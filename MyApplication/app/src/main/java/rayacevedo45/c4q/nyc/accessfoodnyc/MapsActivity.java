@@ -1,17 +1,18 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
-
-import com.parse.Parse;
-import com.parse.ParseObject;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.parse.Parse;
+import com.parse.ParseACL;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -21,13 +22,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Parse.enableLocalDatastore(this);
 
-        Parse.initialize(this);
 
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo2", "bar2");
-        testObject.saveInBackground();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
@@ -35,8 +31,29 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         mMap = mapFragment.getMap();
 
-
+        Button loginSignUpButton = (Button)findViewById(R.id.loginSignUpButton);
+        loginSignUpButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MapsActivity.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+            }
+        });
+//
+//        ParseUser currentUser = ParseUser.getCurrentUser();
+//        if (currentUser == null) {
+//            loadLoginView();
+//        }
     }
+
+//    private void loadLoginView() {
+//        Intent intent = new Intent(this, LoginActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        startActivity(intent);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
