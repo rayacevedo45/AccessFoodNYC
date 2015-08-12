@@ -1,16 +1,28 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.parse.Parse;
+import com.parse.ParseObject;
 
 public class MapActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Parse.enableLocalDatastore(this);
+
+        Parse.initialize(this);
+
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo2", "bar2");
+        testObject.saveInBackground();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+
 
     }
 
