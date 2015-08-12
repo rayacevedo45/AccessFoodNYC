@@ -11,22 +11,22 @@ import android.widget.TextView;
 
 import com.felipecsl.gifimageview.library.GifImageView;
 
-public class MainActivity extends AppCompatActivity {
-    TextView accessTV,foodTV,NYCtv;
+public class SplashActivity extends AppCompatActivity {
+    private TextView accessTV,foodTV,NYCtv;
     private GifImageView gifImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_splash);
 
         accessTV = (TextView) findViewById(R.id.accessID);
         foodTV = (TextView) findViewById(R.id.foodID);
         NYCtv = (TextView) findViewById(R.id.NYCID);
 
-        accessTV.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.lr));
-        foodTV.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.rl));
-        NYCtv.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.lr));
+        accessTV.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.lr));
+        foodTV.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.rl));
+        NYCtv.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.lr));
 
 
 
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(MainActivity.this, Map.class);
+                Intent i = new Intent(SplashActivity.this, MapActivity.class);
                 startActivity(i);
 
                 // close this activity
