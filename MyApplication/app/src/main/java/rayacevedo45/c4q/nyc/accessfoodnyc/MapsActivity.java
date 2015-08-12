@@ -23,6 +23,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private LocationRequest mLocationRequest;
     private Location mLastLocation;
+    private boolean mRequestingLocationUpdates;
 
     private RecyclerView mRecyclerView;
 
@@ -77,8 +78,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnected(Bundle bundle) {
+        if (mRequestingLocationUpdates) {
+            startLocationUpdates();
+        }
 
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+    }
+
+    protected void startLocationUpdates() {
+        LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient, mLocationRequest, this);
     }
 
     @Override
@@ -121,5 +130,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onLocationChanged(Location location) {
 
+        mCurrentLocation = location;
     }
 }
