@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Access"
-        android:textSize="60sp"
+        android:textSize="40sp"
         android:id="@+id/accessID"
         android:textColor="#4AB84A"/>
 
@@ -27,23 +27,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Food"
-        android:textSize="60sp"
+        android:textSize="40sp"
         android:id="@+id/foodID"
         android:gravity="right"
         android:textColor="#4AB84A"
-    android:layout_marginRight="1dp"/>
+        android:layout_marginRight="1dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="NYC"
-        android:textSize="60sp"
+        android:textSize="40sp"
         android:id="@+id/NYCID"
         android:textColor="#4AB84A"
         android:layout_marginLeft="20dp"/>
 
     <ImageView
         android:id="@+id/citypic"
+        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_gravity="bottom"
