@@ -37,9 +37,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         buildGoogleApiClient();
         createLocationRequest();
 
-        Parse.enableLocalDatastore(this);
-
-        Parse.initialize(this, "f6l2pZcEvoOFI1O1mvueXd3Wz0bijxEg17qFmvsm", "fxm9grVH2lvRDVX7e0iaidBuN58miKwVOiZMyMve");
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
