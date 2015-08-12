@@ -9,8 +9,11 @@ import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
+import com.felipecsl.gifimageview.library.GifImageView;
+
 public class MainActivity extends AppCompatActivity {
     TextView accessTV,foodTV,NYCtv;
+    private GifImageView gifImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         accessTV.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.lr));
         foodTV.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.rl));
         NYCtv.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.lr));
+
+
 
         new Handler().postDelayed(new Runnable() {
 
