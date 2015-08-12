@@ -1,3 +1,3 @@
 # AccessFoodNYC
 
-Team Members Hoshiko Oki, Luke Lee, Ray Acevedo, Anna Li.
+Team Members: Hoshiko Oki, Luke Lee, Ray Acevedo, Anna Li.
