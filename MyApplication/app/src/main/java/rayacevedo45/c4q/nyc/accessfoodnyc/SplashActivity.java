@@ -9,7 +9,7 @@ import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class SplashActivity extends AppCompatActivity {
     TextView accessTV,foodTV,NYCtv;
 
     @Override
@@ -21,9 +21,9 @@ public class MainActivity extends AppCompatActivity {
         foodTV = (TextView) findViewById(R.id.foodID);
         NYCtv = (TextView) findViewById(R.id.NYCID);
 
-        accessTV.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.lr));
-        foodTV.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.rl));
-        NYCtv.startAnimation(AnimationUtils.loadAnimation(MainActivity.this, R.anim.lr));
+        accessTV.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.lr));
+        foodTV.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.rl));
+        NYCtv.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.lr));
 
         new Handler().postDelayed(new Runnable() {
 
@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 // This method will be executed once the timer is over
                 // Start your app main activity
-                Intent i = new Intent(MainActivity.this, Map.class);
+                Intent i = new Intent(SplashActivity.this, MapActivity.class);
                 startActivity(i);
 
                 // close this activity
