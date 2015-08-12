@@ -29,5 +29,6 @@ To be completed by Aug 30
 		Hoshiko and Luke:  Using parse.com create database for storing using and vendor information. Pull from social media to allow users to see what food trucks there friends have eating at and what they thought about it. Fix bugs.
 
 To be completed by Sept 15
+		
 		Add bonus Features. Fix Bugs. Polish.
 
