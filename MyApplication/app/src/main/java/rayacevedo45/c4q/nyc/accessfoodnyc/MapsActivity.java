@@ -2,22 +2,31 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.parse.Parse;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private RecyclerView mRecyclerView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        Parse.enableLocalDatastore(this);
+
+        Parse.initialize(this, "f6l2pZcEvoOFI1O1mvueXd3Wz0bijxEg17qFmvsm", "fxm9grVH2lvRDVX7e0iaidBuN58miKwVOiZMyMve");
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
