@@ -1,4 +1,4 @@
-package rayacevedo45.c4q.nyc.accessfoodnyc.database;
+package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.app.Application;
 
@@ -10,10 +10,15 @@ import com.parse.ParseACL;
  */
 public class ParseApplication extends Application {
 
+    private static ParseApplication instance;
+
+    public static ParseApplication getInstance() {
+        return instance;
+    }
     @Override
     public void onCreate() {
         super.onCreate();
-
+        instance = this;
 		/*
 		 * Add Parse initialization code here
 		 */
