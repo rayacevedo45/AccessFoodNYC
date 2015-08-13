@@ -1,8 +1,10 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc.accounts;
 
+import android.accounts.Account;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -12,7 +14,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
@@ -21,7 +26,11 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.plus.Plus;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
+
+import java.io.IOException;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.R;
@@ -45,6 +54,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected EditText passwordEditText;
     protected Button loginButton;
     private SignInButton mSignInButton;
+    private Button mButtonTwitter;
+
+    private Button mButtonGoogleSignOut;
+    private Button mButtonTwitterSignOut;
 
     protected TextView signUpTextView;
 
@@ -53,6 +66,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        ParseTwitterUtils.initialize("5FE9QgpI9yl1u8rsrVJKl09i6", "wvmcQrGJggj1FlVDo58PUODdSF9DWgu9KID6myCUmHBq9UfYxI");
 
         // Build GoogleApiClient with access to basic profile
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -89,11 +104,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-
-                username = username.trim();
-                password = password.trim();
+                String username = usernameEditText.getText().toString().trim();
+                String password = passwordEditText.getText().toString().trim();
 
                 if (username.isEmpty() || password.isEmpty()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
@@ -139,13 +151,22 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         passwordEditText = (EditText)findViewById(R.id.passwordField);
         loginButton = (Button)findViewById(R.id.loginButton);
         mSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        mButtonTwitter = (Button) findViewById(R.id.button_twitter);
+        mButtonGoogleSignOut = (Button) findViewById(R.id.button_google_sign_out);
+        mButtonTwitterSignOut = (Button) findViewById(R.id.button_twitter_sign_out);
     }
 
     private void setUpListeners(boolean isResumed) {
         if (isResumed) {
             mSignInButton.setOnClickListener(this);
+            mButtonTwitter.setOnClickListener(this);
+            mButtonGoogleSignOut.setOnClickListener(this);
+            mButtonTwitterSignOut.setOnClickListener(this);
         } else {
             mSignInButton.setOnClickListener(null);
+            mButtonTwitter.setOnClickListener(null);
+            mButtonGoogleSignOut.setOnClickListener(null);
+            mButtonTwitterSignOut.setOnClickListener(null);
         }
     }
 
@@ -178,6 +199,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         // Show the signed-in UI
         //showSignedInUI();
+        Toast.makeText(getApplicationContext(), "Logged in via Google", Toast.LENGTH_SHORT).show();
+        //goToMapsActivity();
+        new GetIdTokenTask().execute();
     }
 
     @Override
@@ -238,7 +262,51 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             case R.id.sign_in_button:
                 onSignInClicked();
                 break;
+            case R.id.button_twitter:
+                signInViaTwitter();
+                break;
+            case R.id.button_google_sign_out:
+                signOutFromGoogle();
+                break;
+            case R.id.button_twitter_sign_out:
+                break;
         }
+    }
+
+    private void signOutFromGoogle() {
+        if (mGoogleApiClient.isConnected()) {
+            Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
+            mGoogleApiClient.disconnect();
+            Toast.makeText(getApplicationContext(), "Signed out from Google", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void signInViaTwitter() {
+        ParseTwitterUtils.logIn(this, new LogInCallback() {
+            @Override
+            public void done(ParseUser user, ParseException err) {
+                if (user == null) {
+                    Log.d("MyApp", "Uh oh. The user cancelled the Twitter login.");
+                    Toast.makeText(getApplicationContext(), "Something is wrong", Toast.LENGTH_SHORT).show();
+                } else if (user.isNew()) {
+                    Log.d("MyApp", "User signed up and logged in through Twitter!");
+                    Toast.makeText(getApplicationContext(), "Logged in via Twitter", Toast.LENGTH_SHORT).show();
+                    goToMapsActivity();
+                } else if (!ParseTwitterUtils.isLinked(user)) {
+
+                    ParseTwitterUtils.link(user, getApplicationContext(), new SaveCallback() {
+                        @Override
+                        public void done(ParseException ex) {
+
+                        }
+                    });
+                } else {
+                    Log.d("MyApp", "User logged in through Twitter!");
+                }
+            }
+        });
+
+
     }
 
     private void onSignInClicked() {
@@ -263,5 +331,46 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             mIsResolving = false;
             mGoogleApiClient.connect();
         }
+    }
+
+    private void goToMapsActivity() {
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    private class GetIdTokenTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+            String accountName = Plus.AccountApi.getAccountName(mGoogleApiClient);
+            Account account = new Account(accountName, GoogleAuthUtil.GOOGLE_ACCOUNT_TYPE);
+            //String scopes = "audience:server:client_id:" + getString(R.string.parse_client_key);// Not the app's client ID.
+            String scopes = "audience:server:client_id:" + "853411645-rv674lrkr139etcu7ksqh167cuv55i9f.apps.googleusercontent.com";
+            try {
+                return GoogleAuthUtil.getToken(getApplicationContext(), account, scopes);
+            } catch (IOException e) {
+                Log.e(TAG, "Error retrieving ID token.", e);
+                return null;
+            } catch (GoogleAuthException e) {
+                Log.e(TAG, "Error retrieving ID token.", e);
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Log.i(TAG, "ID token: " + result);
+            Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
+            if (result != null) {
+                // Successfully retrieved ID Token
+                // ...
+
+            } else {
+                // There was some error getting the ID Token
+                // ...
+            }
+        }
+
     }
 }

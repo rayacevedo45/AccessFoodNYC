@@ -33,21 +33,14 @@ public class SignUpActivity extends ActionBarActivity {
 
         setContentView(R.layout.activity_sign_up);
 
-        usernameEditText = (EditText)findViewById(R.id.usernameField);
-        passwordEditText = (EditText)findViewById(R.id.passwordField);
-        emailEditText = (EditText)findViewById(R.id.emailField);
-        signUpButton = (Button)findViewById(R.id.signupButton);
+        initializeViews();
 
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameEditText.getText().toString();
-                String password = passwordEditText.getText().toString();
-                String email = emailEditText.getText().toString();
-
-                username = username.trim();
-                password = password.trim();
-                email = email.trim();
+                String username = usernameEditText.getText().toString().trim();
+                String password = passwordEditText.getText().toString().trim();
+                String email = emailEditText.getText().toString().trim();
 
                 if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(SignUpActivity.this);
@@ -61,6 +54,7 @@ public class SignUpActivity extends ActionBarActivity {
                     setProgressBarIndeterminateVisibility(true);
 
                     ParseUser newUser = new ParseUser();
+
                     newUser.setUsername(username);
                     newUser.setPassword(password);
                     newUser.setEmail(email);
@@ -89,6 +83,13 @@ public class SignUpActivity extends ActionBarActivity {
                 }
             }
         });
+    }
+
+    private void initializeViews() {
+        usernameEditText = (EditText)findViewById(R.id.usernameField);
+        passwordEditText = (EditText)findViewById(R.id.passwordField);
+        emailEditText = (EditText)findViewById(R.id.emailField);
+        signUpButton = (Button)findViewById(R.id.signupButton);
     }
 
 //    @Override

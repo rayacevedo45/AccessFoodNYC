@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -37,6 +39,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean mRequestingLocationUpdates;
     private String mLastUpdateTime;
 
+
     private RecyclerView mRecyclerView;
 
 
@@ -52,12 +55,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         createLocationRequest();
 
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        initializeViews();
+
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mMap = mapFragment.getMap();
 
+    }
+
+    private void initializeViews() {
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
     }
 
     @Override
@@ -165,4 +174,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         outState.putString(LAST_UPDATED_TIME_STRING_KEY, mLastUpdateTime);
         super.onSaveInstanceState(outState);
     }
+
+
 }
