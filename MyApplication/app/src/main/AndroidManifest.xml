@@ -44,7 +44,7 @@
         </activity>
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".accounts.LoginActivity"
             android:label="@string/title_activity_login" >
 
         <intent-filter>
@@ -52,15 +52,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <activity
-            android:name=".SignUpActivity"
+            android:name=".accounts.SignUpActivity"
             android:label="@string/title_activity_sign_up" >
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="rayacevedo45.c4q.nyc.accessfoodnyc.LoginActivity" />
+                android:value="rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity" />
         </activity>
 
 
