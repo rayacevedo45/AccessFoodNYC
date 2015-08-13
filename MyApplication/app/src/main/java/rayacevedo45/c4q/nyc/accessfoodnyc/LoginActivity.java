@@ -7,7 +7,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -24,14 +23,27 @@ public class LoginActivity extends ActionBarActivity {
 
     protected TextView signUpTextView;
 
+    protected ParseApplication app;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+//        Parse.initialize(this);
+//
+//        ParseACL defaultACL = new ParseACL();
+//
+//        // If you would like all objects to be private by default, remove this
+//        // line.
+//        defaultACL.setPublicReadAccess(true);
+//
+//        ParseACL.setDefaultACL(defaultACL, true);
+//
+//        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        app = new ParseApplication();
 
         signUpTextView = (TextView)findViewById(R.id.signUpText);
         usernameEditText = (EditText)findViewById(R.id.usernameField);
