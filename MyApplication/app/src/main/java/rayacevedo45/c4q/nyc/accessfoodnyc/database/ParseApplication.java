@@ -1,4 +1,4 @@
-package rayacevedo45.c4q.nyc.accessfoodnyc;
+package rayacevedo45.c4q.nyc.accessfoodnyc.database;
 
 import android.app.Application;
 

@@ -13,6 +13,9 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import rayacevedo45.c4q.nyc.accessfoodnyc.R;
+import rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity;
+
 public class SignUpActivity extends ActionBarActivity {
 
     protected EditText usernameEditText;

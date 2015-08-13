@@ -13,12 +13,23 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.Parse;
 
+import java.text.DateFormat;
+import java.util.Date;
+
+import rayacevedo45.c4q.nyc.accessfoodnyc.R;
+
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, LocationListener {
+
+    private static final String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
+    private static final String LOCATION_KEY = "location-key";
+    private static final String LAST_UPDATED_TIME_STRING_KEY = "last-updated-time-string-key";
 
     private GoogleApiClient mGoogleApiClient;
     private GoogleMap mMap;
@@ -26,6 +37,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Location mLastLocation;
     private Location mCurrentLocation;
     private boolean mRequestingLocationUpdates;
+    private String mLastUpdateTime;
 
     private RecyclerView mRecyclerView;
 
@@ -81,11 +93,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnected(Bundle bundle) {
+
+
+        LatLng defaultLatLng = new LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE);
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLatLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
+
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
         }
-
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        LatLng lastLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(lastLatLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+
     }
 
     protected void startLocationUpdates() {
@@ -94,8 +116,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-
+    public void onConnectionSuspended(int cause) {
+        mGoogleApiClient.connect();
     }
 
     @Override
@@ -134,5 +156,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onLocationChanged(Location location) {
 
         mCurrentLocation = location;
+        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, mRequestingLocationUpdates);
+        outState.putParcelable(LOCATION_KEY, mCurrentLocation);
+        outState.putString(LAST_UPDATED_TIME_STRING_KEY, mLastUpdateTime);
+        super.onSaveInstanceState(outState);
     }
 }

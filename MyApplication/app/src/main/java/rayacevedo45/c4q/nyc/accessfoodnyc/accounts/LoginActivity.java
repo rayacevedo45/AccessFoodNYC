@@ -16,6 +16,9 @@ import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
+import rayacevedo45.c4q.nyc.accessfoodnyc.R;
+import rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity;
+
 public class LoginActivity extends ActionBarActivity {
 
     protected EditText usernameEditText;
