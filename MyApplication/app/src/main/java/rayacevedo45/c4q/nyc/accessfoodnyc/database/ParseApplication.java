@@ -5,9 +5,6 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseACL;
 
-/**
- * Created by Hoshiko on 8/12/15.
- */
 public class ParseApplication extends Application {
 
     @Override

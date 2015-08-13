@@ -24,5 +24,6 @@
     <string name="login_button_label">Login</string>
     <string name="sign_up_text">Sign Up!</string>
     <string name="logout_label">Logout</string>
+    <string name="title_activity_main">MainActivity</string>
 
 </resources>
