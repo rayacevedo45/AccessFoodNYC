@@ -7,23 +7,29 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import rayacevedo45.c4q.nyc.accessfoodnyc.vendor.GifView;
+
 public class SplashActivity extends AppCompatActivity {
-    TextView accessTV,foodTV,NYCtv;
+    ImageView accessIM,foodIM,NYCim;
+    GifView gifView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        accessTV = (TextView) findViewById(R.id.accessID);
-        foodTV = (TextView) findViewById(R.id.foodID);
-        NYCtv = (TextView) findViewById(R.id.NYCID);
+//        accessIM = (ImageView) findViewById(R.id.accessID);
+//        foodIM = (ImageView) findViewById(R.id.foodID);
+//        NYCim = (ImageView) findViewById(R.id.NYCID);
 
-        accessTV.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.lr));
-        foodTV.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.rl));
-        NYCtv.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.lr));
+        gifView = (GifView)findViewById(R.id.gif_view);
+
+//        accessIM.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.lr));
+//        foodIM.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.rl));
+//        NYCim.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.lr));
 
         new Handler().postDelayed(new Runnable() {
 
@@ -42,7 +48,7 @@ public class SplashActivity extends AppCompatActivity {
                 // close this activity
                 finish();
             }
-        }, 2900);
+        }, 5000);
     }
 
     @Override
