@@ -51,17 +51,17 @@
 
 
         <activity
-            android:name=".accounts.LoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/title_activity_login" >
 
         </activity>
 
         <activity
-            android:name=".accounts.SignUpActivity"
+            android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity" />
+                android:value=".LoginActivity" />
         </activity>
 
         <meta-data

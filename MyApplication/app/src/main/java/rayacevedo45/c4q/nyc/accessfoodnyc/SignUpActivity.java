@@ -1,4 +1,4 @@
-package rayacevedo45.c4q.nyc.accessfoodnyc.accounts;
+package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -12,9 +12,6 @@ import android.widget.EditText;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-
-import rayacevedo45.c4q.nyc.accessfoodnyc.R;
-import rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity;
 
 public class SignUpActivity extends ActionBarActivity {
 
