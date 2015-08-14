@@ -31,19 +31,6 @@ public class LoginActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        Parse.initialize(this);
-//
-//        ParseACL defaultACL = new ParseACL();
-//
-//        // If you would like all objects to be private by default, remove this
-//        // line.
-//        defaultACL.setPublicReadAccess(true);
-//
-//        ParseACL.setDefaultACL(defaultACL, true);
-//
-//        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
