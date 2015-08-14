@@ -6,8 +6,16 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".SignUpActivity" >
+    android:paddingTop="35dp"
+    tools:context=".SignUpActivity"
+    android:background="#ffff6810">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout"
+        android:background="@drawable/edittextstyle">
 
     <EditText
         android:id="@+id/usernameField"
@@ -16,9 +24,9 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:ems="10"
-        android:hint="@string/username_hint" >
-
-        <requestFocus />
+        android:hint="@string/username_hint"
+        android:textColor="#020100"
+        android:textColorHint="#020100">
     </EditText>
 
     <EditText
@@ -29,7 +37,9 @@
         android:layout_below="@+id/usernameField"
         android:ems="10"
         android:inputType="textPassword"
-        android:hint="@string/password_hint" />
+        android:hint="@string/password_hint"
+        android:textColor="#020100"
+        android:textColorHint="#020100"/>
 
     <EditText
         android:id="@+id/emailField"
@@ -39,14 +49,25 @@
         android:layout_below="@+id/passwordField"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:hint="@string/email_hint" />
+        android:hint="@string/email_hint"
+        android:textColor="#020100"
+        android:textColorHint="#020100"/>
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/signupButton"
-        android:layout_width="match_parent"
+        android:text="@string/sign_up_button_label"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/emailField"
-        android:layout_below="@+id/emailField"
-        android:text="@string/sign_up_button_label" />
-
+        android:ems="8"
+        android:typeface="monospace"
+        android:textStyle="bold"
+        android:textColor="#020100"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:background="@drawable/edittextstyle"
+        android:layout_below="@+id/linearLayout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="65dp" />
 </RelativeLayout>
