@@ -38,21 +38,24 @@
             <!--</intent-filter>-->
         </activity>
         <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_map" >
-        </activity>
-        <activity
-            android:name=".accounts.LoginActivity"
-            android:label="@string/title_activity_login" >
-
-
-        <intent-filter>
+            android:name=".VendorInfoActivity"
+            android:label="@string/title_activity_vendor"
+            android:theme="@style/Base.ThemeOverlay.AppCompat.ActionBar">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
         </activity>
+
+
+        <activity
+            android:name=".accounts.LoginActivity"
+            android:label="@string/title_activity_login" >
+
+        </activity>
+
         <activity
             android:name=".accounts.SignUpActivity"
             android:label="@string/title_activity_sign_up" >

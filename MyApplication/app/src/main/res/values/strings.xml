@@ -25,5 +25,9 @@
     <string name="sign_up_text">Sign Up!</string>
     <string name="logout_label">Logout</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_vendor">Vendor Info</string>
+
+
+    <string name="detail_section_text">Vendor Details</string>
 
 </resources>

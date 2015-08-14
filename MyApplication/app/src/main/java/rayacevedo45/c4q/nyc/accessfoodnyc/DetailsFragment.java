@@ -1,4 +1,4 @@
-package rayacevedo45.c4q.nyc.accessfoodnyc.vendor;
+package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
