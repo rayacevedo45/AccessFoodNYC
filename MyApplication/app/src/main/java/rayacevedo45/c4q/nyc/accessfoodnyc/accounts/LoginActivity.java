@@ -49,7 +49,7 @@ public class LoginActivity extends ActionBarActivity {
 
         app = new ParseApplication();
 
-        signUpTextView = (TextView)findViewById(R.id.signUpText);
+       // signUpTextView = (TextView)findViewById(R.id.signUpText);
         usernameEditText = (EditText)findViewById(R.id.usernameField);
         passwordEditText = (EditText)findViewById(R.id.passwordField);
         loginButton = (Button)findViewById(R.id.loginButton);
