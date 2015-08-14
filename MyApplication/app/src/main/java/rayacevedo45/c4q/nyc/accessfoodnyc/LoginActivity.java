@@ -1,4 +1,4 @@
-package rayacevedo45.c4q.nyc.accessfoodnyc.accounts;
+package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.accounts.Account;
 import android.app.AlertDialog;
@@ -31,10 +31,6 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.IOException;
-
-import rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity;
-import rayacevedo45.c4q.nyc.accessfoodnyc.R;
-import rayacevedo45.c4q.nyc.accessfoodnyc.ParseApplication;
 
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
 
@@ -200,8 +196,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // Show the signed-in UI
         //showSignedInUI();
         Toast.makeText(getApplicationContext(), "Logged in via Google", Toast.LENGTH_SHORT).show();
-        //goToMapsActivity();
-        new GetIdTokenTask().execute();
+        goToMapsActivity();
+        //new GetIdTokenTask().execute();
     }
 
     @Override

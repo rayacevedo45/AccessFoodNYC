@@ -1,5 +1,6 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,7 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -18,14 +21,23 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, LocationListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, View.OnClickListener, GoogleMap.OnCameraChangeListener {
 
     private static final String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
     private static final String LOCATION_KEY = "location-key";
@@ -39,10 +51,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean mRequestingLocationUpdates;
     private String mLastUpdateTime;
 
+    private Button mButtonFilter;
 
-    private RecyclerView mRecyclerView;
+    private ListView mListView;
+    private VendorsListAdapter mAdapter;
 
-
+    private List<ParseObject> mVendorList;
 
 
     @Override
@@ -51,12 +65,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        //Parse.initialize(this);
+
         buildGoogleApiClient();
         createLocationRequest();
 
 
         initializeViews();
 
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                mAdapter = new VendorsListAdapter(getApplicationContext(), list);
+                mListView.setAdapter(mAdapter);
+
+            }
+        });
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -64,9 +89,49 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private void initializeViews() {
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpListener(true);
+    }
+
+    public void setUpListener(boolean isResumed) {
+        if (isResumed) {
+            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    String objectId = mAdapter.getItem(position).getObjectId();
+                    Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
+                    intent.putExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, objectId);
+                    startActivity(intent);
+                }
+            });
+        } else {
+
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        setUpListener(false);
+    }
+
+    @Override
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    private void initializeViews() {
+        mButtonFilter = (Button) findViewById(R.id.button_filter);
+        mListView = (ListView) findViewById(R.id.listView);
     }
 
     @Override
@@ -96,6 +161,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         googleMap.setMyLocationEnabled(true);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        googleMap.setOnCameraChangeListener(this);
+
+
     }
 
     @Override
@@ -118,8 +186,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     protected void startLocationUpdates() {
+        LocationListener locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                mCurrentLocation = location;
+                mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+            }
+        };
         LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
+                mGoogleApiClient, mLocationRequest, locationListener);
     }
 
     @Override
@@ -140,30 +215,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        mGoogleApiClient.connect();
-    }
 
-    @Override
-    protected void onStop() {
-        mGoogleApiClient.disconnect();
-        super.onStop();
-    }
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(15000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-
-        mCurrentLocation = location;
-        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
     }
 
 
@@ -173,6 +231,31 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         outState.putParcelable(LOCATION_KEY, mCurrentLocation);
         outState.putString(LAST_UPDATED_TIME_STRING_KEY, mLastUpdateTime);
         super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+    }
+
+    @Override
+    public void onCameraChange(CameraPosition cameraPosition) {
+
+    }
+
+    private void getQuery() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+    }
+
+    private void cleanUpMarkers(Set<String> markersToKeep) {
+//        for (String objId : new HashSet<String>(mapMarkers.keySet())) {
+//            if (!markersToKeep.contains(objId)) {
+//                Marker marker = mapMarkers.get(objId);
+//                marker.remove();
+//                mapMarkers.get(objId).remove();
+//                mapMarkers.remove(objId);
+//            }
+//        }
     }
 
 

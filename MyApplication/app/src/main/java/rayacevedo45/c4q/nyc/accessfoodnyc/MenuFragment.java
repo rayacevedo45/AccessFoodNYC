@@ -1,4 +1,4 @@
-package rayacevedo45.c4q.nyc.accessfoodnyc.vendor;
+package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.R;
 
-public class ReviewsFragment extends Fragment {
+public class MenuFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View result = inflater.inflate(R.layout.fragment_reviews, container, false);
+        View result = inflater.inflate(R.layout.fragment_menu, container, false);
 
         return result;
     }
