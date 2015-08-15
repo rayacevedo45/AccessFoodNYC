@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+        <style name="MyCustomTheme" parent="android:Theme.Material.Light">
+        <!-- Override the app bar color -->
+
+        <!-- Override the color of UI controls -->
+        <item name="android:colorAccent">#E84319</item>
+
+        </style>
+</resources>
