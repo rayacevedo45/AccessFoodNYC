@@ -18,6 +18,7 @@ import com.parse.ParseUser;
 import rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.R;
 import rayacevedo45.c4q.nyc.accessfoodnyc.ParseApplication;
+import rayacevedo45.c4q.nyc.accessfoodnyc.SignUpActivity;
 
 public class LoginActivity extends ActionBarActivity {
 
