@@ -54,10 +54,11 @@ public class VendorsListAdapter extends BaseAdapter {
         TextView rating = (TextView) convertView.findViewById(R.id.vendor_rating);
 
         Picasso.with(mContext).load((String) item.get("picture_url")).centerCrop().resize(200, 200).into(photo);
-        name.setText((String) item.get("vendor_name"));
-        //rating.setText((String) item.get("rating"));
+        name.setText(Integer.toString(position + 1) + ". " + (String) item.get("vendor_name"));
+        rating.setText(Integer.toString((Integer) item.get("rating")));
 
 
         return convertView;
     }
 }
+

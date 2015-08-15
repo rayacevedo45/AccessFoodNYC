@@ -3,6 +3,7 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -24,9 +25,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -51,7 +54,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean mRequestingLocationUpdates;
     private String mLastUpdateTime;
 
-    private Button mButtonFilter;
+    private FloatingActionButton mButtonFilter;
 
     private ListView mListView;
     private VendorsListAdapter mAdapter;
@@ -79,6 +82,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void done(List<ParseObject> list, ParseException e) {
                 mAdapter = new VendorsListAdapter(getApplicationContext(), list);
                 mListView.setAdapter(mAdapter);
+                int i = 1;
+                for (ParseObject item : list) {
+                    ParseGeoPoint point = (ParseGeoPoint) item.get("location");
+                    double latitude = point.getLatitude();
+                    double longitude = point.getLongitude();
+                    LatLng position = new LatLng(latitude, longitude);
+                    mMap.addMarker(new MarkerOptions().position(position).title((String) item.get("vendor_name")));
+
+                }
 
             }
         });
@@ -130,7 +142,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initializeViews() {
-        mButtonFilter = (Button) findViewById(R.id.button_filter);
+        mButtonFilter = (FloatingActionButton) findViewById(R.id.button_filter);
         mListView = (ListView) findViewById(R.id.listView);
     }
 
@@ -158,6 +170,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
 
         googleMap.setMyLocationEnabled(true);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
@@ -259,4 +272,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+
 }
+

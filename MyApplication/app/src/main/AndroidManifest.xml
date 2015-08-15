@@ -19,6 +19,7 @@
         android:theme="@style/Theme.AppCompat.NoActionBar"
         android:name="rayacevedo45.c4q.nyc.accessfoodnyc.ParseApplication">
 
+
         <meta-data
             android:name="com.parse.APPLICATION_ID"
             android:value="@string/parse_app_id" />
@@ -29,32 +30,25 @@
         <activity
             android:name=".SplashActivity"
             android:label="@string/app_name"
-
             android:hardwareAccelerated="false">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_map"></activity>
-        <activity
-            android:name=".accounts.LoginActivity"
-            android:label="@string/title_activity_login">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
 
-        </activity>
         <activity
-            android:name=".accounts.SignUpActivity"
-            android:label="@string/title_activity_sign_up">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity" />
+            android:name="rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:colorAccent="#FF5C33"
+            android:statusBarColor="#FF5C33">
+
         </activity>
 
         <meta-data
