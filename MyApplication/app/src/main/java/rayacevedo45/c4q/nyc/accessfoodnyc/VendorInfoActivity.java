@@ -212,20 +212,4 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
             return rootView;
         }
     }
-//
-//    protected void getLatestPosts(){
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-//        query.getInBackground("i6TquTtMsJ", new GetCallback<ParseObject>() {
-//            public void done(ParseObject vendor, ParseException e) {
-//                if (e == null) {
-//                    vendorName = vendor.getString("vendor_name");
-//
-//
-//                } else {
-//                    // something went wrong
-//                }
-//            }
-//        });
-//
-//    }
 }

@@ -17,7 +17,7 @@ import com.squareup.picasso.Picasso;
 import java.net.URL;
 
 public class DetailsFragment extends Fragment {
-    ParseObject vendor = new ParseObject("GameScore");
+    ParseObject vendor = new ParseObject("Vendor");
     String category;
     static String vendorName;
     URL vendorPicUrl;
