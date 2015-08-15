@@ -30,4 +30,7 @@
     <string name="splash_nyc">splash_nyc</string>
     <string name="splash_nyc_pic">splash_nycpic</string>
 
+    <string name="title_activity_vendor">Vendor Info</string>
+
+    <string name="detail_section_text">Vendor Details</string>
 </resources>
