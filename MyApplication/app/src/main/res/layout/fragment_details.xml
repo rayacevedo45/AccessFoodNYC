@@ -14,7 +14,9 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/vendor_pic"/>
+        android:id="@+id/vendor_pic"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"/>
 
     <TextView
         android:layout_width="wrap_content"
