@@ -25,5 +25,9 @@
     <string name="sign_up_text">Sign Up!</string>
     <string name="logout_label">Logout</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="splash_access">splash_access</string>
+    <string name="splash_food">splash_food</string>
+    <string name="splash_nyc">splash_nyc</string>
+    <string name="splash_nyc_pic">splash_nycpic</string>
 
 </resources>
