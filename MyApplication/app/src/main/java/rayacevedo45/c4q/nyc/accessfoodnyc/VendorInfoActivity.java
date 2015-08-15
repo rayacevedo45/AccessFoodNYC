@@ -30,10 +30,14 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
      */
     ViewPager mViewPager;
 
+    // Tab titles
+    private String[] tabs = { "Details", "Menu", "Reviews" };
+    String vendorName;
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
+//        getLatestPosts();
+//        setTitle(vendorName);
         setContentView(R.layout.activity_vendor_info);
 
         // Create the adapter that will return a fragment for each of the three primary sections
@@ -50,6 +54,9 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         // Specify that we will be displaying tabs in the action bar.
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
+
+
+
         // Set up the ViewPager, attaching the adapter and setting up a listener for when the
         // user swipes between sections.
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -65,14 +72,19 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         });
 
         // For each of the sections in the app, add a tab to the action bar.
-        for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
-            // Create a tab with text corresponding to the page title defined by the adapter.
-            // Also specify this Activity object, which implements the TabListener interface, as the
-            // listener for when this tab is selected.
-            actionBar.addTab(
-                    actionBar.newTab()
-                            .setText(mAppSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
+//        for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
+//            // Create a tab with text corresponding to the page title defined by the adapter.
+//            // Also specify this Activity object, which implements the TabListener interface, as the
+//            // listener for when this tab is selected.
+//            actionBar.addTab(
+//                    actionBar.newTab()
+//                            .setText(mAppSectionsPagerAdapter.getPageTitle(i))
+//                            .setTabListener(this));
+//        }
+
+        for (String tab_name : tabs) {
+            actionBar.addTab(actionBar.newTab().setText(tab_name)
+                    .setTabListener(this));
         }
     }
 
@@ -103,19 +115,32 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         @Override
         public Fragment getItem(int i) {
             switch (i) {
-                case 0:
-                    // The first section of the app is the most interesting -- it offers
-                    // a launchpad into the other demonstrations in this example application.
-                    return new LaunchpadSectionFragment();
+//                case 0:
+//                    // The first section of the app is the most interesting -- it offers
+//                    // a launchpad into the other demonstrations in this example application.
+//                    return new LaunchpadSectionFragment();
+//
+//                default:
+//                    // The other sections of the app are dummy placeholders.
+//                    Fragment fragment = new DetailSectionFragment();
+//                    Bundle args = new Bundle();
+//                    args.putInt(DetailSectionFragment.ARG_SECTION_NUMBER, i + 1);
+//                    fragment.setArguments(args);
+//                    return fragment;
 
-                default:
-                    // The other sections of the app are dummy placeholders.
-                    Fragment fragment = new DetailSectionFragment();
-                    Bundle args = new Bundle();
-                    args.putInt(DetailSectionFragment.ARG_SECTION_NUMBER, i + 1);
-                    fragment.setArguments(args);
-                    return fragment;
+
+
+                case 0:
+                    // Top Rated fragment activity
+                    return new DetailsFragment();
+                case 1:
+                    // Games fragment activity
+                    return new MenuFragment();
+                case 2:
+                    // Movies fragment activity
+                    return new ReviewsFragment();
             }
+            return null;
         }
 
         @Override
@@ -187,4 +212,20 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
             return rootView;
         }
     }
+//
+//    protected void getLatestPosts(){
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+//        query.getInBackground("i6TquTtMsJ", new GetCallback<ParseObject>() {
+//            public void done(ParseObject vendor, ParseException e) {
+//                if (e == null) {
+//                    vendorName = vendor.getString("vendor_name");
+//
+//
+//                } else {
+//                    // something went wrong
+//                }
+//            }
+//        });
+//
+//    }
 }
