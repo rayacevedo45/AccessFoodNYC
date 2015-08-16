@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-        <style name="MyCustomTheme" parent="android:Theme.Material.Light.NoActionBar">
-            <item name="android:textColorPrimary">@color/white</item>
-            <item name="android:statusBarColor">@color/orange</item>
-            <item name="android:colorPrimary">@color/red</item>
-            <item name="android:colorAccent">@color/red</item>
-            <item name="android:navigationBarColor">@color/orange</item>
-        </style>
-
-    <style name="MyCustomTheme2" parent="android:Theme.Material.Light">
+        <style name="MyCustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
             <item name="android:textColorPrimary">@color/white</item>
             <item name="android:statusBarColor">@color/orange</item>
             <item name="android:colorPrimary">@color/red</item>
