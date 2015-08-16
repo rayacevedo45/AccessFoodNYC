@@ -53,14 +53,14 @@
         android:layout_margin="16dp" />
 
 
-    <ListView
-        android:id="@+id/listView"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
-    </ListView>
+    </android.support.v7.widget.RecyclerView>
 
 
 

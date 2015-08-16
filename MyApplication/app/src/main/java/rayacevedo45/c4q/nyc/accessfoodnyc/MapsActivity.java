@@ -5,8 +5,11 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -52,8 +55,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private FloatingActionButton mButtonFilter;
 
-    private ListView mListView;
-    private VendorsListAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private VendorListAdapter mAdapter;
 
     private List<ParseObject> mVendorList;
     public static String objectId;
@@ -72,12 +75,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         initializeViews();
 
+
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                mAdapter = new VendorsListAdapter(getApplicationContext(), list);
-                mListView.setAdapter(mAdapter);
+                mAdapter = new VendorListAdapter(getApplicationContext(), list);
+                mRecyclerView.setAdapter(mAdapter);
                 int i = 1;
                 for (ParseObject item : list) {
                     ParseGeoPoint point = (ParseGeoPoint) item.get("location");
@@ -89,7 +94,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                     // Changing marker icon
                     marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck));
-//                    mMap.addMarker(new MarkerOptions().position(position).title((String) item.get("vendor_name")));
                     mMap.addMarker(marker);
                 }
 
@@ -116,15 +120,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     public void setUpListener(boolean isResumed) {
         if (isResumed) {
-            mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                public void onItemClick(View view, int position) {
                     objectId = mAdapter.getItem(position).getObjectId();
                     Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
                     intent.putExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, objectId);
                     startActivity(intent);
                 }
-            });
+            })
+            );
+
+//            mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                    objectId = mAdapter.getItem(position).getObjectId();
+//                    Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
+//                    intent.putExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, objectId);
+//                    startActivity(intent);
+//                }
+//            });
         } else {
 
         }
@@ -144,7 +159,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private void initializeViews() {
         mButtonFilter = (FloatingActionButton) findViewById(R.id.button_filter);
-        mListView = (ListView) findViewById(R.id.listView);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        lm.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(lm);
     }
 
     @Override
