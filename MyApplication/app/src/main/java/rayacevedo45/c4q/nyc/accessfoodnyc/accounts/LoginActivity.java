@@ -1,9 +1,9 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc.accounts;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +21,7 @@ import rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.ParseApplication;
 import rayacevedo45.c4q.nyc.accessfoodnyc.R;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
 
     protected EditText usernameEditText;
     protected EditText passwordEditText;
@@ -34,25 +34,10 @@ public class LoginActivity extends AppCompatActivity {
     protected Button backButton;
     protected Button continueButton;
     protected LinearLayout layout;
-
-    //protected TextView signUpTextView;
-
     protected ParseApplication app;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-//        Parse.initialize(this);
-//
-//        ParseACL defaultACL = new ParseACL();
-//
-//        // If you would like all objects to be private by default, remove this
-//        // line.
-//        defaultACL.setPublicReadAccess(true);
-//
-//        ParseACL.setDefaultACL(defaultACL, true);
-//
-//        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);

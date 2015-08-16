@@ -27,9 +27,9 @@
 
 
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
         <!--app:backgroundTint="#FF5C33"-->
         <!--android:textColorHint="#FF5C33"-->
         <!--android:shadowColor="#FF5C33"-->
@@ -48,27 +48,6 @@
             android:textColor="#E84319"
             android:textColorHint="#E84319"
             android:backgroundTint="#E84319"/>
-            <!--app:backgroundTint="#FF5C33"-->
-            <!--android:textColorHint="#FF5C33"-->
-            <!--android:shadowColor="#FF5C33"-->
-            
-            <!--android:textColorHighlight="#FF5C33"-->
-            <!--android:textColorLink="#FF5C33"-->
-            <!--android:backgroundTint="#FF5C33"-->
-
-    </android.support.design.widget.TextInputLayout>
-
-
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <!--app:backgroundTint="#FF5C33"-->
-        <!--android:textColorHint="#FF5C33"-->
-        <!--android:shadowColor="#FF5C33"-->
-        <!--android:textColor="#FF5C33"-->
-        <!--android:textColorHighlight="#FF5C33"-->
-        <!--android:textColorLink="#FF5C33"-->
-        <!--android:backgroundTint="#FF5C33">-->
 
     <EditText
         android:id="@+id/passwordField"
@@ -82,6 +61,30 @@
         android:inputType="textPassword"
         android:backgroundTint="#E84319"/>
 
+            <!--app:backgroundTint="#FF5C33"-->
+            <!--android:textColorHint="#FF5C33"-->
+            <!--android:shadowColor="#FF5C33"-->
+            
+            <!--android:textColorHighlight="#FF5C33"-->
+            <!--android:textColorLink="#FF5C33"-->
+            <!--android:backgroundTint="#FF5C33"-->
+
+    <!--</android.support.design.widget.TextInputLayout>-->
+
+
+    <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--app:backgroundTint="#FF5C33"-->
+        <!--android:textColorHint="#FF5C33"-->
+        <!--android:shadowColor="#FF5C33"-->
+        <!--android:textColor="#FF5C33"-->
+        <!--android:textColorHighlight="#FF5C33"-->
+        <!--android:textColorLink="#FF5C33"-->
+        <!--android:backgroundTint="#FF5C33">-->
+
+
+
         <!--app:backgroundTint="#FF5C33"-->
         <!--android:textColorHint="#FF5C33"-->
         <!--android:shadowColor="#FF5C33"-->
@@ -90,11 +93,11 @@
         <!--android:textColorLink="#FF5C33"-->
         <!--android:backgroundTint="#FF5C33" />-->
 
-    </android.support.design.widget.TextInputLayout>
+    <!--</android.support.design.widget.TextInputLayout>-->
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
         <!--app:backgroundTint="#FF5C33"-->
         <!--android:textColorHint="#FF5C33"-->
         <!--android:shadowColor="#FF5C33"-->
@@ -122,12 +125,12 @@
         <!--android:textColorLink="#FF5C33"-->
         <!--android:backgroundTint="#FF5C33"-->
 
-    </android.support.design.widget.TextInputLayout>
+    <!--</android.support.design.widget.TextInputLayout>-->
 
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
         <!--app:backgroundTint="#FF5C33"-->
         <!--android:textColorHint="#FF5C33"-->
         <!--android:shadowColor="#FF5C33"-->
@@ -158,12 +161,12 @@
         <!--android:textColorLink="#FF5C33"-->
         <!--android:backgroundTint="#FF5C33" />-->
 
-    </android.support.design.widget.TextInputLayout>
+    <!--</android.support.design.widget.TextInputLayout>-->
 
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
 
         <EditText
             android:id="@+id/emailFieldID"
@@ -177,7 +180,7 @@
             android:textColorHint="#E84319"
             android:backgroundTint="#E84319"/>
 
-    </android.support.design.widget.TextInputLayout>
+    <!--</android.support.design.widget.TextInputLayout>-->
 
 
 
