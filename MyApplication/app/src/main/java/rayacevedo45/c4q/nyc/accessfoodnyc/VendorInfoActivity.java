@@ -87,6 +87,8 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
             actionBar.addTab(actionBar.newTab().setText(tab_name)
                     .setTabListener(this));
         }
+
+
     }
 
     @Override
