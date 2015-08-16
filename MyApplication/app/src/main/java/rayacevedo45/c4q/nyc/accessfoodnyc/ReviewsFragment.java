@@ -5,11 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import org.json.JSONException;
-
-import java.util.ArrayList;
 
 
 public class ReviewsFragment extends Fragment {
@@ -52,5 +47,5 @@ public class ReviewsFragment extends Fragment {
 //        ArrayList<String> tmpKeys = yParser.getBundleKeys();
 //
 //        Toast.makeText(getActivity(), b_name, Toast.LENGTH_SHORT).show();
-//    }
+    }
 }

@@ -5,6 +5,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,6 +35,13 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.YelpResponse;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpSearchService;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, View.OnClickListener, GoogleMap.OnCameraChangeListener {
@@ -100,7 +108,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         mMap = mapFragment.getMap();
 
+
+        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
+        yelpService.searchFoodCarts("40.731889, -73.984369", new YelpSearchCallback());
+
     }
+
+    protected class YelpSearchCallback implements Callback <YelpResponse> {
+
+        public String TAG = "YelpSearchCallback";
+
+        @Override
+        public void success(YelpResponse yelpResponse, Response response) {
+            Log.d(TAG, "Success");
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e(TAG, error.getMessage());
+
+        }
+    }
+
+
+
+
+
 
     @Override
     protected void onStart() {
