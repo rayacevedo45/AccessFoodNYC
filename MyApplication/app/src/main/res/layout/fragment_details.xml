@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#fa6a6a" >
+    android:background="#E84319" >
 
     <!--<TextView android:layout_width="fill_parent"-->
         <!--android:layout_height="wrap_content"-->
@@ -16,13 +16,14 @@
         android:layout_height="wrap_content"
         android:id="@+id/vendor_pic"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitXY"
+        android:textColor="#FFFFFF"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/vendor_name"
-        android:textSize="20dp"
+        android:textSize="30dp"
         android:text=""
         android:layout_below="@+id/vendor_pic"/>
 
