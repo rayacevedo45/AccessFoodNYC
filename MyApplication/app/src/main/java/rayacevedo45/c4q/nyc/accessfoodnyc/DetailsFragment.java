@@ -52,7 +52,7 @@ public class DetailsFragment extends Fragment {
 
     protected void getLatestPosts(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-        query.getInBackground("i6TquTtMsJ", new GetCallback<ParseObject>() {
+        query.getInBackground(MapsActivity.objectId, new GetCallback<ParseObject>() {
             public void done(ParseObject vendor, ParseException e) {
                 if (e == null) {
                     vendorName = vendor.getString("vendor_name");

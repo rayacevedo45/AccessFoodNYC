@@ -5,12 +5,10 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -24,10 +22,8 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.FindCallback;
-import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -35,7 +31,6 @@ import com.parse.ParseQuery;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -60,7 +55,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private VendorsListAdapter mAdapter;
 
     private List<ParseObject> mVendorList;
-
+    public static String objectId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +113,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String objectId = mAdapter.getItem(position).getObjectId();
+                    objectId = mAdapter.getItem(position).getObjectId();
                     Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
                     intent.putExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, objectId);
                     startActivity(intent);
