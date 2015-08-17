@@ -3,15 +3,23 @@ package rayacevedo45.c4q.nyc.accessfoodnyc.accounts;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.plus.Plus;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
@@ -23,6 +31,18 @@ import rayacevedo45.c4q.nyc.accessfoodnyc.R;
 
 public class LoginActivity extends Activity {
 
+    private static final String TAG = "LoginActivity";
+
+    private static final int RC_SIGN_IN = 0;
+
+    // Is there a ConnectionResult resolution in progress?
+    private boolean mIsResolving = false;
+
+    // Should we automatically resolve ConnectionResults when possible?
+    private boolean mShouldResolve = false;
+
+    private GoogleApiClient mGoogleApiClient;
+
     protected EditText usernameEditText;
     protected EditText passwordEditText;
     protected EditText usernameEditText2;
@@ -30,7 +50,7 @@ public class LoginActivity extends Activity {
     protected EditText emailField;
     protected Button loginButton;
     protected Button signUpButton;
-    protected SignInButton googleSignin;
+    protected SignInButton mSignInButton;
     protected Button backButton;
     protected Button continueButton;
     protected LinearLayout layout;
@@ -44,6 +64,58 @@ public class LoginActivity extends Activity {
 
         app = new ParseApplication();
 
+        // Build GoogleApiClient with access to basic profile
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(Bundle bundle) {
+                        // onConnected indicates that an account was selected on the device, that the selected
+                        // account has granted any requested permissions to our app and that we were able to
+                        // establish a service connection to Google Play services.
+                        Log.d(TAG, "onConnected:" + bundle);
+                        mShouldResolve = false;
+
+                        // Show the signed-in UI
+                        //showSignedInUI();
+                        Toast.makeText(getApplicationContext(), "Logged in via Google", Toast.LENGTH_SHORT).show();
+                        goToMapsActivity();
+                        //new GetIdTokenTask().execute();
+                    }
+
+                    @Override
+                    public void onConnectionSuspended(int i) {
+
+                    }
+                })
+                .addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
+                    @Override
+                    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+                        if (!mIsResolving && mShouldResolve) {
+                            if (connectionResult.hasResolution()) {
+                                try {
+                                    connectionResult.startResolutionForResult(LoginActivity.this, RC_SIGN_IN);
+                                    mIsResolving = true;
+                                } catch (IntentSender.SendIntentException e) {
+                                    Log.e(TAG, "Could not resolve ConnectionResult.", e);
+                                    mIsResolving = false;
+                                    mGoogleApiClient.connect();
+                                }
+                            } else {
+                                // Could not resolve the connection result, show the user an
+                                // error dialog.
+                                //showErrorDialog(connectionResult);
+                            }
+                        } else {
+                            // Show the signed-out UI
+                            //showSignedOutUI();
+                        }
+                    }
+                })
+                .addApi(Plus.API)
+                .addScope(new Scope(Scopes.PROFILE))
+                .build();
+
         signUpButton = (Button)findViewById(R.id.signupButtonID);
         usernameEditText = (EditText)findViewById(R.id.usernameField);
         passwordEditText = (EditText)findViewById(R.id.passwordField);
@@ -51,7 +123,7 @@ public class LoginActivity extends Activity {
         passwordEditText2 = (EditText)findViewById(R.id.passwordField2);
         loginButton = (Button)findViewById(R.id.loginButton);
         emailField = (EditText) findViewById(R.id.emailFieldID);
-        googleSignin = (SignInButton) findViewById(R.id.googleSigninID);
+        mSignInButton = (SignInButton) findViewById(R.id.googleSigninID);
         backButton = (Button) findViewById(R.id.BackButtonID);
         continueButton = (Button) findViewById(R.id.ContinueButtonID);
         layout = (LinearLayout) findViewById(R.id.layoutID);
@@ -156,7 +228,45 @@ public class LoginActivity extends Activity {
         });
     }
 
+    private void setUpListeners(boolean isResumed) {
+        if (isResumed) {
+            mSignInButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onSignInClicked();
+                }
+            });
 
+        } else {
+            mSignInButton.setOnClickListener(null);
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpListeners(true);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        setUpListeners(false);
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -178,7 +288,7 @@ public class LoginActivity extends Activity {
     }
     public void showSignUpFields (View v){
 
-            googleSignin.setVisibility(View.GONE);
+            mSignInButton.setVisibility(View.GONE);
             usernameEditText.setVisibility(View.GONE);
             passwordEditText.setVisibility(View.GONE);
             usernameEditText2.setVisibility(View.VISIBLE);
@@ -190,9 +300,11 @@ public class LoginActivity extends Activity {
             continueButton.setVisibility(View.VISIBLE);
             layout.setVisibility(View.GONE);
 
-        }
+
+    }
+
     public void back (View v){
-        googleSignin.setVisibility(View.VISIBLE);
+        mSignInButton.setVisibility(View.VISIBLE);
         usernameEditText.setVisibility(View.VISIBLE);
         passwordEditText.setVisibility(View.VISIBLE);
         usernameEditText2.setVisibility(View.GONE);
@@ -203,7 +315,37 @@ public class LoginActivity extends Activity {
         backButton.setVisibility(View.GONE);
         continueButton.setVisibility(View.GONE);
         layout.setVisibility(View.VISIBLE);
+    }
+
+    private void onSignInClicked() {
+        // User clicked the sign-in button, so begin the sign-in process and automatically
+        // attempt to resolve any errors that occur.
+        mShouldResolve = true;
+        mGoogleApiClient.connect();
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
+
+        if (requestCode == RC_SIGN_IN) {
+            // If the error resolution was not successful we should not resolve further.
+            if (resultCode != RESULT_OK) {
+                mShouldResolve = false;
+            }
+
+            mIsResolving = false;
+            mGoogleApiClient.connect();
         }
     }
+
+    private void goToMapsActivity() {
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        startActivity(intent);
+        finish();
+    }
+}
 
 
