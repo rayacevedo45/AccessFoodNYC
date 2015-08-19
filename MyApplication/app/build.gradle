@@ -23,7 +23,9 @@ repositories {
     flatDir {
         dirs 'libs'
     }
+    mavenCentral()
 }
+
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -31,11 +33,12 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
     compile 'com.android.support:recyclerview-v7:22.2.1'
-    compile 'com.google.android.gms:play-services-maps:7.5.0'
-    compile 'com.google.android.gms:play-services-location:7.5.0'
-    compile 'com.google.android.gms:play-services-identity:7.5.0'
-    compile 'com.google.android.gms:play-services-plus:7.5.0'
+    compile 'com.google.android.gms:play-services-maps:7.8.0'
+    compile 'com.google.android.gms:play-services-location:7.8.0'
+    compile 'com.google.android.gms:play-services-identity:7.8.0'
+    compile 'com.google.android.gms:play-services-plus:7.8.0'
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.android.support:percent:22.2.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.0.0'
 }

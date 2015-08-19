@@ -13,7 +13,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.List;
@@ -44,14 +47,20 @@ public class ProfileActivity extends AppCompatActivity {
         mListView = (ListView) findViewById(R.id.listView_favorites);
 
         ParseUser user = ParseUser.getCurrentUser();
+        ParseRelation<ParseObject> relation = user.getRelation("favorite");
+        relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if (list != null) {
+                    mAdapter = new FavoriteAdapter(getApplicationContext(), list);
+                    mListView.setAdapter(mAdapter);
 
-        List<ParseObject> list = user.getList("favorites");
+                }
+            }
+        });
 
-        if (list != null) {
-            mAdapter = new FavoriteAdapter(getApplicationContext(), list);
-            mListView.setAdapter(mAdapter);
 
-        }
+
 
 
         maps.setOnClickListener(new View.OnClickListener() {

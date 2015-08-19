@@ -17,6 +17,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
@@ -51,9 +52,6 @@ public class DetailsFragment extends Fragment {
         return rootView;
     }
 
-
-
-
     @Override
     public void onResume() {
         super.onResume();
@@ -64,32 +62,17 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 ParseUser user = ParseUser.getCurrentUser();
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("User");
-                query.getInBackground(user.getObjectId(), new GetCallback<ParseObject>() {
+                ParseRelation<ParseObject> relation = user.getRelation("favorite");
+                relation.add(selectedVendor);
+                user.saveInBackground(new SaveCallback() {
                     @Override
-                    public void done(ParseObject userObject, ParseException e) {
+                    public void done(ParseException e) {
                         if (e == null) {
-//                            List<ParseObject> list = new ArrayList<ParseObject>();
-//                            list.add(selectedVendor);
-//                            userObject.put("favorites", list);
-                            userObject.addUnique("favorites", Arrays.asList(selectedVendor));
-                            //userObject.add("favorites", selectedVendor);
-                            userObject.saveInBackground();
-//                            userObject.saveInBackground(new SaveCallback() {
-//                                @Override
-//                                public void done(ParseException e) {
-//
-//                                    if (e == null) {
-//                                        Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
-//                                        Intent intent = new Intent(getActivity(), ProfileActivity.class);
-//                                        startActivity(intent);
-//                                    } else {
-//                                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-//
-//                                    }
-//
-//                                }
-//                            });
+                            Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 });
