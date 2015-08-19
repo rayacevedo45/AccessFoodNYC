@@ -42,12 +42,28 @@
             android:name=".accounts.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/MyCustomTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Un-comment the following data tag and replace placeholder. -->
+                <data
+                    android:host="gitkit"
+                    android:scheme="com.googleusercontent.apps.853411645-uk26kbc9v5203v3hcuka6mndifclc8b0" />
+            </intent-filter>
         </activity>
 
         <activity
             android:name=".VendorInfoActivity"
             android:label="@string/title_activity_vendor"
             android:theme="@style/Base.ThemeOverlay.AppCompat.ActionBar">
+        </activity>
+
+        <activity android:name=".ProfileActivity"
+            android:label="Profile">
+
+
         </activity>
 
 

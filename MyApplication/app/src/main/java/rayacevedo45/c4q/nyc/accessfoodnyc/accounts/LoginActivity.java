@@ -27,6 +27,7 @@ import com.parse.SignUpCallback;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.ParseApplication;
+import rayacevedo45.c4q.nyc.accessfoodnyc.ProfileActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.R;
 
 public class LoginActivity extends Activity {
@@ -157,10 +158,14 @@ public class LoginActivity extends Activity {
 
                             if (e == null) {
                                 // Success!
-                                Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
+                                Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+
+
+
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
+                                //finish();
                             } else {
                                 // Fail
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
