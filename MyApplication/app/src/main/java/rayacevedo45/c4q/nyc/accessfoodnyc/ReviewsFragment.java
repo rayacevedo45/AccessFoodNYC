@@ -9,14 +9,15 @@ import android.view.ViewGroup;
 
 public class ReviewsFragment extends Fragment {
 
+    private String b1Name;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_reviews, container, false);
-
-
         return rootView;
+
     }
 
     @Override
@@ -47,5 +48,9 @@ public class ReviewsFragment extends Fragment {
 //        ArrayList<String> tmpKeys = yParser.getBundleKeys();
 //
 //        Toast.makeText(getActivity(), b_name, Toast.LENGTH_SHORT).show();
+
+
     }
+
+
 }

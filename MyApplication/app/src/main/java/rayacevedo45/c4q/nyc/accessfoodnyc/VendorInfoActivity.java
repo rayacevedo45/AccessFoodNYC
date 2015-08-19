@@ -9,10 +9,23 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.List;
+
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.helpers.MockData;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.YelpResponse;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpSearchService;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class VendorInfoActivity extends FragmentActivity implements ActionBar.TabListener {
@@ -88,6 +101,10 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
                     .setTabListener(this));
         }
 
+
+
+        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
+        yelpService.searchFoodCarts("10022", new YelpSearchCallback());
 
     }
 
@@ -215,4 +232,33 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
             return rootView;
         }
     }
+
+
+    protected class YelpSearchCallback implements Callback<YelpResponse> {
+
+        public String TAG = "YelpSearchCallback";
+        ParseApplication application;
+
+        @Override
+        public void success(YelpResponse data, Response response) {
+            Log.d(TAG, "Success");
+            application = ParseApplication.getInstance();
+            application.yelpResponse = data;
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e(TAG, error.getMessage());
+            application = ParseApplication.getInstance();
+            application.yelpResponse = MockData.getMockData(application);
+            List<Business> businessList = application.yelpResponse.getBusinesses();
+            Business b1 = businessList.get(0);
+            String b1Name  = b1.getName();
+            String b1Phone = b1.getPhone();
+            Toast.makeText(getApplicationContext(), b1Name + ", "+ b1Phone, Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+
 }

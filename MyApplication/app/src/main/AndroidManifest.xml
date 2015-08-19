@@ -35,11 +35,7 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_map">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <activity
@@ -55,8 +51,11 @@
             android:name=".VendorInfoActivity"
             android:label="@string/title_activity_vendor"
             android:theme="@style/Base.ThemeOverlay.AppCompat.ActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
 

@@ -5,9 +5,12 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseACL;
 
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.YelpResponse;
+
 public class ParseApplication extends Application {
 
     private static ParseApplication instance;
+    public static YelpResponse yelpResponse;
 
     public static ParseApplication getInstance() {
         return instance;

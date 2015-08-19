@@ -12,12 +12,15 @@ public class Location {
 
     @Expose
     private String city;
+
     @SerializedName("display_address")
     @Expose
     private List<String> displayAddress = new ArrayList<String>();
+
     @SerializedName("geo_accuracy")
     @Expose
     private Double geoAccuracy;
+
     @SerializedName("postal_code")
     @Expose
     private String postalCode;
