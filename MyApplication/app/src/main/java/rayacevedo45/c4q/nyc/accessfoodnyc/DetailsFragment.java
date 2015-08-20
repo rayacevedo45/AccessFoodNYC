@@ -10,10 +10,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.ParseObject;
+import com.squareup.picasso.Picasso;
 
 import java.net.URL;
 
 public class DetailsFragment extends Fragment {
+
+//    public static String businessId;
+//    public static String b1Name;
+//    public static String b1Phone;
+//    public static Double rating;
+//    public static String ratingUrl;
+//    public static int reviewCount;
+//    public static String businessUrl;
+//    public static String businessImgUrl;
+//    public static String snippetText;
+//    public static String phone;
+//    public static String categories;
+
+
     ParseObject vendor = new ParseObject("Vendor");
     String category;
     static String vendorName;
@@ -22,17 +37,29 @@ public class DetailsFragment extends Fragment {
     TextView categoryText;
     TextView vendorNameText;
     ImageView vendorPicImage;
+    ImageView vendorRatingImage;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-        vendorNameText = (TextView)rootView.findViewById(R.id.vendor_name);
 
+        vendorNameText = (TextView)rootView.findViewById(R.id.vendor_name);
+        vendorNameText.setText(((VendorInfoActivity)getActivity()).bizName);
 
         categoryText = (TextView)rootView.findViewById(R.id.category);
+        categoryText.setText(((VendorInfoActivity) getActivity()).categories);
+
         vendorPicImage = (ImageView)rootView.findViewById(R.id.vendor_pic);
+        String businessImgUrl = ((VendorInfoActivity)getActivity()).businessImgUrl;
+        Picasso.with(getActivity()).load(businessImgUrl).resize(1100, 700).into(vendorPicImage);
+
+        vendorRatingImage = (ImageView)rootView.findViewById(R.id.vendor_rating);
+        String vendorRatingUrl = ((VendorInfoActivity)getActivity()).ratingImgUrlLarge;
+        Picasso.with(getActivity()).load(vendorRatingUrl).into(vendorRatingImage);
+
+
         return rootView;
     }
 
@@ -63,5 +90,7 @@ public class DetailsFragment extends Fragment {
 //        });
 //
 //    }
+
+
 
 }

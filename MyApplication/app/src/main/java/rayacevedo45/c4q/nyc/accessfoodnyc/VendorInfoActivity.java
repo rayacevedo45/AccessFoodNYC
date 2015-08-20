@@ -9,11 +9,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.List;
 
-import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.helpers.MockData;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.YelpResponse;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
@@ -25,19 +23,18 @@ import retrofit.client.Response;
 
 public class VendorInfoActivity extends FragmentActivity implements ActionBar.TabListener {
 
-
-
-    String businessId;
-    String b1Name;
-    String b1Phone;
-    Double rating;
-    String ratingUrl;
-    int reviewCount;
-    String businessUrl;
-    String businessImgUrl;
-    String snippetText;
-    String phone;
-    String categories;
+    public static String businessId;
+    public static String bizName;
+    public static String bizPhone;
+    public static Double rating;
+    public static String ratingImgUrlLarge;
+    public static int reviewCount;
+    public static String businessUrl;
+    public static String businessImgUrl;
+    public static String snippetText;
+    public static String phone;
+    public static String categories;
+    public static ParseApplication application;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
@@ -216,11 +213,10 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
 //        }
 //    }
 
-
     protected class YelpSearchCallback implements Callback<YelpResponse> {
 
         public String TAG = "YelpSearchCallback";
-        ParseApplication application;
+
 
         @Override
         public void success(YelpResponse data, Response response) {
@@ -233,45 +229,9 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         @Override
         public void failure(RetrofitError error) {
             Log.e(TAG, error.getMessage());
-            application = ParseApplication.getInstance();
-            application.yelpResponse = MockData.getMockData(application);
-            YelpDataGenerator ();
-        }
-
-        public void YelpDataGenerator (){
-            List<Business> businessList = application.yelpResponse.getBusinesses();
-//            ArrayList<Business> businessList = new ArrayList<>(businessListList.size());
-
-            Business b1 = businessList.get(5);
-            businessId = b1.getId();
-            b1Name  = b1.getName();
-            b1Phone = b1.getPhone();
-            rating = b1.getRating();
-            ratingUrl = b1.getRatingImgUrl();
-            reviewCount = b1.getReviewCount();
-            businessUrl = b1.getUrl();
-            businessImgUrl = b1.getImageUrl();
-            snippetText = b1.getSnippetText();
-            phone = b1.getPhone();
-            List<List<String>> categoryList = b1.getCategories();
-            categories = catListIterator(categoryList);
-
-
-            Toast.makeText(getApplicationContext(), categories, Toast.LENGTH_SHORT).show();
-        }
-
-        public String catListIterator (List<List<String>> catListOfLists){
-            int i = 0;
-            List<String> catList = null;
-            String categories = "";
-
-            while (i < catListOfLists.size()) {
-               catList = catListOfLists.get(i);
-                categories= categories + " " + (catList.get(0));
-                    i++;
-            }
-
-            return categories;
+//            application = ParseApplication.getInstance();
+//            application.yelpResponse = MockData.getMockData(application);
+//            YelpDataGenerator ();
         }
 
 
@@ -279,5 +239,39 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
     }
 
 
+    public static void YelpDataGenerator(){
+        List<Business> businessList = application.yelpResponse.getBusinesses();
+//            ArrayList<Business> businessList = new ArrayList<>(businessListList.size());
+
+        Business biz = businessList.get(9);
+        businessId = biz.getId();
+        bizName  = biz.getName();
+        bizPhone = biz.getPhone();
+        rating = biz.getRating();
+        ratingImgUrlLarge = biz.getRatingImgUrlLarge();
+        reviewCount = biz.getReviewCount();
+        businessUrl = biz.getUrl();
+        businessImgUrl = biz.getImageUrl();
+        snippetText = biz.getSnippetText();
+        phone = biz.getPhone();
+        List<List<String>> categoryList = biz.getCategories();
+        categories = catListIterator(categoryList);
+
+//      Toast.makeText(getApplicationContext(), categories, Toast.LENGTH_SHORT).show();
+    }
+//
+    public static String catListIterator (List<List<String>> catListOfLists){
+        int i = 0;
+        List<String> catList = null;
+        String categories = "";
+
+        while (i < catListOfLists.size()) {
+            catList = catListOfLists.get(i);
+            categories= categories + " " + (catList.get(0));
+            i++;
+        }
+
+        return categories;
+    }
 
 }
