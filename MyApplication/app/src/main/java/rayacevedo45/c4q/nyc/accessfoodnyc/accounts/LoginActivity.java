@@ -3,7 +3,6 @@ package rayacevedo45.c4q.nyc.accessfoodnyc.accounts;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -14,19 +13,11 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.login.LoginResult;
+import com.facebook.Profile;
 import com.facebook.login.widget.LoginButton;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
-import com.google.android.gms.plus.Plus;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
@@ -148,41 +139,35 @@ public class LoginActivity extends Activity {
         layout = (LinearLayout) findViewById(R.id.layoutID);
         mButtonFacebookLogin = (LoginButton) findViewById(R.id.login_button);
 
-        mButtonFacebookLogin.setReadPermissions(Arrays.asList("public_profile", "user_friends"));
+        //mButtonFacebookLogin.setReadPermissions(Arrays.asList("public_profile", "user_friends"));
 
-        mButtonFacebookLogin.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        mButtonFacebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onSuccess(final LoginResult loginResult) {
-                final AccessToken token = loginResult.getAccessToken();
-
-                ParseFacebookUtils.logInInBackground(token, new LogInCallback() {
+            public void onClick(View view) {
+                ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, Arrays.asList("public_profile", "user_friends"), new LogInCallback() {
                     @Override
-                    public void done(ParseUser parseUser, ParseException e) {
-                        if (parseUser == null) {
+                    public void done(ParseUser user, ParseException err) {
+                        if (user == null) {
                             Toast.makeText(getApplicationContext(), "Uh oh. The user cancelled the Facebook login.", Toast.LENGTH_SHORT).show();
                             Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
-                        } else if (parseUser.isNew()) {
+                        } else if (user.isNew()) {
+                            Profile profile = Profile.getCurrentProfile();
+
+
+                            user.put("first_name", profile.getFirstName());
+                            user.put("last_name", profile.getLastName());
+                            user.saveInBackground();
                             Toast.makeText(getApplicationContext(), "User signed up and logged in through Facebook!", Toast.LENGTH_SHORT).show();
                             Log.d("MyApp", "User signed up and logged in through Facebook!");
+                            goToProfileActivity();
                         } else {
-                            
+                            Profile profile = Profile.getCurrentProfile();
                             Toast.makeText(getApplicationContext(), "User logged in through Facebook!", Toast.LENGTH_SHORT).show();
                             Log.d("MyApp", "User logged in through Facebook!");
+                            goToProfileActivity();
                         }
                     }
                 });
-
-
-            }
-
-            @Override
-            public void onCancel() {
-
-            }
-
-            @Override
-            public void onError(FacebookException e) {
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -383,10 +368,8 @@ public class LoginActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-        //ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
 
-        //Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
 
 //        if (requestCode == RC_SIGN_IN) {
 //            // If the error resolution was not successful we should not resolve further.
