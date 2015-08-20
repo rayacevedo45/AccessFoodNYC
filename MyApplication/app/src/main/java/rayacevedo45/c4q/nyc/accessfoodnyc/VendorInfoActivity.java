@@ -2,7 +2,6 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -10,10 +9,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -29,6 +24,20 @@ import retrofit.client.Response;
 
 
 public class VendorInfoActivity extends FragmentActivity implements ActionBar.TabListener {
+
+
+
+    String businessId;
+    String b1Name;
+    String b1Phone;
+    Double rating;
+    String ratingUrl;
+    int reviewCount;
+    String businessUrl;
+    String businessImgUrl;
+    String snippetText;
+    String phone;
+    String categories;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
@@ -50,8 +59,11 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        getLatestPosts();
-//        setTitle(vendorName);
+
+        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
+        yelpService.searchFoodCarts("11217", new YelpSearchCallback());
+
+
         setContentView(R.layout.activity_vendor_info);
 
         // Create the adapter that will return a fragment for each of the three primary sections
@@ -85,26 +97,11 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
             }
         });
 
-        // For each of the sections in the app, add a tab to the action bar.
-//        for (int i = 0; i < mAppSectionsPagerAdapter.getCount(); i++) {
-//            // Create a tab with text corresponding to the page title defined by the adapter.
-//            // Also specify this Activity object, which implements the TabListener interface, as the
-//            // listener for when this tab is selected.
-//            actionBar.addTab(
-//                    actionBar.newTab()
-//                            .setText(mAppSectionsPagerAdapter.getPageTitle(i))
-//                            .setTabListener(this));
-//        }
 
         for (String tab_name : tabs) {
             actionBar.addTab(actionBar.newTab().setText(tab_name)
                     .setTabListener(this));
         }
-
-
-
-        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
-        yelpService.searchFoodCarts("10022", new YelpSearchCallback());
 
     }
 
@@ -135,20 +132,6 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         @Override
         public Fragment getItem(int i) {
             switch (i) {
-//                case 0:
-//                    // The first section of the app is the most interesting -- it offers
-//                    // a launchpad into the other demonstrations in this example application.
-//                    return new LaunchpadSectionFragment();
-//
-//                default:
-//                    // The other sections of the app are dummy placeholders.
-//                    Fragment fragment = new DetailSectionFragment();
-//                    Bundle args = new Bundle();
-//                    args.putInt(DetailSectionFragment.ARG_SECTION_NUMBER, i + 1);
-//                    fragment.setArguments(args);
-//                    return fragment;
-
-
 
                 case 0:
                     // Top Rated fragment activity
@@ -174,64 +157,64 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         }
     }
 
-    /**
-     * A fragment that launches other parts of the demo application.
-     */
-    public static class LaunchpadSectionFragment extends Fragment {
+//    /**
+//     * A fragment that launches other parts of the demo application.
+//     */
+//    public static class LaunchpadSectionFragment extends Fragment {
+//
+//        @Override
+//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                                 Bundle savedInstanceState) {
+//            View rootView = inflater.inflate(R.layout.fragment_section_launchpad, container, false);
+//
+//            // Demonstration of a collection-browsing activity.
+//            rootView.findViewById(R.id.demo_collection_button)
+//                    .setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            Intent intent = new Intent(getActivity(), CollectionVendorActivity.class);
+//                            startActivity(intent);
+//                        }
+//                    });
+//
+//            // Demonstration of navigating to external activities.
+//            rootView.findViewById(R.id.demo_external_activity)
+//                    .setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            // Create an intent that asks the user to pick a photo, but using
+//                            // FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET, ensures that relaunching
+//                            // the application from the device home screen does not return
+//                            // to the external activity.
+//                            Intent externalActivityIntent = new Intent(Intent.ACTION_PICK);
+//                            externalActivityIntent.setType("image/*");
+//                            externalActivityIntent.addFlags(
+//                                    Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+//                            startActivity(externalActivityIntent);
+//                        }
+//                    });
+//
+//            return rootView;
+//        }
+//    }
 
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_section_launchpad, container, false);
-
-            // Demonstration of a collection-browsing activity.
-            rootView.findViewById(R.id.demo_collection_button)
-                    .setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Intent intent = new Intent(getActivity(), CollectionVendorActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-
-            // Demonstration of navigating to external activities.
-            rootView.findViewById(R.id.demo_external_activity)
-                    .setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            // Create an intent that asks the user to pick a photo, but using
-                            // FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET, ensures that relaunching
-                            // the application from the device home screen does not return
-                            // to the external activity.
-                            Intent externalActivityIntent = new Intent(Intent.ACTION_PICK);
-                            externalActivityIntent.setType("image/*");
-                            externalActivityIntent.addFlags(
-                                    Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-                            startActivity(externalActivityIntent);
-                        }
-                    });
-
-            return rootView;
-        }
-    }
-
-    /**
-     * A dummy fragment representing a section of the app, but that simply displays dummy text.
-     */
-    public static class DetailSectionFragment extends Fragment {
-
-        public static final String ARG_SECTION_NUMBER = "section_number";
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-            Bundle args = getArguments();
-            ((TextView) rootView.findViewById(android.R.id.text1)).setText(
-                    getString(R.string.detail_section_text, args.getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
+//    /**
+//     * A dummy fragment representing a section of the app, but that simply displays dummy text.
+//     */
+//    public static class DetailSectionFragment extends Fragment {
+//
+//        public static final String ARG_SECTION_NUMBER = "section_number";
+//
+//        @Override
+//        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                                 Bundle savedInstanceState) {
+//            View rootView = inflater.inflate(R.layout.fragment_details, container, false);
+//            Bundle args = getArguments();
+//            ((TextView) rootView.findViewById(android.R.id.text1)).setText(
+//                    getString(R.string.detail_section_text, args.getInt(ARG_SECTION_NUMBER)));
+//            return rootView;
+//        }
+//    }
 
 
     protected class YelpSearchCallback implements Callback<YelpResponse> {
@@ -244,6 +227,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
             Log.d(TAG, "Success");
             application = ParseApplication.getInstance();
             application.yelpResponse = data;
+            YelpDataGenerator ();
         }
 
         @Override
@@ -251,14 +235,49 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
             Log.e(TAG, error.getMessage());
             application = ParseApplication.getInstance();
             application.yelpResponse = MockData.getMockData(application);
-            List<Business> businessList = application.yelpResponse.getBusinesses();
-            Business b1 = businessList.get(0);
-            String b1Name  = b1.getName();
-            String b1Phone = b1.getPhone();
-            Toast.makeText(getApplicationContext(), b1Name + ", "+ b1Phone, Toast.LENGTH_SHORT).show();
+            YelpDataGenerator ();
         }
 
+        public void YelpDataGenerator (){
+            List<Business> businessList = application.yelpResponse.getBusinesses();
+//            ArrayList<Business> businessList = new ArrayList<>(businessListList.size());
+
+            Business b1 = businessList.get(5);
+            businessId = b1.getId();
+            b1Name  = b1.getName();
+            b1Phone = b1.getPhone();
+            rating = b1.getRating();
+            ratingUrl = b1.getRatingImgUrl();
+            reviewCount = b1.getReviewCount();
+            businessUrl = b1.getUrl();
+            businessImgUrl = b1.getImageUrl();
+            snippetText = b1.getSnippetText();
+            phone = b1.getPhone();
+            List<List<String>> categoryList = b1.getCategories();
+            categories = catListIterator(categoryList);
+
+
+            Toast.makeText(getApplicationContext(), categories, Toast.LENGTH_SHORT).show();
+        }
+
+        public String catListIterator (List<List<String>> catListOfLists){
+            int i = 0;
+            List<String> catList = null;
+            String categories = "";
+
+            while (i < catListOfLists.size()) {
+               catList = catListOfLists.get(i);
+                categories= categories + " " + (catList.get(0));
+                    i++;
+            }
+
+            return categories;
+        }
+
+
+
     }
+
 
 
 }

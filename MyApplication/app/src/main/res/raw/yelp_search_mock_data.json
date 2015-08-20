@@ -13,53 +13,53 @@
   "businesses": [
     {
       "is_claimed": true,
-      "rating": 5.0,
-      "mobile_url": "http://m.yelp.com/biz/the-gogo-grill-new-york",
-      "rating_img_url": "http://s3-media1.fl.yelpcdn.com/assets/2/www/img/f1def11e4e79/ico/stars/v1/stars_5.png",
-      "review_count": 62,
-      "name": "The GoGo Grill",
-      "rating_img_url_small": "http://s3-media1.fl.yelpcdn.com/assets/2/www/img/c7623205d5cd/ico/stars/v1/stars_small_5.png",
-      "url": "http://www.yelp.com/biz/the-gogo-grill-new-york",
-      "is_closed": false,
-      "id": "the-gogo-grill-new-york",
-      "phone": "6464251905",
-      "snippet_text": "I could eat here all day erryday.  And I think I might.\n\nThat bread... as the German idealist philosopher Georg Hegel once said, \"Too fair to worship, too...",
-      "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/z_qsq_mTbN9PeMe62Fb7yg/ms.jpg",
-      "categories": [
-        [
-          "Food Trucks",
-          "foodtrucks"
-        ]
+    "rating": 5.0,
+    "mobile_url": "http://m.yelp.com/biz/the-gogo-grill-new-york",
+    "rating_img_url": "http://s3-media1.fl.yelpcdn.com/assets/2/www/img/f1def11e4e79/ico/stars/v1/stars_5.png",
+    "review_count": 62,
+    "name": "The GoGo Grill",
+    "rating_img_url_small": "http://s3-media1.fl.yelpcdn.com/assets/2/www/img/c7623205d5cd/ico/stars/v1/stars_small_5.png",
+    "url": "http://www.yelp.com/biz/the-gogo-grill-new-york",
+    "is_closed": false,
+    "id": "the-gogo-grill-new-york",
+    "phone": "6464251905",
+    "snippet_text": "I could eat here all day erryday.  And I think I might.\n\nThat bread... as the German idealist philosopher Georg Hegel once said, \"Too fair to worship, too...",
+    "image_url": "http://s3-media2.fl.yelpcdn.com/bphoto/z_qsq_mTbN9PeMe62Fb7yg/ms.jpg",
+    "categories": [
+    [
+    "Food Trucks",
+    "foodtrucks"
+    ]
+    ],
+    "display_phone": "+1-646-425-1905",
+    "rating_img_url_large": "http://s3-media3.fl.yelpcdn.com/assets/2/www/img/22affc4e6c38/ico/stars/v1/stars_large_5.png",
+    "menu_provider": "single_platform",
+    "menu_date_updated": 1439525528,
+    "snippet_image_url": "http://s3-media2.fl.yelpcdn.com/photo/33FK1dGupgQwoNdc9-xv9Q/ms.jpg",
+    "location": {
+      "city": "New York",
+      "display_address": [
+        "Bowling Green Park",
+        "1 Broadway",
+        "Financial District",
+        "New York, NY 10004"
       ],
-      "display_phone": "+1-646-425-1905",
-      "rating_img_url_large": "http://s3-media3.fl.yelpcdn.com/assets/2/www/img/22affc4e6c38/ico/stars/v1/stars_large_5.png",
-      "menu_provider": "single_platform",
-      "menu_date_updated": 1439525528,
-      "snippet_image_url": "http://s3-media2.fl.yelpcdn.com/photo/33FK1dGupgQwoNdc9-xv9Q/ms.jpg",
-      "location": {
-        "city": "New York",
-        "display_address": [
-          "Bowling Green Park",
-          "1 Broadway",
-          "Financial District",
-          "New York, NY 10004"
-        ],
-        "geo_accuracy": 9.5,
-        "neighborhoods": [
-          "Financial District"
-        ],
-        "postal_code": "10004",
-        "country_code": "US",
-        "address": [
-          "Bowling Green Park",
-          "1 Broadway"
-        ],
-        "coordinate": {
-          "latitude": 40.7049245,
-          "longitude": -74.013706
-        },
-        "state_code": "NY"
-      }
+      "geo_accuracy": 9.5,
+      "neighborhoods": [
+        "Financial District"
+      ],
+      "postal_code": "10004",
+      "country_code": "US",
+      "address": [
+        "Bowling Green Park",
+        "1 Broadway"
+      ],
+      "coordinate": {
+        "latitude": 40.7049245,
+        "longitude": -74.013706
+      },
+      "state_code": "NY"
+    }
     },
     {
       "is_claimed": true,
