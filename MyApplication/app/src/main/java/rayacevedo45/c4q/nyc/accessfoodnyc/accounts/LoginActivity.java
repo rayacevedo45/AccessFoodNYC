@@ -91,6 +91,7 @@ public class LoginActivity extends Activity {
 
                             user.put("first_name", profile.getFirstName());
                             user.put("last_name", profile.getLastName());
+                            user.put("profile_url", profile.getProfilePictureUri(300, 300).toString());
                             user.saveInBackground();
                             Toast.makeText(getApplicationContext(), "User signed up and logged in through Facebook!", Toast.LENGTH_SHORT).show();
                             Log.d("MyApp", "User signed up and logged in through Facebook!");

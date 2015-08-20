@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,6 +19,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -25,6 +27,7 @@ import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
 
 public class ProfileActivity extends AppCompatActivity {
 
+    private ImageView mImageViewProfile;
     private TextView first;
     private TextView last;
 
@@ -40,6 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        mImageViewProfile = (ImageView) findViewById(R.id.imageView_profile);
         first = (TextView) findViewById(R.id.first_name);
         last = (TextView) findViewById(R.id.last_name);
         maps = (Button) findViewById(R.id.button_maps);
@@ -88,6 +92,7 @@ public class ProfileActivity extends AppCompatActivity {
         first.setText((String) user.get("first_name"));
         last.setText((String) user.get("last_name"));
 
+        Picasso.with(getApplicationContext()).load(user.getString("profile_url")).centerCrop().resize(300, 300).into(mImageViewProfile);
 
 
 
