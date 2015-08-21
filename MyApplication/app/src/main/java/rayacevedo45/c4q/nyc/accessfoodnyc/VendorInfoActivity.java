@@ -23,18 +23,12 @@ import retrofit.client.Response;
 
 public class VendorInfoActivity extends FragmentActivity implements ActionBar.TabListener {
 
-    public static String businessId;
-    public static String bizName;
-    public static String bizPhone;
-    public static Double rating;
-    public static String ratingImgUrlLarge;
-    public static int reviewCount;
-    public static String businessUrl;
-    public static String businessImgUrl;
-    public static String snippetText;
-    public static String phone;
-    public static String categories;
-    public static ParseApplication application;
+    // Tab titles
+    private static final String[] TABS = { "Details", "Menu", "Reviews" };
+
+    public static ParseApplication sApplication;
+
+    private DetailsFragment mCurrentDetailsFragment;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
@@ -50,9 +44,6 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
      */
     ViewPager mViewPager;
 
-    // Tab titles
-    private String[] tabs = { "Details", "Menu", "Reviews" };
-    String vendorName;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,7 +86,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         });
 
 
-        for (String tab_name : tabs) {
+        for (String tab_name : TABS) {
             actionBar.addTab(actionBar.newTab().setText(tab_name)
                     .setTabListener(this));
         }
@@ -120,7 +111,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
      * sections of the app.
      */
-    public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+    public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 
         public AppSectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -129,15 +120,15 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         @Override
         public Fragment getItem(int i) {
             switch (i) {
-
                 case 0:
+                    mCurrentDetailsFragment = new DetailsFragment();
                     // Top Rated fragment activity
-                    return new DetailsFragment();
+                    return mCurrentDetailsFragment;
                 case 1:
-                    // Games fragment activity
+                    // Menu fragment activity
                     return new MenuFragment();
                 case 2:
-                    // Movies fragment activity
+                    // Reviews fragment activity
                     return new ReviewsFragment();
             }
             return null;
@@ -217,49 +208,27 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
 
         public String TAG = "YelpSearchCallback";
 
-
         @Override
         public void success(YelpResponse data, Response response) {
             Log.d(TAG, "Success");
-            application = ParseApplication.getInstance();
-            application.yelpResponse = data;
-            YelpDataGenerator ();
+            sApplication = ParseApplication.getInstance();
+            sApplication.yelpResponse = data;
+            List<Business> businessList = sApplication.yelpResponse.getBusinesses();
+            if (businessList != null && businessList.size() > 0) {
+                if (mCurrentDetailsFragment != null) {
+                    mCurrentDetailsFragment.onYelpData(businessList.get(0));
+                } else {
+                    Log.d("YelpDataGenerator", "mCurrentDetailsFragment was null!!!!");
+                }
+            }
         }
 
         @Override
         public void failure(RetrofitError error) {
             Log.e(TAG, error.getMessage());
-//            application = ParseApplication.getInstance();
-//            application.yelpResponse = MockData.getMockData(application);
-//            YelpDataGenerator ();
         }
-
-
-
     }
 
-
-    public static void YelpDataGenerator(){
-        List<Business> businessList = application.yelpResponse.getBusinesses();
-//            ArrayList<Business> businessList = new ArrayList<>(businessListList.size());
-
-        Business biz = businessList.get(9);
-        businessId = biz.getId();
-        bizName  = biz.getName();
-        bizPhone = biz.getPhone();
-        rating = biz.getRating();
-        ratingImgUrlLarge = biz.getRatingImgUrlLarge();
-        reviewCount = biz.getReviewCount();
-        businessUrl = biz.getUrl();
-        businessImgUrl = biz.getImageUrl();
-        snippetText = biz.getSnippetText();
-        phone = biz.getPhone();
-        List<List<String>> categoryList = biz.getCategories();
-        categories = catListIterator(categoryList);
-
-//      Toast.makeText(getApplicationContext(), categories, Toast.LENGTH_SHORT).show();
-    }
-//
     public static String catListIterator (List<List<String>> catListOfLists){
         int i = 0;
         List<String> catList = null;
