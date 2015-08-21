@@ -18,6 +18,8 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
     private Button mButtonReview;
     private ListView mListView;
 
+    private String b1Name;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -29,9 +31,10 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
 
         ParseUser user = ParseUser.getCurrentUser();
 
-
         return rootView;
+
     }
+
 
     private void setUpListener(boolean isResumed) {
         if (isResumed) {
@@ -95,4 +98,5 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
             return null;
         }
     }
+
 }

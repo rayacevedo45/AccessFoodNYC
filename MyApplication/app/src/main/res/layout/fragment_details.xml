@@ -5,12 +5,7 @@
     android:orientation="vertical"
     android:background="#E84319" >
 
-    <!--<TextView android:layout_width="fill_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:gravity="center"-->
-        <!--android:text="Review Screen"-->
-        <!--android:textSize="20dp"-->
-        <!--android:layout_centerInParent="true"/>-->
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -35,10 +30,17 @@
         android:text=""
         android:layout_below="@+id/vendor_name"/>
 
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:id="@+id/vendor_rating"
+        android:layout_below="@+id/category"/>
+
     <Button
         android:id="@+id/button_add"
         android:text="add to favorite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
 
 </RelativeLayout>

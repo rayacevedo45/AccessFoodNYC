@@ -88,7 +88,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     double longitude = point.getLongitude();
                     LatLng position = new LatLng(latitude, longitude);
                     // create marker
-                    MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title("vendor_name");
+                    MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title((String) item.get("vendor_name"));
 
                     // Changing marker icon
                     marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck));
@@ -102,7 +102,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         mMap = mapFragment.getMap();
 
+
     }
+
+
+
+
+
 
     @Override
     protected void onStart() {
