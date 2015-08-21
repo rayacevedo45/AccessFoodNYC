@@ -109,20 +109,19 @@ public class LoginActivity extends Activity {
                             Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
                         } else if (user.isNew()) {
                             Profile profile = Profile.getCurrentProfile();
-
-
                             user.put("first_name", profile.getFirstName());
                             user.put("last_name", profile.getLastName());
                             user.put("profile_url", profile.getProfilePictureUri(300, 300).toString());
                             user.saveInBackground();
+
                             Toast.makeText(getApplicationContext(), "User signed up and logged in through Facebook!", Toast.LENGTH_SHORT).show();
                             Log.d("MyApp", "User signed up and logged in through Facebook!");
-                            goToProfileActivity();
+                            goToMapsActivity();
                         } else {
                             Profile profile = Profile.getCurrentProfile();
                             Toast.makeText(getApplicationContext(), "User logged in through Facebook!", Toast.LENGTH_SHORT).show();
                             Log.d("MyApp", "User logged in through Facebook!");
-                            goToProfileActivity();
+                            goToMapsActivity();
                         }
                     }
                 });
