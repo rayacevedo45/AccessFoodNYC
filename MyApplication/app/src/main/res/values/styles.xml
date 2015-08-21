@@ -10,10 +10,15 @@
         <item name="colorAccent">@color/accentColor</item>
     </style>
 
-    <!--<style name="MyCustomToolBarTheme" parent="@style/ThemeOverlay.AppCompat.Light">-->
-        <!--<item name="textColorPrimary">@color/toolbarTextColor</item>-->
-        <!--<item name="textColorSecondary">@color/toolbarTextColor</item>-->
-    <!--</style>-->
+    <style name="MyCustomToolBarTheme" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="android:textColorPrimary">@color/toolbarTextColor</item>
+        <item name="android:textColorSecondary">@color/toolbarTextColor</item>
+    </style>
+
+
+
+
+
 
     <style name="MyCustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!--<item name="textColorPrimary">@color/white</item>-->
