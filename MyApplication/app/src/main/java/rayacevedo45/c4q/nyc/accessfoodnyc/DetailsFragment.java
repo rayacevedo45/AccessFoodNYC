@@ -39,6 +39,9 @@ public class DetailsFragment extends Fragment {
         mVendorRatingImage = (ImageView)getActivity().findViewById(R.id.vendor_rating);
         String vendorRatingUrlLarge = business.getRatingImgUrlLarge();
         Picasso.with(getActivity()).load(vendorRatingUrlLarge).into(mVendorRatingImage);
+
+
+
         Log.d(TAG, "finished onYelpData.");
     }
 }
