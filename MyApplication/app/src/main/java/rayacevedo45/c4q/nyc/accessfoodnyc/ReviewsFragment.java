@@ -1,13 +1,22 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.ListView;
+
+import com.parse.ParseUser;
 
 
-public class ReviewsFragment extends Fragment {
+public class ReviewsFragment extends Fragment implements View.OnClickListener {
+
+    private Button mButtonReview;
+    private ListView mListView;
 
     private String b1Name;
 
@@ -16,41 +25,78 @@ public class ReviewsFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_reviews, container, false);
+
+        mButtonReview = (Button) rootView.findViewById(R.id.button_review);
+        mListView = (ListView) rootView.findViewById(R.id.listView_reviews);
+
+        ParseUser user = ParseUser.getCurrentUser();
+
         return rootView;
 
+    }
+
+
+    private void setUpListener(boolean isResumed) {
+        if (isResumed) {
+            mButtonReview.setOnClickListener(this);
+        } else {
+            mButtonReview.setOnClickListener(null);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        setUpListener(true);
+    }
 
-//        APIStaticInfo api_keys = new APIStaticInfo();
-//
-//        Yelp yelp = new Yelp(api_keys.getYelpConsumerKey(), api_keys.getYelpConsumerSecret(),
-//                api_keys.getYelpToken(), api_keys.getYelpTokenSecret());
-//        String response = yelp.search("restaurants", 40.731889, -73.984369);
-//
-//        YelpParser yParser = new YelpParser();
-//        yParser.setResponse(response);
-//        try {
-//            yParser.parseBusiness();
-//        } catch (JSONException e) {
-//            // TODO Auto-generated catch block
-//            e.printStackTrace();
-//            //Do whatever you want with the error, like throw a Toast error report
-//        }
-//
-//        int i = 0;
-//        String mobile_url = yParser.getBusinessMobileURL(i);
-//        String rating_url = yParser.getRatingURL(i);
-//        String b_name = yParser.getBusinessName(i);
-//        Bundle tmpBundle = yParser.getYelpBundle();
-//        ArrayList<String> tmpKeys = yParser.getBundleKeys();
-//
-//        Toast.makeText(getActivity(), b_name, Toast.LENGTH_SHORT).show();
+    @Override
+    public void onPause() {
+        super.onPause();
+        setUpListener(false);
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_review:
+                writeReview();
+                break;
+        }
+    }
+
+    private void writeReview() {
 
     }
 
+    private class ReviewAdapter extends BaseAdapter {
+
+        private Context mContext;
+
+
+        public ReviewAdapter(Context context) {
+            mContext = context;
+        }
+
+        @Override
+        public int getCount() {
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            return null;
+        }
+    }
 
 }

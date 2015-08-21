@@ -4,6 +4,8 @@ import android.app.Application;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseFacebookUtils;
+import com.parse.ParseSession;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.YelpResponse;
 
@@ -24,6 +26,8 @@ public class ParseApplication extends Application {
 		 */
 
         Parse.initialize(this);
+        ParseFacebookUtils.initialize(this);
+
 
         ParseACL defaultACL = new ParseACL();
 

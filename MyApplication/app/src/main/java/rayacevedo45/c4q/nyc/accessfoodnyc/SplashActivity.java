@@ -1,10 +1,9 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -12,7 +11,7 @@ import android.widget.ImageView;
 import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.vendor.GifView;
 
-public class SplashActivity extends AppCompatActivity{
+public class SplashActivity extends Activity {
     ImageView accessIM, foodIM, NYCim;
     GifView gifView;
 
@@ -48,7 +47,7 @@ public class SplashActivity extends AppCompatActivity{
                 // close this activity
                 finish();
             }
-        }, 4000);
+        }, 2000);
     }
 
     @Override

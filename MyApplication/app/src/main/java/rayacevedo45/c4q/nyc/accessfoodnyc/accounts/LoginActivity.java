@@ -1,27 +1,39 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc.accounts;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
+import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+import java.util.Arrays;
+
 import rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.ParseApplication;
+import rayacevedo45.c4q.nyc.accessfoodnyc.ProfileActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.R;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends Activity {
+
+    CallbackManager callbackManager;
 
     protected EditText usernameEditText;
     protected EditText passwordEditText;
@@ -30,31 +42,23 @@ public class LoginActivity extends AppCompatActivity {
     protected EditText emailField;
     protected Button loginButton;
     protected Button signUpButton;
-    protected SignInButton googleSignin;
+    protected SignInButton mSignInButton;
     protected Button backButton;
     protected Button continueButton;
     protected LinearLayout layout;
-
-    //protected TextView signUpTextView;
-
     protected ParseApplication app;
+
+    private LoginButton mButtonFacebookLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-//        Parse.initialize(this);
-//
-//        ParseACL defaultACL = new ParseACL();
-//
-//        // If you would like all objects to be private by default, remove this
-//        // line.
-//        defaultACL.setPublicReadAccess(true);
-//
-//        ParseACL.setDefaultACL(defaultACL, true);
-//
-//        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
-
         super.onCreate(savedInstanceState);
+
+        // facebook stuff
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+
         setContentView(R.layout.activity_login);
 
         app = new ParseApplication();
@@ -66,11 +70,42 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText2 = (EditText)findViewById(R.id.passwordField2);
         loginButton = (Button)findViewById(R.id.loginButton);
         emailField = (EditText) findViewById(R.id.emailFieldID);
-        googleSignin = (SignInButton) findViewById(R.id.googleSigninID);
         backButton = (Button) findViewById(R.id.BackButtonID);
         continueButton = (Button) findViewById(R.id.ContinueButtonID);
         layout = (LinearLayout) findViewById(R.id.layoutID);
+        mButtonFacebookLogin = (LoginButton) findViewById(R.id.login_button);
 
+
+        mButtonFacebookLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, Arrays.asList("public_profile", "user_friends"), new LogInCallback() {
+                    @Override
+                    public void done(ParseUser user, ParseException err) {
+                        if (user == null) {
+                            Toast.makeText(getApplicationContext(), "Uh oh. The user cancelled the Facebook login.", Toast.LENGTH_SHORT).show();
+                            Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
+                        } else if (user.isNew()) {
+                            Profile profile = Profile.getCurrentProfile();
+
+
+                            user.put("first_name", profile.getFirstName());
+                            user.put("last_name", profile.getLastName());
+                            user.put("profile_url", profile.getProfilePictureUri(300, 300).toString());
+                            user.saveInBackground();
+                            Toast.makeText(getApplicationContext(), "User signed up and logged in through Facebook!", Toast.LENGTH_SHORT).show();
+                            Log.d("MyApp", "User signed up and logged in through Facebook!");
+                            goToProfileActivity();
+                        } else {
+                            Profile profile = Profile.getCurrentProfile();
+                            Toast.makeText(getApplicationContext(), "User logged in through Facebook!", Toast.LENGTH_SHORT).show();
+                            Log.d("MyApp", "User logged in through Facebook!");
+                            goToProfileActivity();
+                        }
+                    }
+                });
+            }
+        });
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -100,10 +135,8 @@ public class LoginActivity extends AppCompatActivity {
 
                             if (e == null) {
                                 // Success!
-                                Intent intent = new Intent(LoginActivity.this, MapsActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                startActivity(intent);
+                                goToProfileActivity();
+                                //finish();
                             } else {
                                 // Fail
                                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
@@ -171,7 +204,36 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void setUpListeners(boolean isResumed) {
+        if (isResumed) {
 
+        } else {
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpListeners(true);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        setUpListeners(false);
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -192,22 +254,21 @@ public class LoginActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
     public void showSignUpFields (View v){
+        mButtonFacebookLogin.setVisibility(View.GONE);
+        usernameEditText.setVisibility(View.GONE);
+        passwordEditText.setVisibility(View.GONE);
+        usernameEditText2.setVisibility(View.VISIBLE);
+        passwordEditText2.setVisibility(View.VISIBLE);
+        emailField.setVisibility(View.VISIBLE);
+        loginButton.setVisibility(View.GONE);
+        signUpButton.setVisibility(View.GONE);
+        backButton.setVisibility(View.VISIBLE);
+        continueButton.setVisibility(View.VISIBLE);
+        layout.setVisibility(View.GONE);
+    }
 
-            googleSignin.setVisibility(View.GONE);
-            usernameEditText.setVisibility(View.GONE);
-            passwordEditText.setVisibility(View.GONE);
-            usernameEditText2.setVisibility(View.VISIBLE);
-            passwordEditText2.setVisibility(View.VISIBLE);
-            emailField.setVisibility(View.VISIBLE);
-            loginButton.setVisibility(View.GONE);
-            signUpButton.setVisibility(View.GONE);
-            backButton.setVisibility(View.VISIBLE);
-            continueButton.setVisibility(View.VISIBLE);
-            layout.setVisibility(View.GONE);
-
-        }
     public void back (View v){
-        googleSignin.setVisibility(View.VISIBLE);
+        mButtonFacebookLogin.setVisibility(View.VISIBLE);
         usernameEditText.setVisibility(View.VISIBLE);
         passwordEditText.setVisibility(View.VISIBLE);
         usernameEditText2.setVisibility(View.GONE);
@@ -218,7 +279,26 @@ public class LoginActivity extends AppCompatActivity {
         backButton.setVisibility(View.GONE);
         continueButton.setVisibility(View.GONE);
         layout.setVisibility(View.VISIBLE);
-        }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
+    }
 
+    private void goToMapsActivity() {
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    private void goToProfileActivity() {
+        Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+}

@@ -1,158 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    tools:context=".LoginActivity"
+    android:background="@color/white"
     android:orientation="vertical"
-    android:background="#FF5C33">
+    tools:context=".LoginActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="AccessFoodNYC"
-        android:textSize="35sp"
-        android:textColor="#E84319"
+
         android:gravity="center"
-        android:textStyle="bold"
-        android:layout_marginBottom="25dp" />
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="225dp"
-        android:src="@drawable/groupofoodtrucks"
-        android:layout_marginBottom="25dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"/>
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/googleSigninID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#E84319"
-        android:layout_marginBottom="15dp"/>
+        android:text="AccessFoodNYC"
+        android:textColor="@color/red"
+        android:textSize="40sp"
+        android:textStyle="bold" />
 
     <android.support.design.widget.TextInputLayout
+        android:layout_marginTop="150dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <!--app:backgroundTint="#FF5C33"-->
-        <!--android:textColorHint="#FF5C33"-->
-        <!--android:shadowColor="#FF5C33"-->
-        <!--android:textColor="#FF5C33"-->
-        <!--android:textColorHighlight="#FF5C33"-->
-        <!--android:textColorLink="#FF5C33"-->
-        <!--android:backgroundTint="#FF5C33">-->
-
+        android:layout_height="wrap_content"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
         <EditText
             android:id="@+id/usernameField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/orange"
             android:ems="10"
             android:hint="@string/username_hint"
-            android:textColor="#FFFFFF"/>
-            <!--app:backgroundTint="#FF5C33"-->
-            <!--android:textColorHint="#FF5C33"-->
-            <!--android:shadowColor="#FF5C33"-->
-            
-            <!--android:textColorHighlight="#FF5C33"-->
-            <!--android:textColorLink="#FF5C33"-->
-            <!--android:backgroundTint="#FF5C33"-->
+            android:textColor="@color/orange"
+            android:textColorHint="@color/orange" />
 
     </android.support.design.widget.TextInputLayout>
 
-
     <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <!--app:backgroundTint="#FF5C33"-->
-        <!--android:textColorHint="#FF5C33"-->
-        <!--android:shadowColor="#FF5C33"-->
-        <!--android:textColor="#FF5C33"-->
-        <!--android:textColorHighlight="#FF5C33"-->
-        <!--android:textColorLink="#FF5C33"-->
-        <!--android:backgroundTint="#FF5C33">-->
-
-    <EditText
-        android:id="@+id/passwordField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/password_hint"
-        android:layout_marginBottom="30dp"
-        android:textColor="#FFFFFF"
-        android:inputType="textPassword"/>
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">>
 
-        <!--app:backgroundTint="#FF5C33"-->
-        <!--android:textColorHint="#FF5C33"-->
-        <!--android:shadowColor="#FF5C33"-->
-        <!--android:textColor="#FF5C33"-->
-        <!--android:textColorHighlight="#FF5C33"-->
-        <!--android:textColorLink="#FF5C33"-->
-        <!--android:backgroundTint="#FF5C33" />-->
+        <EditText
+            android:id="@+id/passwordField"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/orange"
+            android:ems="10"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword"
+            android:textColor="@color/orange"
+            android:textColorHint="@color/orange" />
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <!--app:backgroundTint="#FF5C33"-->
-        <!--android:textColorHint="#FF5C33"-->
-        <!--android:shadowColor="#FF5C33"-->
-        <!--android:textColor="#FF5C33"-->
-        <!--android:textColorHighlight="#FF5C33"-->
-        <!--android:textColorLink="#FF5C33"-->
-        <!--android:backgroundTint="#FF5C33">-->
-
+        android:layout_height="wrap_content"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
 
         <EditText
             android:id="@+id/usernameField2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/orange"
             android:ems="10"
             android:hint="New Username"
-            android:visibility="gone"/>
-        <!--app:backgroundTint="#FF5C33"-->
-        <!--android:textColorHint="#FF5C33"-->
-        <!--android:shadowColor="#FF5C33"-->
-        <!--android:textColor="#FF5C33"-->
-        <!--android:textColorHighlight="#FF5C33"-->
-        <!--android:textColorLink="#FF5C33"-->
-        <!--android:backgroundTint="#FF5C33"-->
+            android:textColor="@color/orange"
+            android:textColorHint="@color/orange"
+            android:visibility="gone" />
 
     </android.support.design.widget.TextInputLayout>
 
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <!--app:backgroundTint="#FF5C33"-->
-        <!--android:textColorHint="#FF5C33"-->
-        <!--android:shadowColor="#FF5C33"-->
-        <!--android:textColor="#FF5C33"-->
-        <!--android:textColorHighlight="#FF5C33"-->
-        <!--android:textColorLink="#FF5C33"-->
-        <!--android:backgroundTint="#FF5C33">-->
+        android:layout_height="wrap_content"
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">>
+
 
         <EditText
             android:id="@+id/passwordField2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/orange"
             android:ems="10"
             android:hint="New Password"
-            android:layout_marginBottom="30dp"
-            android:visibility="gone"/>
-
-
-        <!--app:backgroundTint="#FF5C33"-->
-        <!--android:textColorHint="#FF5C33"-->
-        <!--android:shadowColor="#FF5C33"-->
-        <!--android:textColor="#FF5C33"-->
-        <!--android:textColorHighlight="#FF5C33"-->
-        <!--android:textColorLink="#FF5C33"-->
-        <!--android:backgroundTint="#FF5C33" />-->
+            android:inputType="textPassword"
+            android:textColor="@color/orange"
+            android:textColorHint="@color/orange"
+            android:visibility="gone" />
 
     </android.support.design.widget.TextInputLayout>
 
@@ -160,96 +97,123 @@
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">>
 
         <EditText
             android:id="@+id/emailFieldID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/orange"
             android:ems="10"
-            android:inputType="textEmailAddress"
             android:hint="@string/email_hint"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/orange"
+            android:textColorHint="@color/orange"
             android:visibility="gone"/>
 
     </android.support.design.widget.TextInputLayout>
 
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="fill_parent"
-    android:layout_centerHorizontal="true"
-    android:orientation="horizontal"
-    android:gravity="bottom"
-    android:layout_alignParentBottom="true"
-    android:id="@+id/layoutID">
-
-
-    <android.support.v7.widget.AppCompatButton
-        android:layout_marginRight="2dp"
-        android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/login_button_label"
-        android:background="#E84319"
-        android:textColor="#FFFFFF"
+    <LinearLayout
+        android:id="@+id/layoutID"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_weight="1"/>
+        android:layout_centerHorizontal="true"
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <com.facebook.login.widget.LoginButton
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_marginTop="30dp"-->
+                <!--android:layout_marginBottom="10dp"-->
 
 
-    <android.support.v7.widget.AppCompatButton
-        android:layout_marginLeft="2dp"
-        android:id="@+id/signupButtonID"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sign_up_text"
-        android:background="#E84319"
-        android:textColor="#FFFFFF"
-        android:onClick="showSignUpFields"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@id/loginButton"
-        android:layout_alignParentRight="true"
-        android:layout_weight="1"/>
+        </LinearLayout>
 
 
 
-</LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <Button
+                android:id="@+id/signupButtonID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_weight="1"
+                android:background="@color/amber"
+                android:onClick="showSignUpFields"
+                android:text="@string/sign_up_text"
+                android:textColor="@color/white"/>
+
+            <Button
+                android:id="@+id/loginButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_weight="1"
+                android:background="@color/orange"
+                android:text="@string/login_button_label"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
         android:gravity="bottom"
-        android:layout_alignParentBottom="true">
+        android:orientation="horizontal">
 
-    <android.support.v7.widget.AppCompatButton
-        android:layout_marginRight="2dp"
-        android:id="@+id/BackButtonID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Back"
-        android:background="#E84319"
-        android:textColor="#FF5C33"
-        android:layout_weight="1"
-        android:elevation="15dp"
-        android:visibility="gone"
-        android:onClick="back"
-        android:layout_alignParentBottom="true"/>
+        <Button
 
-    <android.support.v7.widget.AppCompatButton
-        android:layout_marginLeft="2dp"
-        android:id="@+id/ContinueButtonID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Continue"
-        android:background="#E84319"
-        android:textColor="#FF5C33"
-        android:layout_weight="1"
-        android:elevation="15dp"
-        android:visibility="gone"
-        android:layout_alignParentBottom="true"/>
+            android:id="@+id/BackButtonID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1"
+            android:background="@color/amber"
+            android:elevation="15dp"
+            android:onClick="back"
+            android:text="Back"
+            android:textColor="#ffffff"
+            android:visibility="gone"
+            style="?android:attr/activatedBackgroundIndicator"/>
+
+        <Button
+
+            android:id="@+id/ContinueButtonID"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_weight="1"
+            android:background="@color/orange"
+            android:elevation="15dp"
+            android:text="Continue"
+            android:textColor="#ffffff"
+            android:visibility="gone" />
 
 
     </LinearLayout>
+
+
 </LinearLayout>
+
+

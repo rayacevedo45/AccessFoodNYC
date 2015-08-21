@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:background="#ffff6810">
+    android:background="@color/orange">
 
     <RelativeLayout
         android:layout_marginTop="22dp"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:text="Access Food"
             android:textSize="30sp"
-            android:textColor="#D1462F"
+            android:textColor="@color/red"
             android:layout_marginBottom="61dp"
             android:typeface="monospace"
             android:textStyle="bold"
@@ -38,7 +38,7 @@
             android:layout_height="wrap_content"
             android:text="NYC"
             android:textSize="25sp"
-            android:textColor="#D1462F"
+            android:textColor="@color/red"
             android:layout_marginBottom="31dp"
             android:typeface="monospace"
             android:textStyle="bold"
