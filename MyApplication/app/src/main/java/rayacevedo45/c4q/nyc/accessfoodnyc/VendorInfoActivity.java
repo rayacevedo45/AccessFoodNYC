@@ -212,8 +212,8 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         public void success(YelpResponse data, Response response) {
             Log.d(TAG, "Success");
             sApplication = ParseApplication.getInstance();
-            sApplication.yelpResponse = data;
-            List<Business> businessList = sApplication.yelpResponse.getBusinesses();
+            sApplication.sYelpResponse = data;
+            List<Business> businessList = sApplication.sYelpResponse.getBusinesses();
             if (businessList != null && businessList.size() > 0) {
                 if (mCurrentDetailsFragment != null) {
                     mCurrentDetailsFragment.onYelpData(businessList.get(0));

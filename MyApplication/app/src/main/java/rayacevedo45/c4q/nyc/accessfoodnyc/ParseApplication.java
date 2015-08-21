@@ -9,16 +9,16 @@ import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.YelpResponse;
 
 public class ParseApplication extends Application {
 
-    private static ParseApplication instance;
-    public static YelpResponse yelpResponse;
+    private static ParseApplication sInstance;
+    public static YelpResponse sYelpResponse;
 
     public static ParseApplication getInstance() {
-        return instance;
+        return sInstance;
     }
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
+        sInstance = this;
 		/*
 		 * Add Parse initialization code here
 		 */
