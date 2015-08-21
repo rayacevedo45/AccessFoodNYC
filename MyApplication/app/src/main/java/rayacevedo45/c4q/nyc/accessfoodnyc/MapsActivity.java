@@ -36,6 +36,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
+
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, View.OnClickListener, GoogleMap.OnCameraChangeListener {
 
@@ -136,17 +138,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             })
             );
-
-//            mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    objectId = mAdapter.getItem(position).getObjectId();
-//                    Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
-//                    intent.putExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, objectId);
-//                    startActivity(intent);
-//                }
-//            });
+            mButtonFilter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goToProfileActivity();
+                }
+            });
         } else {
+            mButtonFilter.setOnClickListener(null);
 
         }
     }
@@ -299,7 +298,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        }
     }
 
-
+    private void goToProfileActivity() {
+        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 
 }
 
