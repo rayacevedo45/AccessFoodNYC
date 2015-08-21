@@ -254,7 +254,7 @@ public class LoginActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
     public void showSignUpFields (View v){
-        mSignInButton.setVisibility(View.GONE);
+        mButtonFacebookLogin.setVisibility(View.GONE);
         usernameEditText.setVisibility(View.GONE);
         passwordEditText.setVisibility(View.GONE);
         usernameEditText2.setVisibility(View.VISIBLE);
@@ -268,7 +268,7 @@ public class LoginActivity extends Activity {
     }
 
     public void back (View v){
-        mSignInButton.setVisibility(View.VISIBLE);
+        mButtonFacebookLogin.setVisibility(View.VISIBLE);
         usernameEditText.setVisibility(View.VISIBLE);
         passwordEditText.setVisibility(View.VISIBLE);
         usernameEditText2.setVisibility(View.GONE);
