@@ -20,7 +20,10 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Location;
 
 
 public class DetailsFragment extends Fragment {
@@ -31,6 +34,16 @@ public class DetailsFragment extends Fragment {
     private ImageView mVendorRatingImage;
     private Button add;
     private ParseObject selectedVendor;
+
+    private TextView mVendorAddText;
+    private static String mAddress = "";
+
+    private TextView mNeighborhoodText;
+    private static String mNeighborhood;
+
+    private TextView mCategoriesText;
+    private static String mCategories;
+
 
 
     @Override
@@ -47,6 +60,10 @@ public class DetailsFragment extends Fragment {
         mVendorNameText = (TextView)getActivity().findViewById(R.id.vendor_name);
         mVendorNameText.setText(business.getName());
 
+        mVendorNameText = (TextView)getActivity().findViewById(R.id.category);
+        catListIterator(business);
+        mVendorNameText.setText(mCategories);
+
         mVendorPicImage = (ImageView)getActivity().findViewById(R.id.vendor_pic);
         String businessImgUrl = (business.getImageUrl());
         Picasso.with(getActivity()).load(businessImgUrl).resize(1100, 700).into(mVendorPicImage);
@@ -55,7 +72,39 @@ public class DetailsFragment extends Fragment {
         String vendorRatingUrlLarge = business.getRatingImgUrlLarge();
         Picasso.with(getActivity()).load(vendorRatingUrlLarge).into(mVendorRatingImage);
 
+        addressGenerator(business);
+        mVendorAddText = (TextView)getActivity().findViewById(R.id.address);
+        mVendorAddText.setText(mAddress);
+        mNeighborhoodText = (TextView)getActivity().findViewById(R.id.neighborhood);
+        mNeighborhoodText.setText(mNeighborhood);
+    }
 
+    public static String catListIterator (Business business){
+        List<List<String>> catListOfLists = business.getCategories();
+        int i = 0;
+        List<String> catList = null;
+        mCategories = "";
+
+        while (i < catListOfLists.size()) {
+            catList = catListOfLists.get(i);
+            mCategories= mCategories + " " + (catList.get(0));
+            i++;
+        }
+
+        return mCategories;
+    }
+
+    public static String addressGenerator (Business business){
+
+        Location bizLocation = business.getLocation();
+        List <String> addList = bizLocation.getDisplayAddress();
+        int i = 0;
+        while (i < addList.size()) {
+            mAddress = mAddress + ", " + (addList.get(i));
+            i++;
+        }
+        mNeighborhood = addList.get(2);
+        return mAddress;
     }
 
     @Override

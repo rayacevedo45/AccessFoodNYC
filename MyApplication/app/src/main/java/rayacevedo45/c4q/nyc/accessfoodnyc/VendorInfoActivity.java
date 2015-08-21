@@ -171,18 +171,6 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         }
     }
 
-    public static String catListIterator (List<List<String>> catListOfLists){
-        int i = 0;
-        List<String> catList = null;
-        String categories = "";
 
-        while (i < catListOfLists.size()) {
-            catList = catListOfLists.get(i);
-            categories= categories + " " + (catList.get(0));
-            i++;
-        }
-
-        return categories;
-    }
 
 }
