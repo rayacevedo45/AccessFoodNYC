@@ -34,12 +34,15 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
     // Tab titles
     private String[] tabs = { "Details", "Menu", "Reviews" };
     String vendorName;
+    private String objectId;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        getLatestPosts();
 //        setTitle(vendorName);
         setContentView(R.layout.activity_vendor_info);
+
+        objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID);
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
@@ -107,7 +110,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
      * sections of the app.
      */
-    public static class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+    public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
 
         public AppSectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -115,6 +118,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
 
         @Override
         public Fragment getItem(int i) {
+            Fragment fragment = null;
             switch (i) {
 //                case 0:
 //                    // The first section of the app is the most interesting -- it offers
@@ -138,6 +142,11 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
                     // Games fragment activity
                     return new MenuFragment();
                 case 2:
+                    fragment = new ReviewsFragment();
+                    Bundle bundle = new Bundle();
+
+                    bundle.putString(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, objectId);
+                    fragment.setArguments(bundle);
                     // Movies fragment activity
                     return new ReviewsFragment();
             }
