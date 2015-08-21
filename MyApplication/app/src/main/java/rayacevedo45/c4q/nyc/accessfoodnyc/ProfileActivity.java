@@ -2,6 +2,8 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -31,8 +33,9 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView mImageViewProfile;
     private TextView first;
     private TextView last;
+    private TextView yf;
 
-    private Button maps;
+    //private Button maps;
     private Button logout;
 
     private ListView mListView;
@@ -47,9 +50,12 @@ public class ProfileActivity extends AppCompatActivity {
         mImageViewProfile = (ImageView) findViewById(R.id.imageView_profile);
         first = (TextView) findViewById(R.id.first_name);
         last = (TextView) findViewById(R.id.last_name);
-        maps = (Button) findViewById(R.id.button_maps);
+        //maps = (Button) findViewById(R.id.button_maps);
         logout = (Button) findViewById(R.id.log_out);
         mListView = (ListView) findViewById(R.id.listView_favorites);
+        yf = (TextView) findViewById(R.id.yfID);
+
+        yf.setPaintFlags(yf.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
 
         ParseUser user = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> relation = user.getRelation("favorite");
@@ -67,14 +73,14 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
-
-        maps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                startActivity(intent);
-            }
-        });
+//
+//        maps.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +100,7 @@ public class ProfileActivity extends AppCompatActivity {
         first.setText((String) user.get("first_name"));
         last.setText((String) user.get("last_name"));
 
-        Picasso.with(getApplicationContext()).load(user.getString("profile_url")).centerCrop().resize(300, 300).into(mImageViewProfile);
+        Picasso.with(getApplicationContext()).load(user.getString("profile_url")).centerCrop().resize(400, 400).into(mImageViewProfile);
 
 
 
@@ -140,7 +146,7 @@ public class ProfileActivity extends AppCompatActivity {
             ParseObject vendor = getItem(position);
 
             name.setText(vendor.getString("vendor_name"));
-
+            name.setTextColor(Color.BLACK);
 
 
             return convertView;
