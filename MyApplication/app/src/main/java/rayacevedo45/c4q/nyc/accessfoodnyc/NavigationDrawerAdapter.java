@@ -88,7 +88,7 @@ public class NavigationDrawerAdapter extends RecyclerView.Adapter<NavigationDraw
 
     }
 
-    public class Information {
+    public static class Information {
 
         int iconId;
         String title;
