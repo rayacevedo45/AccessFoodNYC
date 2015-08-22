@@ -17,6 +17,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
 
     private Button mButtonReview;
     private ListView mListView;
+    private String objectId;
 
     private String b1Name;
 
@@ -28,6 +29,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
 
         mButtonReview = (Button) rootView.findViewById(R.id.button_review);
         mListView = (ListView) rootView.findViewById(R.id.listView_reviews);
+        objectId = getArguments().getString(Constants.EXTRA_KEY_VENDOR_OBJECT_ID);
 
         ParseUser user = ParseUser.getCurrentUser();
 
@@ -66,6 +68,11 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void writeReview() {
+
+        ParseUser user = ParseUser.getCurrentUser();
+        String userId = user.getObjectId();
+
+
 
     }
 
