@@ -39,4 +39,25 @@ public class ServiceGenerator {
 
         return service;
     }
+
+    public static YelpBusinessSearchService createYelpBusinessSearchService(){
+
+        //use the library that extends OKHttpClient to sign the request using the token (as required by Yelp)
+        RetrofitHttpOAuthConsumer oAuthConsumer = new RetrofitHttpOAuthConsumer(CONSUMER_KEY, CONSUMER_SECRET);
+        oAuthConsumer.setTokenWithSecret(TOKEN, TOKEN_SECRET);
+
+        //generating signature using oAuthConsumer (with key secret and token +token secret)
+        OkClient httpClient = new SigningOkClient(oAuthConsumer);
+
+
+
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(YelpBusinessSearchService.BASE_URL)
+                .setClient(httpClient)
+                .build();
+
+        YelpBusinessSearchService service = restAdapter.create(YelpBusinessSearchService.class);
+
+        return service;
+    }
 }

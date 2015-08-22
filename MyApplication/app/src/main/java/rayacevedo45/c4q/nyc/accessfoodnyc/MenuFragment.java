@@ -41,7 +41,7 @@ public class MenuFragment extends Fragment {
 
     protected void getLatestPosts(){
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-        query.getInBackground(MapsActivity.objectId, new GetCallback<ParseObject>() {
+        query.getInBackground(MapsActivity.businessId, new GetCallback<ParseObject>() {
             public void done(ParseObject vendor, ParseException e) {
                 if (e == null) {
                     menuPicUrlStr = vendor.getString("menu_url");

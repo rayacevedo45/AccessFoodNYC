@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,14 +36,15 @@ public class DetailsFragment extends Fragment {
     private Button add;
     private ParseObject selectedVendor;
 
-    private TextView mVendorAddText;
-    private static String mAddress = "";
-
-    private TextView mNeighborhoodText;
-    private static String mNeighborhood;
+    private TextView mVendorRatingNum;
+    private static String RatingNumStr;
+    private static List <String> addList;
 
     private TextView mCategoriesText;
     private static String mCategories;
+
+    private TextView mPhoneText;
+    private TextView mSnippetText;
 
 
 
@@ -72,11 +74,24 @@ public class DetailsFragment extends Fragment {
         String vendorRatingUrlLarge = business.getRatingImgUrlLarge();
         Picasso.with(getActivity()).load(vendorRatingUrlLarge).into(mVendorRatingImage);
 
+        mVendorRatingNum = (TextView)getActivity().findViewById(R.id.rating_num);
+        mVendorRatingNum.setText(String.valueOf(business.getRating()));
+
         addressGenerator(business);
-        mVendorAddText = (TextView)getActivity().findViewById(R.id.address);
-        mVendorAddText.setText(mAddress);
-        mNeighborhoodText = (TextView)getActivity().findViewById(R.id.neighborhood);
-        mNeighborhoodText.setText(mNeighborhood);
+        LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.address);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        for( int i = 0; i < addList.size(); i++ )
+        {
+            TextView textView = new TextView(getActivity());
+            textView.setText(addList.get(i));
+            linearLayout.addView(textView);
+        }
+
+        mPhoneText = (TextView)getActivity().findViewById(R.id.phone);
+        mPhoneText.setText(business.getDisplayPhone());
+
+        mSnippetText = (TextView)getActivity().findViewById(R.id.snippet_text);
+        mPhoneText.setText(business.getSnippetText());
     }
 
     public static String catListIterator (Business business){
@@ -94,17 +109,12 @@ public class DetailsFragment extends Fragment {
         return mCategories;
     }
 
-    public static String addressGenerator (Business business){
+    public static List <String> addressGenerator (Business business){
 
         Location bizLocation = business.getLocation();
-        List <String> addList = bizLocation.getDisplayAddress();
-        int i = 0;
-        while (i < addList.size()) {
-            mAddress = mAddress + ", " + (addList.get(i));
-            i++;
-        }
-        mNeighborhood = addList.get(2);
-        return mAddress;
+        addList = bizLocation.getDisplayAddress();
+
+        return addList;
     }
 
     @Override

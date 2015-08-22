@@ -36,19 +36,40 @@
         android:id="@+id/vendor_rating"
         android:layout_below="@+id/category"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/address"
-        android:textSize="15dp"
-        android:layout_below="@+id/vendor_rating"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/neighborhood"
+        android:id="@+id/rating_num"
+        android:textSize="15dp"
+        android:layout_toRightOf="@id/vendor_rating"
+        android:layout_below="@+id/category"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/address"
+        android:layout_below="@+id/vendor_rating"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/phone"
         android:textSize="15dp"
         android:layout_below="@+id/address"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/snippet_text"
+        android:textSize="15dp"
+        android:layout_below="@+id/phone"/>
 
 
     <Button
