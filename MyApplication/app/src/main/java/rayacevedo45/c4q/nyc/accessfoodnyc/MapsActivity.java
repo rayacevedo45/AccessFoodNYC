@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -28,12 +29,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Coordinate;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.YelpResponse;
@@ -76,12 +79,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_maps);
-
-        //Parse.initialize(this);
 
         buildGoogleApiClient();
         createLocationRequest();
@@ -91,9 +91,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mMap = mapFragment.getMap();
-
-
-
     }
 
     private void setUpClusterer() {
@@ -122,8 +119,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     }
-
-
 
     protected class YelpSearchCallback implements Callback<YelpResponse> {
 
@@ -237,12 +232,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_profile:
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_logout:
+                logOut();
+                break;
+            case R.id.action_settings:
+                break;
         }
+
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -351,6 +354,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-
+    private void logOut() {
+        LoginManager.getInstance().logOut();
+        ParseUser.logOut();
+        Toast.makeText(getApplicationContext(), "Successfully logged out!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 }
 
