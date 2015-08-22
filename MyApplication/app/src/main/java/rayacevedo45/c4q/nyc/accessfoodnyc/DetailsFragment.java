@@ -68,7 +68,7 @@ public class DetailsFragment extends Fragment {
 
         mVendorPicImage = (ImageView)getActivity().findViewById(R.id.vendor_pic);
         String businessImgUrl = (business.getImageUrl());
-        Picasso.with(getActivity()).load(businessImgUrl).resize(1100, 700).into(mVendorPicImage);
+        Picasso.with(getActivity()).load(businessImgUrl).centerCrop().resize(350, 350).noFade().into(mVendorPicImage);
 
         mVendorRatingImage = (ImageView)getActivity().findViewById(R.id.vendor_rating);
         String vendorRatingUrlLarge = business.getRatingImgUrlLarge();
