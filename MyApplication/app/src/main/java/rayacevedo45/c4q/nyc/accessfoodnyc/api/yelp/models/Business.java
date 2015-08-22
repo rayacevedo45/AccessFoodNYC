@@ -229,7 +229,7 @@ public class Business {
     /**
      * 
      * @return
-     *     The id
+     *     The x
      */
     public String getId() {
         return id;
