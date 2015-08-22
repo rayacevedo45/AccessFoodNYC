@@ -146,30 +146,6 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
     }
 
 
-//    protected class YelpSearchCallback implements Callback<YelpResponse> {
-//
-//        public String TAG = "YelpSearchCallback";
-//
-//        @Override
-//        public void success(YelpResponse data, Response response) {
-//            Log.d(TAG, "Success");
-//            sApplication = ParseApplication.getInstance();
-//            sApplication.sYelpResponse = data;
-//            List<Business> businessList = sApplication.sYelpResponse.getBusinesses();
-//            if (businessList != null && businessList.size() > 0) {
-//                if (mCurrentDetailsFragment != null) {
-//                    mCurrentDetailsFragment.onYelpData(businessList.get(0));
-//                } else {
-//                    Log.d("YelpDataGenerator", "mCurrentDetailsFragment was null!!!!");
-//                }
-//            }
-//        }
-//
-//        @Override
-//        public void failure(RetrofitError error) {
-//            Log.e(TAG, error.getMessage());
-//        }
-//    }
 
     protected class YelpBusinessSearchCallback implements Callback<Business> {
 
@@ -178,9 +154,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         @Override
         public void success(Business business, Response response) {
             Log.d(TAG, "Success");
-//            sApplication = ParseApplication.getInstance();
-//            sApplication.sYelpResponse = business;
-//            business = sApplication.sYelpResponse;
+
             if (business != null ) {
                 if (mCurrentDetailsFragment != null) {
                     mCurrentDetailsFragment.onYelpData(business);

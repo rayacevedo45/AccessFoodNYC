@@ -88,29 +88,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-//        query.findInBackground(new FindCallback<ParseObject>() {
-//            @Override
-//            public void done(List<ParseObject> list, ParseException e) {
-//                mAdapter = new VendorListAdapter(getApplicationContext(), list);
-//                mRecyclerView.setAdapter(mAdapter);
-//                int i = 1;
-//                for (ParseObject item : list) {
-//                    ParseGeoPoint point = (ParseGeoPoint) item.get("location");
-//                    double latitude = point.getLatitude();
-//                    double longitude = point.getLongitude();
-//                    LatLng position = new LatLng(latitude, longitude);
-//                    // create marker
-//                    MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title((String) item.get("vendor_name"));
-//
-//                    // Changing marker icon
-//                    marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck));
-//                    mMap.addMarker(marker);
-//                }
-//
-//            }
-//        });
-
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mMap = mapFragment.getMap();
@@ -187,15 +164,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             })
             );
 
-//            mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    objectId = mAdapter.getItem(position).getObjectId();
-//                    Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
-//                    intent.putExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, objectId);
-//                    startActivity(intent);
-//                }
-//            });
         } else {
 
         }
