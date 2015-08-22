@@ -6,10 +6,10 @@
     <color name="black">#000000</color>
     <color name="amber">#FFC107</color>
 
-    <color name="primaryColor">#2196F3</color>
-    <color name="primaryColorDark">#1976D2</color>
-    <color name="primaryColorLight">#BBDEFB</color>
-    <color name="accentColor">#FF9800</color>
+    <color name="primaryColor">#FF9800</color>
+    <color name="primaryColorDark">#F57C00</color>
+    <color name="primaryColorLight">#FFE0B2</color>
+    <color name="accentColor">#03A9F4</color>
     <color name="toolbarTextColor">#FFFFFF</color>
     <color name="textColorSecondary">#727272</color>
     <color name="primaryText">#212121</color>
