@@ -40,7 +40,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
      * time.
      */
     ViewPager mViewPager;
-
+    ActionBar actionBar;
 
     // Tab titles
     private String[] tabs = { "Details", "Menu", "Reviews" };
@@ -63,10 +63,10 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
-        mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+        //mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the action bar.
-        final ActionBar actionBar = getActionBar();
+        actionBar = getActionBar();
 
         // Specify that the Home/Up button should not be enabled, since there is no hierarchical
         // parent.
@@ -81,16 +81,16 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         // Set up the ViewPager, attaching the adapter and setting up a listener for when the
         // user swipes between sections.
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mAppSectionsPagerAdapter);
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-                // When swiping between different app sections, select the corresponding tab.
-                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-                // Tab.
-                actionBar.setSelectedNavigationItem(position);
-            }
-        });
+//        mViewPager.setAdapter(mAppSectionsPagerAdapter);
+//        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+//            @Override
+//            public void onPageSelected(int position) {
+//                // When swiping between different app sections, select the corresponding tab.
+//                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
+//                // Tab.
+//                actionBar.setSelectedNavigationItem(position);
+//            }
+//        });
 
 
         for (String tab_name : TABS) {
@@ -125,9 +125,9 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         }
 
         @Override
-        public Fragment getItem(int i) {
+        public Fragment getItem(int position) {
             Fragment fragment = null;
-            switch (i) {
+            switch (position) {
                 case 0:
                     mCurrentDetailsFragment = new DetailsFragment();
                     // Top Rated fragment activity
@@ -168,13 +168,31 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         public void success(Business business, Response response) {
             Log.d(TAG, "Success");
 
-            if (business != null ) {
-                if (mCurrentDetailsFragment != null) {
-                    mCurrentDetailsFragment.onYelpData(business);
-                } else {
-                    Log.d("YelpDataGenerator", "mCurrentDetailsFragment was null!!!!");
-                }
+            if (business != null) {
+                mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+
+                mViewPager.setAdapter(mAppSectionsPagerAdapter);
+
+                mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        // When swiping between different app sections, select the corresponding tab.
+                        // We can also use ActionBar.Tab#select() to do this if we have a reference to the
+                        // Tab.
+                        actionBar.setSelectedNavigationItem(position);
+                    }
+                });
+                mCurrentDetailsFragment.onYelpData(business);
             }
+
+//            if (business != null ) {
+//                if (mCurrentDetailsFragment != null) {
+//
+//                    mCurrentDetailsFragment.onYelpData(business);
+//                } else {
+//                    Log.d("YelpDataGenerator", "mCurrentDetailsFragment was null!!!!");
+//                }
+//            }
 
 
         }
