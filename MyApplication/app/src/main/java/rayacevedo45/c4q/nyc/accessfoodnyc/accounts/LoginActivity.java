@@ -13,9 +13,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 import com.parse.LogInCallback;
@@ -49,6 +52,8 @@ public class LoginActivity extends Activity {
     protected ParseApplication app;
 
     private LoginButton mButtonFacebookLogin;
+    private AccessTokenTracker mAccessTokenTracker;
+    private AccessToken mAccessToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +65,22 @@ public class LoginActivity extends Activity {
         callbackManager = CallbackManager.Factory.create();
 
         setContentView(R.layout.activity_login);
+
+        FacebookSdk.clearLoggingBehaviors();
+//        mAccessTokenTracker = new AccessTokenTracker() {
+//            @Override
+//            protected void onCurrentAccessTokenChanged(
+//                    AccessToken oldAccessToken,
+//                    AccessToken currentAccessToken) {
+//                // Set the access token using
+//                // currentAccessToken when it's loaded or set.
+//            }
+//        };
+//        // If the access token is available already assign it.
+//        mAccessToken = AccessToken.getCurrentAccessToken();
+
+
+
 
         app = new ParseApplication();
 
@@ -76,10 +97,11 @@ public class LoginActivity extends Activity {
         mButtonFacebookLogin = (LoginButton) findViewById(R.id.login_button);
 
 
+
         mButtonFacebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, Arrays.asList("public_profile", "user_friends"), new LogInCallback() {
+                ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, Arrays.asList("public_profile", "user_friends", "email"), new LogInCallback() {
                     @Override
                     public void done(ParseUser user, ParseException err) {
                         if (user == null) {
@@ -87,20 +109,19 @@ public class LoginActivity extends Activity {
                             Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
                         } else if (user.isNew()) {
                             Profile profile = Profile.getCurrentProfile();
-
-
                             user.put("first_name", profile.getFirstName());
                             user.put("last_name", profile.getLastName());
                             user.put("profile_url", profile.getProfilePictureUri(300, 300).toString());
                             user.saveInBackground();
+
                             Toast.makeText(getApplicationContext(), "User signed up and logged in through Facebook!", Toast.LENGTH_SHORT).show();
                             Log.d("MyApp", "User signed up and logged in through Facebook!");
-                            goToProfileActivity();
+                            goToMapsActivity();
                         } else {
                             Profile profile = Profile.getCurrentProfile();
                             Toast.makeText(getApplicationContext(), "User logged in through Facebook!", Toast.LENGTH_SHORT).show();
                             Log.d("MyApp", "User logged in through Facebook!");
-                            goToProfileActivity();
+                            goToMapsActivity();
                         }
                     }
                 });

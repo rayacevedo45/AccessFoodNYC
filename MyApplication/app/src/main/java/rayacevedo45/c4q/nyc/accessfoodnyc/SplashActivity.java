@@ -8,12 +8,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.parse.ParseUser;
+
 import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.vendor.GifView;
 
 public class SplashActivity extends Activity {
     ImageView accessIM, foodIM, NYCim;
     GifView gifView;
+
+    CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,30 +32,57 @@ public class SplashActivity extends Activity {
 //        foodIM = (ImageView) findViewById(R.id.foodID);
 //        NYCim = (ImageView) findViewById(R.id.NYCID);
 
+
+
+
         gifView = (GifView) findViewById(R.id.gif_view);
 
 //        accessIM.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.lr));
 //        foodIM.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.rl));
 //        NYCim.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.lr));
 
-        new Handler().postDelayed(new Runnable() {
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+
+
+        if (isUserLoggedIn()) {
+            goToMapsActivity();
+        } else {
+            new Handler().postDelayed(new Runnable() {
 
             /*
              * Showing splash screen with a timer. This will be useful when you
              * want to show case your app logo / company
              */
 
-            @Override
-            public void run() {
-                // This method will be executed once the timer is over
-                // Start your app main activity
-                Intent i = new Intent(SplashActivity.this, LoginActivity.class);
-                startActivity(i);
+                @Override
+                public void run() {
+                    // This method will be executed once the timer is over
+                    // Start your app main activity
+                    Intent i = new Intent(SplashActivity.this, LoginActivity.class);
+                    startActivity(i);
 
-                // close this activity
-                finish();
+                    // close this activity
+                    finish();
+                }
+            }, 2000);
+        }
+
+
+    }
+
+    private boolean isUserLoggedIn() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser != null) {
+            return true;
+        } else {
+            AccessToken currentToken = AccessToken.getCurrentAccessToken();
+            if (currentToken != null && !currentToken.isExpired()) {
+                return true;
             }
-        }, 2000);
+        }
+        return false;
     }
 
     @Override
@@ -70,5 +105,13 @@ public class SplashActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void goToMapsActivity() {
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
     }
 }
