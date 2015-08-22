@@ -10,12 +10,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
-import java.util.List;
-
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
-import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.YelpResponse;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
-import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpSearchService;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpBusinessSearchService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -48,8 +45,11 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
-        yelpService.searchFoodCarts("11217", new YelpSearchCallback());
+//        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
+//        yelpService.searchFoodCarts("40.686406, -73.981440", new MapsActivity.YelpSearchCallback());
+
+    YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
+        yelpBizService.searchBusiness(MapsActivity.businessId, new YelpBusinessSearchCallback());
 
 
         setContentView(R.layout.activity_vendor_info);
@@ -146,23 +146,50 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
     }
 
 
-    protected class YelpSearchCallback implements Callback<YelpResponse> {
+//    protected class YelpSearchCallback implements Callback<YelpResponse> {
+//
+//        public String TAG = "YelpSearchCallback";
+//
+//        @Override
+//        public void success(YelpResponse data, Response response) {
+//            Log.d(TAG, "Success");
+//            sApplication = ParseApplication.getInstance();
+//            sApplication.sYelpResponse = data;
+//            List<Business> businessList = sApplication.sYelpResponse.getBusinesses();
+//            if (businessList != null && businessList.size() > 0) {
+//                if (mCurrentDetailsFragment != null) {
+//                    mCurrentDetailsFragment.onYelpData(businessList.get(0));
+//                } else {
+//                    Log.d("YelpDataGenerator", "mCurrentDetailsFragment was null!!!!");
+//                }
+//            }
+//        }
+//
+//        @Override
+//        public void failure(RetrofitError error) {
+//            Log.e(TAG, error.getMessage());
+//        }
+//    }
 
-        public String TAG = "YelpSearchCallback";
+    protected class YelpBusinessSearchCallback implements Callback<Business> {
+
+        public String TAG = "YelpBusinessSearchCallback";
 
         @Override
-        public void success(YelpResponse data, Response response) {
+        public void success(Business business, Response response) {
             Log.d(TAG, "Success");
-            sApplication = ParseApplication.getInstance();
-            sApplication.sYelpResponse = data;
-            List<Business> businessList = sApplication.sYelpResponse.getBusinesses();
-            if (businessList != null && businessList.size() > 0) {
+//            sApplication = ParseApplication.getInstance();
+//            sApplication.sYelpResponse = business;
+//            business = sApplication.sYelpResponse;
+            if (business != null ) {
                 if (mCurrentDetailsFragment != null) {
-                    mCurrentDetailsFragment.onYelpData(businessList.get(0));
+                    mCurrentDetailsFragment.onYelpData(business);
                 } else {
                     Log.d("YelpDataGenerator", "mCurrentDetailsFragment was null!!!!");
                 }
             }
+
+
         }
 
         @Override
@@ -171,18 +198,6 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         }
     }
 
-    public static String catListIterator (List<List<String>> catListOfLists){
-        int i = 0;
-        List<String> catList = null;
-        String categories = "";
 
-        while (i < catListOfLists.size()) {
-            catList = catListOfLists.get(i);
-            categories= categories + " " + (catList.get(0));
-            i++;
-        }
-
-        return categories;
-    }
 
 }

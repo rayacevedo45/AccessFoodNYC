@@ -7,6 +7,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,9 +26,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -35,6 +33,15 @@ import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Coordinate;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.YelpResponse;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpSearchService;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, View.OnClickListener, GoogleMap.OnCameraChangeListener {
@@ -57,12 +64,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private VendorListAdapter mAdapter;
 
     private List<ParseObject> mVendorList;
-    public static String objectId;
+    public static String businessId;
+
+    private static String latLngForSearch = "40.686406, -73.981440";
+
+
+    public static ParseApplication sApplication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_maps);
 
         //Parse.initialize(this);
@@ -75,42 +88,79 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                mAdapter = new VendorListAdapter(getApplicationContext(), list);
-                mRecyclerView.setAdapter(mAdapter);
-                int i = 1;
-                for (ParseObject item : list) {
-                    ParseGeoPoint point = (ParseGeoPoint) item.get("location");
-                    double latitude = point.getLatitude();
-                    double longitude = point.getLongitude();
-                    LatLng position = new LatLng(latitude, longitude);
-                    // create marker
-                    MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title((String) item.get("vendor_name"));
-
-                    // Changing marker icon
-                    marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck));
-                    mMap.addMarker(marker);
-                }
-
-            }
-        });
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+//        query.findInBackground(new FindCallback<ParseObject>() {
+//            @Override
+//            public void done(List<ParseObject> list, ParseException e) {
+//                mAdapter = new VendorListAdapter(getApplicationContext(), list);
+//                mRecyclerView.setAdapter(mAdapter);
+//                int i = 1;
+//                for (ParseObject item : list) {
+//                    ParseGeoPoint point = (ParseGeoPoint) item.get("location");
+//                    double latitude = point.getLatitude();
+//                    double longitude = point.getLongitude();
+//                    LatLng position = new LatLng(latitude, longitude);
+//                    // create marker
+//                    MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title((String) item.get("vendor_name"));
+//
+//                    // Changing marker icon
+//                    marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck));
+//                    mMap.addMarker(marker);
+//                }
+//
+//            }
+//        });
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mMap = mapFragment.getMap();
 
 
+        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
+        yelpService.searchFoodCarts(String.valueOf(latLngForSearch), new YelpSearchCallback());
     }
 
 
+    protected class YelpSearchCallback implements Callback<YelpResponse> {
+
+        public String TAG = "YelpSearchCallback";
+
+        @Override
+        public void success(YelpResponse data, Response response) {
+            Log.d(TAG, "Success");
+            sApplication = ParseApplication.getInstance();
+            sApplication.sYelpResponse = data;
+            List<Business> businessList = sApplication.sYelpResponse.getBusinesses();
+
+            mAdapter = new VendorListAdapter(getApplicationContext(), businessList);
+            mRecyclerView.setAdapter(mAdapter);
+            int i = 1;
+            for (Business business : businessList) {
+                rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Location location = business.getLocation();
+                Coordinate coordinate = location.getCoordinate();
+
+                double latitude = coordinate.getLatitude();
+                ;
+                double longitude = coordinate.getLongitude();
+                LatLng position = new LatLng(latitude, longitude);
+                // create marker
+                MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title(business.getName());
+
+                // Changing marker icon
+                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck));
+                mMap.addMarker(marker);
+            }
 
 
+        }
 
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e(TAG, error.getMessage());
+        }
+    }
 
-    @Override
+        @Override
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
@@ -129,9 +179,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    objectId = mAdapter.getItem(position).getObjectId();
+                    businessId = mAdapter.getItem(position).getId();
                     Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
-                    intent.putExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, objectId);
+                    intent.putExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, businessId);
                     startActivity(intent);
                 }
             })
@@ -297,6 +347,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                mapMarkers.remove(objId);
 //            }
 //        }
+
     }
 
 

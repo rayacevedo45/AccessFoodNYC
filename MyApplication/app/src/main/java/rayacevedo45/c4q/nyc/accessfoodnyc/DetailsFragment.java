@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,7 +21,10 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Location;
 
 
 public class DetailsFragment extends Fragment {
@@ -31,6 +35,17 @@ public class DetailsFragment extends Fragment {
     private ImageView mVendorRatingImage;
     private Button add;
     private ParseObject selectedVendor;
+
+    private TextView mVendorRatingNum;
+    private static String RatingNumStr;
+    private static List <String> addList;
+
+    private TextView mCategoriesText;
+    private static String mCategories;
+
+    private TextView mPhoneText;
+    private TextView mSnippetText;
+
 
 
     @Override
@@ -47,6 +62,10 @@ public class DetailsFragment extends Fragment {
         mVendorNameText = (TextView)getActivity().findViewById(R.id.vendor_name);
         mVendorNameText.setText(business.getName());
 
+        mVendorNameText = (TextView)getActivity().findViewById(R.id.category);
+        catListIterator(business);
+        mVendorNameText.setText(mCategories);
+
         mVendorPicImage = (ImageView)getActivity().findViewById(R.id.vendor_pic);
         String businessImgUrl = (business.getImageUrl());
         Picasso.with(getActivity()).load(businessImgUrl).resize(1100, 700).into(mVendorPicImage);
@@ -55,7 +74,47 @@ public class DetailsFragment extends Fragment {
         String vendorRatingUrlLarge = business.getRatingImgUrlLarge();
         Picasso.with(getActivity()).load(vendorRatingUrlLarge).into(mVendorRatingImage);
 
+        mVendorRatingNum = (TextView)getActivity().findViewById(R.id.rating_num);
+        mVendorRatingNum.setText(String.valueOf(business.getRating()));
 
+        addressGenerator(business);
+        LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.address);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        for( int i = 0; i < addList.size(); i++ )
+        {
+            TextView textView = new TextView(getActivity());
+            textView.setText(addList.get(i));
+            linearLayout.addView(textView);
+        }
+
+        mPhoneText = (TextView)getActivity().findViewById(R.id.phone);
+        mPhoneText.setText(business.getDisplayPhone());
+
+        mSnippetText = (TextView)getActivity().findViewById(R.id.snippet_text);
+        mPhoneText.setText(business.getSnippetText());
+    }
+
+    public static String catListIterator (Business business){
+        List<List<String>> catListOfLists = business.getCategories();
+        int i = 0;
+        List<String> catList = null;
+        mCategories = "";
+
+        while (i < catListOfLists.size()) {
+            catList = catListOfLists.get(i);
+            mCategories= mCategories + " " + (catList.get(0));
+            i++;
+        }
+
+        return mCategories;
+    }
+
+    public static List <String> addressGenerator (Business business){
+
+        Location bizLocation = business.getLocation();
+        addList = bizLocation.getDisplayAddress();
+
+        return addList;
     }
 
     @Override
