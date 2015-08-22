@@ -17,7 +17,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:name="rayacevedo45.c4q.nyc.accessfoodnyc.ParseApplication"
-        android:theme="@style/Theme.AppCompat">
+        android:theme="@style/AppTheme">
 
         <activity
             android:name=".SplashActivity"
@@ -35,8 +35,6 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_map"
             android:theme="@style/Theme.AppCompat">
-
-
         </activity>
 
         <activity
@@ -50,8 +48,6 @@
             android:name=".VendorInfoActivity"
             android:label="@string/title_activity_vendor"
             android:theme="@style/Base.ThemeOverlay.AppCompat.ActionBar">
-
-
         </activity>
 
         <activity android:name=".ProfileActivity"
