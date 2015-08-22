@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.common.ConnectionResult;
@@ -22,10 +23,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.android.clustering.ClusterManager;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
@@ -66,10 +66,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private List<ParseObject> mVendorList;
     public static String businessId;
 
-    private static String latLngForSearch = "40.686406, -73.981440";
-
+    private static String latLngForSearch;
+    private static LatLng lastLatLng;
 
     public static ParseApplication sApplication;
+
+    // Declare a variable for the cluster manager.
+    ClusterManager<MarkerCluster> mClusterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,19 +86,43 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         buildGoogleApiClient();
         createLocationRequest();
 
-
         initializeViews();
-
-
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mMap = mapFragment.getMap();
 
 
-        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
-        yelpService.searchFoodCarts(String.valueOf(latLngForSearch), new YelpSearchCallback());
+
     }
+
+    private void setUpClusterer() {
+
+        // Initialize the manager with the context and the map.
+        // (Activity extends context, so we can pass 'this' in the constructor.)
+        mClusterManager = new ClusterManager<MarkerCluster>(getApplicationContext(), mMap);
+
+        // Point the map's listeners at the listeners implemented by the cluster
+        // manager.
+        mMap.setOnCameraChangeListener(mClusterManager);
+
+
+        mClusterManager.setRenderer(new ClusterRendring(getApplicationContext(), mMap, mClusterManager));
+
+        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MarkerCluster>() {
+            @Override
+            public boolean onClusterItemClick(MarkerCluster markerCluster) {
+
+                String a = markerCluster.getTitle();
+                Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+        });
+
+
+    }
+
 
 
     protected class YelpSearchCallback implements Callback<YelpResponse> {
@@ -117,17 +144,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Coordinate coordinate = location.getCoordinate();
 
                 double latitude = coordinate.getLatitude();
-                ;
+
                 double longitude = coordinate.getLongitude();
                 LatLng position = new LatLng(latitude, longitude);
                 // create marker
-                MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title(business.getName());
-
+//                MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title(business.getName());
+                MarkerCluster mc = new MarkerCluster(latitude, longitude, business.getName());
+                mClusterManager.addItem(mc);
                 // Changing marker icon
-                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck));
-                mMap.addMarker(marker);
+//                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck));
+//                mMap.addMarker(marker);
             }
-
+            generateClusterManager(mClusterManager);
 
         }
 
@@ -135,6 +163,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         public void failure(RetrofitError error) {
             Log.e(TAG, error.getMessage());
         }
+
+    }
+
+    protected ClusterManager<MarkerCluster> generateClusterManager(ClusterManager<MarkerCluster> mClusterManager){
+        return mClusterManager;
     }
 
         @Override
@@ -217,17 +250,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-
         googleMap.setMyLocationEnabled(true);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.setOnCameraChangeListener(this);
-
 
     }
 
     @Override
     public void onConnected(Bundle bundle) {
-
 
         LatLng defaultLatLng = new LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLatLng));
@@ -238,10 +268,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        LatLng lastLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+        lastLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
         mMap.moveCamera(CameraUpdateFactory.newLatLng(lastLatLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
 
+        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
+        yelpService.searchFoodCarts(String.valueOf(lastLatLng), new YelpSearchCallback());
+
+        setUpClusterer();
     }
 
     protected void startLocationUpdates() {
@@ -275,14 +309,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(15000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
