@@ -27,15 +27,18 @@ If you did not meet your goals, how will this affect the progression of the prod
     * Goals/Responsibilities This Week:
           Improve UI and improve UX for sign-in Activity.
   *  Hoshiko   
-    * Goals/Responsibilities Last Week:
+    * Goals/Responsibilities Last Week: 
+    * Create tab views for vendor information, create user Login and sign in using server.
+    * feed fake information for prototype.
          * Did you meet your goals/responsibilities last week? Why or why not?
+         * Yes.  I think we devided our works really good towards our first demo.
     * Goals/Responsibilities This Week:
+    *Feed Yelp API and vendor login + collecting info form vendor.
+
   *  Anna
     * Goals/Responsibilities Last Week:
         * Did you meet your goals/responsibilities last week? Why or why not?
-        * I responsbile for the splash.class and finished it on time.
     * Goals/Responsibilities This Week:
-        * Make a navigaition drawer by the rule of google material design. 
   *  Luke
     * Goals/Responsibilities Last Week:
        * Did you meet your goals/responsibilities last week? Why or why not?
