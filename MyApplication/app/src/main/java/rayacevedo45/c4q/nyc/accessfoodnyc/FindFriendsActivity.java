@@ -15,7 +15,7 @@ public class FindFriendsActivity extends AppCompatActivity {
 
         AccessToken currentToken = AccessToken.getCurrentAccessToken();
 
-     
+
 
     }
 }
