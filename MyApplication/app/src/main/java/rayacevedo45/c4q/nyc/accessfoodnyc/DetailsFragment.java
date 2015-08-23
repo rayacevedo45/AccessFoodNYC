@@ -47,7 +47,7 @@ public class DetailsFragment extends Fragment {
     private TextView mPhoneText;
     private TextView mSnippetText;
 
-
+    private static String mId;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -94,6 +94,8 @@ public class DetailsFragment extends Fragment {
         mSnippetText = (TextView)getActivity().findViewById(R.id.snippet_text);
         mSnippetText.setMovementMethod(new ScrollingMovementMethod());
         mPhoneText.setText(business.getSnippetText());
+
+        mId = business.getId();
     }
 
     public static String catListIterator (Business business){
@@ -128,6 +130,10 @@ public class DetailsFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectedVendor = new ParseObject("Vendor");
+                selectedVendor.put("yelpId", mId);
+                selectedVendor.saveInBackground();
+
                 ParseUser user = ParseUser.getCurrentUser();
                 ParseRelation<ParseObject> relation = user.getRelation("favorite");
                 relation.add(selectedVendor);
