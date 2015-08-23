@@ -33,7 +33,9 @@ If you did not meet your goals, how will this affect the progression of the prod
   *  Anna
     * Goals/Responsibilities Last Week:
         * Did you meet your goals/responsibilities last week? Why or why not?
+        * I responsbile for the splash.class and finished it on time.
     * Goals/Responsibilities This Week:
+        * Make a navigaition drawer by the rule of google material design. 
   *  Luke
     * Goals/Responsibilities Last Week:
        * Did you meet your goals/responsibilities last week? Why or why not?
