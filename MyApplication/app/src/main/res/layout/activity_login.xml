@@ -8,13 +8,15 @@
     android:orientation="vertical"
     tools:context=".LoginActivity">
 
+
+
     <TextView
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:gravity="center"
-        android:text="AccessFoodNYC"
-        android:textColor="@color/red"
+        android:text="Access Food"
+        android:textColor="@color/primaryColor"
         android:textSize="40sp"
         android:textStyle="bold" />
 
@@ -130,7 +132,7 @@
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_button"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30dp"
                 android:layout_marginBottom="30dp" />
@@ -153,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_weight="1"
-                android:background="@color/amber"
+                android:background="@color/accentColor"
                 android:onClick="showSignUpFields"
                 android:text="@string/sign_up_text"
                 android:textColor="@color/white"/>
@@ -164,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_weight="1"
-                android:background="@color/orange"
+                android:background="#4CAF50"
                 android:text="@string/login_button_label"
                 android:textColor="@color/white" />
 
