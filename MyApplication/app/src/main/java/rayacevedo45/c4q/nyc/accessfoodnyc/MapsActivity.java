@@ -86,14 +86,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         buildGoogleApiClient();
         createLocationRequest();
 
-        initializeViews();
-
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mMap = mapFragment.getMap();
 
-
-
+        initializeViews();
     }
 
     private void setUpClusterer() {
@@ -259,6 +256,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onConnected(Bundle bundle) {
 
+        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
+        yelpService.searchFoodCarts(String.valueOf(lastLatLng), new YelpSearchCallback());
+
+        setUpClusterer();
+
         LatLng defaultLatLng = new LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLatLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
@@ -272,10 +274,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLng(lastLatLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
 
-        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
-        yelpService.searchFoodCarts(String.valueOf(lastLatLng), new YelpSearchCallback());
 
-        setUpClusterer();
     }
 
     protected void startLocationUpdates() {
