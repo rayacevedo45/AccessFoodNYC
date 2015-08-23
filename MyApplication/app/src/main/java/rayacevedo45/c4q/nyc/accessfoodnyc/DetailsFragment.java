@@ -126,7 +126,6 @@ public class DetailsFragment extends Fragment {
         super.onResume();
         Log.d(TAG, "finished onYelpData.");
 
-
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

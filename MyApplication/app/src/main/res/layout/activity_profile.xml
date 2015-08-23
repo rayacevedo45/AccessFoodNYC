@@ -77,18 +77,24 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:gravity="bottom"
-        android:orientation="horizontal">
-
-    <Button
-        android:id="@+id/log_out"
-        android:text="@string/logout_label"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/amber"/>
+        android:gravity="bottom"
+        android:orientation="vertical">
+
+
+        <Button
+            android:background="@color/accentColor"
+            android:text="Find Friends"
+            android:id="@+id/find_friends"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/log_out"
+            android:text="@string/logout_label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/amber"/>
 
     </LinearLayout>
 
