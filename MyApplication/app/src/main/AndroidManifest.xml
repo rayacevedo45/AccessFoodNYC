@@ -53,6 +53,10 @@
             android:label="Profile">
         </activity>
 
+        <activity android:name=".FindFriendsActivity"
+            android:label="Find Friends">
+        </activity>
+
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"

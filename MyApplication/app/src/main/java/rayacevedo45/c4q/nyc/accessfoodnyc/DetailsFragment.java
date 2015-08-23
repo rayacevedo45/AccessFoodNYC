@@ -125,6 +125,10 @@ public class DetailsFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+
                 ParseUser user = ParseUser.getCurrentUser();
                 ParseRelation<ParseObject> relation = user.getRelation("favorite");
                 relation.add(selectedVendor);
