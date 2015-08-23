@@ -1,6 +1,7 @@
 ## Weekly Retro Template  
 
 **Goals for last Sprint**:
+ Finish parsing and ploting the Yelp API and reviews and detailed information using Yelp API. Finish Login Activity.
 
 **Goals for this Sprint**:
 Create a separate app strictly for vendors where they can update their locations, menus, coupons, specials etc. This app will feed a database the which will feed AccessFood.
