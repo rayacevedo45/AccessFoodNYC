@@ -22,10 +22,12 @@ If you did not meet your goals, how will this affect the progression of the prod
     * Goals/Responsibilities Last Week:
          * Did you meet your goals/responsibilities last week? Why or why not?
     * Goals/Responsibilities This Week:
-  *  Team Member #3
+  *  Team Member Anna:
     * Goals/Responsibilities Last Week:
         * Did you meet your goals/responsibilities last week? Why or why not?
+        * my goal is make a navigation drawer. I made it but we did not merge it into current app for now. the reason is to use navigation drawer we should use fragment but not activity, need more time to update this. 
     * Goals/Responsibilities This Week:
+    * make a user review function. 
   *  (Team Member #4)
     * Goals/Responsibilities Last Week:
        * Did you meet your goals/responsibilities last week? Why or why not?
