@@ -17,24 +17,12 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:name="rayacevedo45.c4q.nyc.accessfoodnyc.ParseApplication"
-        android:theme="@style/Theme.AppCompat">
+        android:theme="@style/AppTheme">
 
         <activity
             android:name=".SplashActivity"
             android:label="@string/app_name"
             android:hardwareAccelerated="false">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-
-        </activity>
-
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_map"
-            android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -44,32 +32,29 @@
         </activity>
 
         <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_map">
+        </activity>
+
+        <activity
             android:name=".accounts.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/MyCustomTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Un-comment the following data tag and replace placeholder. -->
-                <data
-                    android:host="gitkit"
-                    android:scheme="com.googleusercontent.apps.853411645-uk26kbc9v5203v3hcuka6mndifclc8b0" />
-            </intent-filter>
+            
         </activity>
 
         <activity
             android:name=".VendorInfoActivity"
             android:label="@string/title_activity_vendor"
             android:theme="@style/Base.ThemeOverlay.AppCompat.ActionBar">
-
-
         </activity>
 
         <activity android:name=".ProfileActivity"
-            android:label="Profile"
-            android:theme="@style/MyCustomTheme">
+            android:label="Profile">
+        </activity>
+
+        <activity android:name=".FindFriendsActivity"
+            android:label="Find Friends">
         </activity>
 
         <activity android:name="com.facebook.FacebookActivity"

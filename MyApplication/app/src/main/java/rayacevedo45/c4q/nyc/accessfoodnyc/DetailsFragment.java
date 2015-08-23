@@ -47,8 +47,6 @@ public class DetailsFragment extends Fragment {
     private TextView mPhoneText;
     private TextView mSnippetText;
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
@@ -124,10 +122,13 @@ public class DetailsFragment extends Fragment {
         super.onResume();
         Log.d(TAG, "finished onYelpData.");
 
-
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+
                 ParseUser user = ParseUser.getCurrentUser();
                 ParseRelation<ParseObject> relation = user.getRelation("favorite");
                 relation.add(selectedVendor);

@@ -36,7 +36,8 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView yf;
 
     //private Button maps;
-    private Button logout;
+    private Button mButtonLogOut;
+    private Button mButtonFindFriends;
 
     private ListView mListView;
     private FavoriteAdapter mAdapter;
@@ -51,7 +52,8 @@ public class ProfileActivity extends AppCompatActivity {
         first = (TextView) findViewById(R.id.first_name);
         last = (TextView) findViewById(R.id.last_name);
         //maps = (Button) findViewById(R.id.button_maps);
-        logout = (Button) findViewById(R.id.log_out);
+        mButtonFindFriends = (Button) findViewById(R.id.find_friends);
+        mButtonLogOut = (Button) findViewById(R.id.log_out);
         mListView = (ListView) findViewById(R.id.listView_favorites);
         yf = (TextView) findViewById(R.id.yfID);
 
@@ -70,40 +72,44 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-//
-//        maps.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoginManager.getInstance().logOut();
-                ParseUser.logOut();
-                Toast.makeText(getApplicationContext(), "Successfully logged out!", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
-
-            }
-        });
-
-
         first.setText((String) user.get("first_name"));
         last.setText((String) user.get("last_name"));
 
         Picasso.with(getApplicationContext()).load(user.getString("profile_url")).centerCrop().resize(400, 400).into(mImageViewProfile);
 
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpListeners(true);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        setUpListeners(false);
+    }
+
+    private void setUpListeners(boolean isResumed) {
+        if (isResumed) {
+            mButtonFindFriends.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), FindFriendsActivity.class);
+                    startActivity(intent);
+                }
+            });
+            mButtonLogOut.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    logOut();
+                }
+            });
+        } else {
+            mButtonFindFriends.setOnClickListener(null);
+            mButtonLogOut.setOnClickListener(null);
+        }
     }
 
     private class FavoriteAdapter extends BaseAdapter {
@@ -148,8 +154,19 @@ public class ProfileActivity extends AppCompatActivity {
             name.setText(vendor.getString("vendor_name"));
             name.setTextColor(Color.BLACK);
 
-
             return convertView;
         }
     }
+
+    private void logOut() {
+        LoginManager.getInstance().logOut();
+        ParseUser.logOut();
+        Toast.makeText(getApplicationContext(), "Successfully logged out!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+
 }
