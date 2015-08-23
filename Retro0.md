@@ -19,6 +19,7 @@ Are goal for this week's sprint is to plot food trucks onto our map using the Ye
  
 **Team Member Analysis**:
 If you did not meet your goals, how will this affect the progression of the product? What will you do differently to meet your goals this week?
+Not meeting weekly goals adds to the next weeks workload and puts us behind schedule, limiting the amount of bonuses features we can add on
 
   *  Ray
     * Goals/Responsibilities Last Week:
