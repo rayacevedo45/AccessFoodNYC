@@ -38,7 +38,9 @@ If you did not meet your goals, how will this affect the progression of the prod
   *  Anna
     * Goals/Responsibilities Last Week:
         * Did you meet your goals/responsibilities last week? Why or why not?
-    * Goals/Responsibilities This Week:
+          I am responsible for a splash.class and I finished on time.
+        * Goals/Responsibilities This Week:
+          To make a navigation drawer.
   *  Luke
     * Goals/Responsibilities Last Week:
        * Did you meet your goals/responsibilities last week? Why or why not?
