@@ -156,7 +156,7 @@ public class LoginActivity extends Activity {
 
                             if (e == null) {
                                 // Success!
-                                goToProfileActivity();
+                                goToMapsActivity();
                                 //finish();
                             } else {
                                 // Fail
