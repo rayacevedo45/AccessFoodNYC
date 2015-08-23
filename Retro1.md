@@ -35,15 +35,22 @@ If you did not meet your goals, how will this affect the progression of the prod
        * Did you meet your goals/responsibilities last week? Why or why not?
        Yes, I made favorites working and facebook automatic login and logout working. I made profileActivity as well.
     * Goals/Responsibilities This Week:
-    friends request
+      Friends request.
+  *  Ray
+    * Goals/Responsibilities Last Week:
+       * Did you meet your goals/responsibilities last week? Why or why not?
+       My goal was to complete the Login activity. I completed this goal.
+    * Goals/Responsibilities This Week:
+      Complete front-end for vendor app.
 
 **Additional Discussion Topics**:
 
   *  Compare your work planned with what your work completed. 
+  The worked we planned compared to work we completed is a lot different since we decided not to use a navigation drawer or any other API.
   *  Is the divison of roles within your team working?
+  We had a few conflicts we are back on track.
   *  How is communication and collaboration between team members?
-  *  Are you getting adequate support? How are you reviewing code?
-  *  How can you improve productivity and get the most work done within the next week?
+  There is constant communication with in our group and plenty of information sharing. We are constantly checking in on each other and staying on top of each other. 
 
 **Mentor Comments**:
 Our mentor helped us a lot with the Yelp API. He also advised as against using a navigation drawer because we would have to change all our activities to fragments.
