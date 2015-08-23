@@ -4,6 +4,7 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,7 +67,7 @@ public class DetailsFragment extends Fragment {
 
         mVendorPicImage = (ImageView)getActivity().findViewById(R.id.vendor_pic);
         String businessImgUrl = (business.getImageUrl());
-        Picasso.with(getActivity()).load(businessImgUrl).resize(1100, 700).into(mVendorPicImage);
+        Picasso.with(getActivity()).load(businessImgUrl).centerCrop().resize(350, 350).noFade().into(mVendorPicImage);
 
         mVendorRatingImage = (ImageView)getActivity().findViewById(R.id.vendor_rating);
         String vendorRatingUrlLarge = business.getRatingImgUrlLarge();
@@ -89,6 +90,7 @@ public class DetailsFragment extends Fragment {
         mPhoneText.setText(business.getDisplayPhone());
 
         mSnippetText = (TextView)getActivity().findViewById(R.id.snippet_text);
+        mSnippetText.setMovementMethod(new ScrollingMovementMethod());
         mPhoneText.setText(business.getSnippetText());
     }
 

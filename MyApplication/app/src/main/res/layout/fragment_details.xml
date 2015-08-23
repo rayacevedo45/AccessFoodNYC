@@ -3,24 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#E84319" >
+    android:background="#ffffff"
+    android:layout_margin="20dp"
+    android:padding="10dp">
 
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/vendor_pic"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:scaleType="fitXY"-->
+        <!--android:textColor="#FFFFFF"/>-->
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/vendor_pic"
-        android:adjustViewBounds="true"
-        android:scaleType="fitXY"
-        android:textColor="#FFFFFF"/>
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:border_width="2dp"
+        app:border_color="#FFFFFF"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp" />
+
+    
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/vendor_name"
-        android:textSize="30dp"
+        android:textSize="25dp"
         android:text=""
-        android:layout_below="@+id/vendor_pic"/>
+        android:layout_below="@+id/vendor_pic"
+        android:layout_centerHorizontal="true"
+        android:textColor="#303030" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -28,13 +45,16 @@
         android:id="@+id/category"
         android:textSize="15dp"
         android:text=""
-        android:layout_below="@+id/vendor_name"/>
+        android:layout_below="@+id/vendor_name"
+        android:layout_centerHorizontal="true"
+        android:textColor="#303030" />
 
     <ImageView
         android:layout_width="200dp"
         android:layout_height="30dp"
         android:id="@+id/vendor_rating"
-        android:layout_below="@+id/category"/>
+        android:layout_alignTop="@+id/rating_num"
+        android:layout_centerHorizontal="true" />
 
 
     <TextView
@@ -43,7 +63,8 @@
         android:id="@+id/rating_num"
         android:textSize="15dp"
         android:layout_toRightOf="@id/vendor_rating"
-        android:layout_below="@+id/category"/>
+        android:layout_below="@+id/category"
+        android:textColor="#303030" />
 
 
     <LinearLayout
@@ -51,7 +72,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/address"
         android:layout_below="@+id/vendor_rating"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:gravity = "center">
 
     </LinearLayout>
 
@@ -62,21 +85,29 @@
         android:layout_height="wrap_content"
         android:id="@+id/phone"
         android:textSize="15dp"
-        android:layout_below="@+id/address"/>
+        android:layout_below="@+id/address"
+        android:layout_centerHorizontal="true"
+        android:textColor="#303030" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/snippet_text"
         android:textSize="15dp"
-        android:layout_below="@+id/phone"/>
+        android:layout_below="@+id/phone"
+        android:layout_centerHorizontal="true"
+        android:textColor="#303030"
+        android:gravity = "center"
+        android:scrollbars = "vertical"/>
 
 
     <Button
         android:id="@+id/button_add"
         android:text="add to favorite"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-10dp" />
 
 
 </RelativeLayout>

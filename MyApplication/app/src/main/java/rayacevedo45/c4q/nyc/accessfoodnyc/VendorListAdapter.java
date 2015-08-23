@@ -62,6 +62,9 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         String businessImgUrl = (business.getImageUrl());
         Picasso.with(mContext).load(businessImgUrl).centerCrop().resize(250, 250).into(vendorViewHolder.thumbnail);
 
+        String ratingImgUrl = (business.getRatingImgUrl());
+        Picasso.with(mContext).load(ratingImgUrl).into(vendorViewHolder.ratingImage);
+
         vendorViewHolder.name.setText(Integer.toString(position + 1) + ". " + business.getName());
         vendorViewHolder.rating.setText(String.valueOf(business.getRating()));
 
@@ -72,12 +75,14 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         protected ImageView thumbnail;
         protected TextView rating;
         protected TextView name;
+        protected ImageView ratingImage;
 
         public VendorViewHolder(View itemView) {
             super(itemView);
             thumbnail = (ImageView) itemView.findViewById(R.id.imageView_vendor);
             rating = (TextView) itemView.findViewById(R.id.vendor_rating);
             name = (TextView) itemView.findViewById(R.id.vendor_name);
+            ratingImage = (ImageView) itemView.findViewById(R.id.vendor_rating_img);
         }
 
 
