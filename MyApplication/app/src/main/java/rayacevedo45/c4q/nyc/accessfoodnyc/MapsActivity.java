@@ -1,6 +1,8 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -31,9 +33,11 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
@@ -45,7 +49,6 @@ import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpSearchService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit.http.HEAD;
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, View.OnClickListener, GoogleMap.OnCameraChangeListener {
@@ -70,7 +73,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private List<ParseObject> mVendorList;
     public static String businessId;
 
-    private static String latLngForSearch;
+    private static String latLngForSearch = "40.740949, -73.932157";
     private static LatLng lastLatLng;
 
     public static ParseApplication sApplication;
@@ -277,9 +280,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         lastLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
         setUpClusterer();
-        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
-        yelpService.searchFoodCarts(String.valueOf(lastLatLng), new YelpSearchCallback());
 
+        Geocoder geocoder;
+        List<Address> addresses = null;
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+        String city = addresses.get(0).getLocality();
+        String state = addresses.get(0).getAdminArea();
+        String postalCode = addresses.get(0).getPostalCode();
+
+        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
+//        yelpService.searchFoodCarts(String.valueOf(lastLatLng), new YelpSearchCallback());
+        yelpService.searchFoodCarts(address+" "+postalCode, new YelpSearchCallback());
+//        yelpService.searchFoodCarts("3100 47th Ave 11101", new YelpSearchCallback());
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(lastLatLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
