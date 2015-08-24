@@ -25,7 +25,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
 
         mButtonReview = (Button) rootView.findViewById(R.id.button_review);
         mListView = (ListView) rootView.findViewById(R.id.listView_reviews);
-        objectId = getArguments().getString(Constants.EXTRA_KEY_VENDOR_OBJECT_ID);
+//        objectId = getArguments().getString(Constants.EXTRA_KEY_VENDOR_OBJECT_ID);
 
 //        ParseUser user = ParseUser.getCurrentUser();
 
