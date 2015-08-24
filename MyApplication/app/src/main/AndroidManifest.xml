@@ -33,14 +33,16 @@
 
         <activity
             android:name=".MapsActivity"
-            android:label="@string/title_activity_map">
+            android:label="@string/title_activity_map"
+            android:theme="@style/Theme.AppCompat">
         </activity>
+
+
 
         <activity
             android:name=".accounts.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/MyCustomTheme">
-            
         </activity>
 
         <activity

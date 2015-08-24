@@ -47,6 +47,8 @@ public class DetailsFragment extends Fragment {
     private TextView mPhoneText;
     private TextView mSnippetText;
 
+    private static String mId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
@@ -92,6 +94,8 @@ public class DetailsFragment extends Fragment {
         mSnippetText = (TextView)getActivity().findViewById(R.id.snippet_text);
         mSnippetText.setMovementMethod(new ScrollingMovementMethod());
         mPhoneText.setText(business.getSnippetText());
+
+        mId = business.getId();
     }
 
     public static String catListIterator (Business business){
@@ -125,25 +129,36 @@ public class DetailsFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ParseUser user = ParseUser.getCurrentUser();
+                final ParseRelation<ParseObject> relation = user.getRelation("favorite");
 
+//                if
 
-
-
-                ParseUser user = ParseUser.getCurrentUser();
-                ParseRelation<ParseObject> relation = user.getRelation("favorite");
-                relation.add(selectedVendor);
-                user.saveInBackground(new SaveCallback() {
+                selectedVendor = new ParseObject("Vendor");
+                selectedVendor.put("yelpId", mId);
+                selectedVendor.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        if (e == null) {
-                            Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getActivity(), ProfileActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                        relation.add(selectedVendor);
+
+                        user.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
                     }
                 });
+
+
+
+
             }
         });
 

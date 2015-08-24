@@ -65,6 +65,8 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (list != null) {
+
+
                     mAdapter = new FavoriteAdapter(getApplicationContext(), list);
                     mListView.setAdapter(mAdapter);
 
@@ -150,6 +152,8 @@ public class ProfileActivity extends AppCompatActivity {
             TextView name = (TextView) convertView.findViewById(R.id.favorite_name);
 
             ParseObject vendor = getItem(position);
+
+
 
             name.setText(vendor.getString("vendor_name"));
             name.setTextColor(Color.BLACK);

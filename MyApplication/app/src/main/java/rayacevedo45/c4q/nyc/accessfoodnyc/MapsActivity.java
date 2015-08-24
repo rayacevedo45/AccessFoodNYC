@@ -45,6 +45,7 @@ import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpSearchService;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.http.HEAD;
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, View.OnClickListener, GoogleMap.OnCameraChangeListener {
@@ -86,11 +87,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         buildGoogleApiClient();
         createLocationRequest();
 
-        initializeViews();
-
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mMap = mapFragment.getMap();
+
+        initializeViews();
+
     }
 
     private void setUpClusterer() {
@@ -151,6 +153,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                mMap.addMarker(marker);
             }
             generateClusterManager(mClusterManager);
+            mClusterManager.cluster();
 
         }
 
@@ -272,13 +275,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         lastLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(lastLatLng));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
 
+        setUpClusterer();
         YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
         yelpService.searchFoodCarts(String.valueOf(lastLatLng), new YelpSearchCallback());
 
-        setUpClusterer();
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(lastLatLng));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+
+
+
+
+
     }
 
     protected void startLocationUpdates() {
