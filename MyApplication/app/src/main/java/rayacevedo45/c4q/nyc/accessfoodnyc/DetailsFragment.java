@@ -129,25 +129,36 @@ public class DetailsFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final ParseUser user = ParseUser.getCurrentUser();
+                final ParseRelation<ParseObject> relation = user.getRelation("favorite");
+
+//                if
+
                 selectedVendor = new ParseObject("Vendor");
                 selectedVendor.put("yelpId", mId);
-                selectedVendor.saveInBackground();
-
-                ParseUser user = ParseUser.getCurrentUser();
-                ParseRelation<ParseObject> relation = user.getRelation("favorite");
-                relation.add(selectedVendor);
-                user.saveInBackground(new SaveCallback() {
+                selectedVendor.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
-                        if (e == null) {
-                            Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(getActivity(), ProfileActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                        }
+                        relation.add(selectedVendor);
+
+                        user.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                if (e == null) {
+                                    Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
                     }
                 });
+
+
+
+
             }
         });
 
