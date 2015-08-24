@@ -130,7 +130,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
             switch (position) {
                 case 0:
                     mCurrentDetailsFragment = new DetailsFragment();
-                    // Top Rated fragment activity
+                    // Detail fragment activity
                     return mCurrentDetailsFragment;
                 case 1:
                     // Menu fragment activity

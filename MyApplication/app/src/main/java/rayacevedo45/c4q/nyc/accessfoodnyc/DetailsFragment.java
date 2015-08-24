@@ -4,7 +4,6 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,6 +62,8 @@ public class DetailsFragment extends Fragment {
         mVendorNameText = (TextView)getActivity().findViewById(R.id.vendor_name);
         mVendorNameText.setText(business.getName());
 
+        ImageView yepLogo = (ImageView)getActivity().findViewById(R.id.yelp_logo);
+
         mVendorNameText = (TextView)getActivity().findViewById(R.id.category);
         catListIterator(business);
         mVendorNameText.setText(mCategories);
@@ -92,7 +93,6 @@ public class DetailsFragment extends Fragment {
         mPhoneText.setText(business.getDisplayPhone());
 
         mSnippetText = (TextView)getActivity().findViewById(R.id.snippet_text);
-        mSnippetText.setMovementMethod(new ScrollingMovementMethod());
         mPhoneText.setText(business.getSnippetText());
 
         mId = business.getId();
@@ -156,14 +156,9 @@ public class DetailsFragment extends Fragment {
                     }
                 });
 
-
-
-
             }
         });
 
     }
-
-
 
 }
