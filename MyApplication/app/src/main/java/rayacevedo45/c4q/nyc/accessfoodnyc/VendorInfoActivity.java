@@ -196,7 +196,6 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
                 }
             }
 
-
         }
 
         @Override
