@@ -1,17 +1,22 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -21,20 +26,29 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
+import com.google.maps.android.clustering.ClusterManager;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
+
+import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Coordinate;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.YelpResponse;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpSearchService;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, View.OnClickListener, GoogleMap.OnCameraChangeListener {
@@ -57,54 +71,107 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private VendorListAdapter mAdapter;
 
     private List<ParseObject> mVendorList;
-    public static String objectId;
+    public static String businessId;
+
+    private static String latLngForSearch = "40.740949, -73.932157";
+    private static LatLng lastLatLng;
+
+    public static ParseApplication sApplication;
+
+    // Declare a variable for the cluster manager.
+    ClusterManager<MarkerCluster> mClusterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
 
-        //Parse.initialize(this);
+        setContentView(R.layout.activity_maps);
 
         buildGoogleApiClient();
         createLocationRequest();
-
-
-        initializeViews();
-
-
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                mAdapter = new VendorListAdapter(getApplicationContext(), list);
-                mRecyclerView.setAdapter(mAdapter);
-                int i = 1;
-                for (ParseObject item : list) {
-                    ParseGeoPoint point = (ParseGeoPoint) item.get("location");
-                    double latitude = point.getLatitude();
-                    double longitude = point.getLongitude();
-                    LatLng position = new LatLng(latitude, longitude);
-                    // create marker
-                    MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title("vendor_name");
-
-                    // Changing marker icon
-                    marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck));
-                    mMap.addMarker(marker);
-                }
-
-            }
-        });
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mMap = mapFragment.getMap();
 
+        initializeViews();
+
     }
 
-    @Override
+    private void setUpClusterer() {
+
+        // Initialize the manager with the context and the map.
+        // (Activity extends context, so we can pass 'this' in the constructor.)
+        mClusterManager = new ClusterManager<MarkerCluster>(getApplicationContext(), mMap);
+
+        // Point the map's listeners at the listeners implemented by the cluster
+        // manager.
+        mMap.setOnCameraChangeListener(mClusterManager);
+
+
+        mClusterManager.setRenderer(new ClusterRendring(getApplicationContext(), mMap, mClusterManager));
+
+        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MarkerCluster>() {
+            @Override
+            public boolean onClusterItemClick(MarkerCluster markerCluster) {
+
+                String a = markerCluster.getTitle();
+                Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
+        });
+
+
+    }
+
+    protected class YelpSearchCallback implements Callback<YelpResponse> {
+
+        public String TAG = "YelpSearchCallback";
+
+        @Override
+        public void success(YelpResponse data, Response response) {
+            Log.d(TAG, "Success");
+            sApplication = ParseApplication.getInstance();
+            sApplication.sYelpResponse = data;
+            List<Business> businessList = sApplication.sYelpResponse.getBusinesses();
+
+            mAdapter = new VendorListAdapter(getApplicationContext(), businessList);
+            mRecyclerView.setAdapter(mAdapter);
+            int i = 1;
+            for (Business business : businessList) {
+                rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Location location = business.getLocation();
+                Coordinate coordinate = location.getCoordinate();
+
+                double latitude = coordinate.getLatitude();
+
+                double longitude = coordinate.getLongitude();
+                LatLng position = new LatLng(latitude, longitude);
+                // create marker
+//                MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title(business.getName());
+                MarkerCluster mc = new MarkerCluster(latitude, longitude, business.getName());
+                mClusterManager.addItem(mc);
+                // Changing marker icon
+//                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck));
+//                mMap.addMarker(marker);
+            }
+            generateClusterManager(mClusterManager);
+            mClusterManager.cluster();
+
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e(TAG, error.getMessage());
+        }
+
+    }
+
+    protected ClusterManager<MarkerCluster> generateClusterManager(ClusterManager<MarkerCluster> mClusterManager){
+        return mClusterManager;
+    }
+
+        @Override
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
@@ -123,23 +190,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    objectId = mAdapter.getItem(position).getObjectId();
+                    businessId = mAdapter.getItem(position).getId();
                     Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
-                    intent.putExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, objectId);
+                    intent.putExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, businessId);
                     startActivity(intent);
                 }
             })
             );
 
-//            mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                    objectId = mAdapter.getItem(position).getObjectId();
-//                    Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
-//                    intent.putExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, objectId);
-//                    startActivity(intent);
-//                }
-//            });
         } else {
 
         }
@@ -180,12 +238,20 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_profile:
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_logout:
+                logOut();
+                break;
+            case R.id.action_settings:
+                break;
         }
+
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -193,17 +259,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-
         googleMap.setMyLocationEnabled(true);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.setOnCameraChangeListener(this);
-
 
     }
 
     @Override
     public void onConnected(Bundle bundle) {
-
 
         LatLng defaultLatLng = new LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE);
         mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLatLng));
@@ -214,9 +277,37 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
-        LatLng lastLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+        lastLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
+        setUpClusterer();
+
+        Geocoder geocoder;
+        List<Address> addresses = null;
+        geocoder = new Geocoder(this, Locale.getDefault());
+
+        try {
+            addresses = geocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+            String city = addresses.get(0).getLocality();
+            String state = addresses.get(0).getAdminArea();
+            String postalCode = addresses.get(0).getPostalCode();
+
+            YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
+//        yelpService.searchFoodCarts(String.valueOf(lastLatLng), new YelpSearchCallback());
+            yelpService.searchFoodCarts(address+" "+postalCode, new YelpSearchCallback());
+//        yelpService.searchFoodCarts("3100 47th Ave 11101", new YelpSearchCallback());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(lastLatLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+
+
+
+
 
     }
 
@@ -251,14 +342,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
         mLocationRequest.setFastestInterval(15000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
     }
-
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -291,9 +380,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                mapMarkers.remove(objId);
 //            }
 //        }
+
     }
 
 
-
+    private void logOut() {
+        LoginManager.getInstance().logOut();
+        ParseUser.logOut();
+        Toast.makeText(getApplicationContext(), "Successfully logged out!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 }
 

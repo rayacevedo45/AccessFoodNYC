@@ -7,17 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.parse.GetCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-import com.squareup.picasso.Picasso;
-
 public class MenuFragment extends Fragment {
 
-    ParseObject vendor = new ParseObject("Vendor");
+//    ParseObject vendor = new ParseObject("Vendor");
     ImageView menuImage;
-    String menuPicUrlStr;
+//    String menuPicUrlStr;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -35,23 +29,23 @@ public class MenuFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        getLatestPosts();
+//        getLatestPosts();
 
     }
 
-    protected void getLatestPosts(){
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-        query.getInBackground(MapsActivity.objectId, new GetCallback<ParseObject>() {
-            public void done(ParseObject vendor, ParseException e) {
-                if (e == null) {
-                    menuPicUrlStr = vendor.getString("menu_url");
-                    Picasso.with(getActivity()).load(menuPicUrlStr).into(menuImage);
-
-                } else {
-                    // something went wrong
-                }
-            }
-        });
-
-    }
+//    protected void getLatestPosts(){
+//        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+//        query.getInBackground(MapsActivity.businessId, new GetCallback<ParseObject>() {
+//            public void done(ParseObject vendor, ParseException e) {
+//                if (e == null) {
+//                    menuPicUrlStr = vendor.getString("menu_url");
+//                    Picasso.with(getActivity()).load(menuPicUrlStr).into(menuImage);
+//
+//                } else {
+//                    // something went wrong
+//                }
+//            }
+//        });
+//
+//    }
 }
