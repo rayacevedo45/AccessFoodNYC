@@ -101,7 +101,7 @@ public class LoginActivity extends Activity {
         mButtonFacebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, Arrays.asList("public_profile", "user_friends", "email"), new LogInCallback() {
+                ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, Arrays.asList("public_profile", "user_friends", "email", "user_birthday"), new LogInCallback() {
                     @Override
                     public void done(ParseUser user, ParseException err) {
                         if (user == null) {
