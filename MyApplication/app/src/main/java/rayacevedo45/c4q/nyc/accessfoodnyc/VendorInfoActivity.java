@@ -17,6 +17,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity.businessId;
+
 
 public class VendorInfoActivity extends FragmentActivity implements ActionBar.TabListener {
 
@@ -50,11 +52,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
-//        yelpService.searchFoodCarts("40.686406, -73.981440", new MapsActivity.YelpSearchCallback());
 
-    YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
-        yelpBizService.searchBusiness(MapsActivity.businessId, new YelpBusinessSearchCallback());
 
 
         setContentView(R.layout.activity_vendor_info);
@@ -81,22 +79,25 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         // Set up the ViewPager, attaching the adapter and setting up a listener for when the
         // user swipes between sections.
         mViewPager = (ViewPager) findViewById(R.id.pager);
-//        mViewPager.setAdapter(mAppSectionsPagerAdapter);
-//        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-//            @Override
-//            public void onPageSelected(int position) {
-//                // When swiping between different app sections, select the corresponding tab.
-//                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-//                // Tab.
-//                actionBar.setSelectedNavigationItem(position);
-//            }
-//        });
+        mViewPager.setAdapter(mAppSectionsPagerAdapter);
+        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                // When swiping between different app sections, select the corresponding tab.
+                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
+                // Tab.
+                actionBar.setSelectedNavigationItem(position);
+            }
+        });
 
 
         for (String tab_name : TABS) {
             actionBar.addTab(actionBar.newTab().setText(tab_name)
                     .setTabListener(this));
         }
+
+        YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
+        yelpBizService.searchBusiness(businessId, new YelpBusinessSearchCallback());
 
     }
 
@@ -108,6 +109,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in the ViewPager.
         mViewPager.setCurrentItem(tab.getPosition());
+
     }
 
     @Override
@@ -126,11 +128,12 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
 
         @Override
         public Fragment getItem(int position) {
-            Fragment fragment = null;
+            Fragment fragment;
             switch (position) {
                 case 0:
                     mCurrentDetailsFragment = new DetailsFragment();
                     // Detail fragment activity
+
                     return mCurrentDetailsFragment;
                 case 1:
                     // Menu fragment activity
@@ -172,6 +175,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
                 mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 
                 mViewPager.setAdapter(mAppSectionsPagerAdapter);
+                mViewPager.setOffscreenPageLimit(3);
 
                 mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
                     @Override
@@ -182,17 +186,15 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
                         actionBar.setSelectedNavigationItem(position);
                     }
                 });
-                mCurrentDetailsFragment.onYelpData(business);
-            }
+//                mCurrentDetailsFragment.onYelpData(business);
 
-//            if (business != null ) {
-//                if (mCurrentDetailsFragment != null) {
-//
-//                    mCurrentDetailsFragment.onYelpData(business);
-//                } else {
-//                    Log.d("YelpDataGenerator", "mCurrentDetailsFragment was null!!!!");
-//                }
-//            }
+                if (mCurrentDetailsFragment != null) {
+
+                    mCurrentDetailsFragment.onYelpData(business);
+                } else {
+                    Log.d("YelpDataGenerator", "mCurrentDetailsFragment was null!!!!");
+                }
+            }
 
 
         }
@@ -202,7 +204,6 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
             Log.e(TAG, error.getMessage());
         }
     }
-
 
 
 }

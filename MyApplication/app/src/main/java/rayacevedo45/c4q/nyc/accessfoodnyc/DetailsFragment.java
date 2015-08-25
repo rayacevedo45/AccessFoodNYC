@@ -51,8 +51,10 @@ public class DetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-
+        Bundle args = getArguments();
         add = (Button) rootView.findViewById(R.id.button_add);
+
+
 
         return rootView;
     }
@@ -61,8 +63,6 @@ public class DetailsFragment extends Fragment {
         Log.d(TAG, "inside onYelpData.");
         mVendorNameText = (TextView)getActivity().findViewById(R.id.vendor_name);
         mVendorNameText.setText(business.getName());
-
-        ImageView yepLogo = (ImageView)getActivity().findViewById(R.id.yelp_logo);
 
         mVendorNameText = (TextView)getActivity().findViewById(R.id.category);
         catListIterator(business);
@@ -160,5 +160,5 @@ public class DetailsFragment extends Fragment {
         });
 
     }
-
+    
 }
