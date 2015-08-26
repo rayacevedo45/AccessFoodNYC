@@ -14,8 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -51,8 +53,10 @@ public class DetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-
+        Bundle args = getArguments();
         add = (Button) rootView.findViewById(R.id.button_add);
+
+
 
         return rootView;
     }
@@ -61,8 +65,6 @@ public class DetailsFragment extends Fragment {
         Log.d(TAG, "inside onYelpData.");
         mVendorNameText = (TextView)getActivity().findViewById(R.id.vendor_name);
         mVendorNameText.setText(business.getName());
-
-        ImageView yepLogo = (ImageView)getActivity().findViewById(R.id.yelp_logo);
 
         mVendorNameText = (TextView)getActivity().findViewById(R.id.category);
         catListIterator(business);
@@ -132,29 +134,67 @@ public class DetailsFragment extends Fragment {
                 final ParseUser user = ParseUser.getCurrentUser();
                 final ParseRelation<ParseObject> relation = user.getRelation("favorite");
 
-//                if
+                //check if the yelpID is already in parse.com or not
 
-                selectedVendor = new ParseObject("Vendor");
-                selectedVendor.put("yelpId", mId);
-                selectedVendor.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        relation.add(selectedVendor);
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+                query.whereStartsWith("yelpId", mId);
 
-                        user.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                if (e == null) {
-                                    Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(getActivity(), ProfileActivity.class);
-                                    startActivity(intent);
-                                } else {
-                                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                query.getFirstInBackground(new GetCallback<ParseObject>() {
+                    public void done(ParseObject object, ParseException e) {
+                        if (e == null) {
+                            //object exists
+
+                            selectedVendor = object;
+                            relation.add(selectedVendor);
+
+                            user.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    if (e == null) {
+                                        Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                    }
                                 }
+                            });
+                            Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                            startActivity(intent);
+                        } else {
+                            if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
+                                //object doesn't exist
+
+                                //add yelpID as new vendor in parse.com
+                                selectedVendor = new ParseObject("Vendor");
+                                selectedVendor.put("yelpId", mId);
+                                selectedVendor.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        relation.add(selectedVendor);
+
+                                        user.saveInBackground(new SaveCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                if (e == null) {
+                                                    Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(getActivity(), ProfileActivity.class);
+                                                    startActivity(intent);
+                                                } else {
+                                                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                                }
+                                            }
+                                        });
+                                    }
+                                });
+                            } else {
+                                //unknown error, debug
                             }
-                        });
+                        }
                     }
                 });
+
+
 
             }
         });
