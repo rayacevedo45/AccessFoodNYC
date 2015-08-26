@@ -62,6 +62,7 @@ public class DetailsFragment extends Fragment {
     }
 
     public void onYelpData(Business business) {
+
         Log.d(TAG, "inside onYelpData.");
         mVendorNameText = (TextView)getActivity().findViewById(R.id.vendor_name);
         mVendorNameText.setText(business.getName());
@@ -200,5 +201,7 @@ public class DetailsFragment extends Fragment {
         });
 
     }
+
+
 
 }
