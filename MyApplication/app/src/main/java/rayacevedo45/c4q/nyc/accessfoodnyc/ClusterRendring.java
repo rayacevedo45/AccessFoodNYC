@@ -24,6 +24,9 @@ public class ClusterRendring extends DefaultClusterRenderer<MarkerCluster> {
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
 //            markerOptions.snippet(item.getSnippet());
         markerOptions.title(item.getTitle());
+        markerOptions.snippet(item.getBizId());
         super.onBeforeClusterItemRendered(item, markerOptions);
     }
+
+
 }
