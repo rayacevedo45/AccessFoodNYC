@@ -68,13 +68,22 @@ public class FindFriendsActivity extends AppCompatActivity {
                     }
                 }
 
-                ParseUser user = ParseUser.getCurrentUser();
+                final ParseUser user = ParseUser.getCurrentUser();
                 ParseRelation<ParseUser> relation = user.getRelation("friends");
                 relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
                     @Override
-                    public void done(List<ParseUser> list, ParseException e) {
-                        mAdapter = new FindFriendsAdapter(getApplicationContext(), mList, list);
-                        mRecyclerView.setAdapter(mAdapter);
+                    public void done(final List<ParseUser> list, ParseException e) {
+
+                        ParseRelation<ParseUser> relation1 = user.getRelation("pending_friends");
+                        relation1.getQuery().findInBackground(new FindCallback<ParseUser>() {
+                            @Override
+                            public void done(List<ParseUser> list2, ParseException e) {
+                                mAdapter = new FindFriendsAdapter(getApplicationContext(), mList, list, list2);
+                                mRecyclerView.setAdapter(mAdapter);
+                            }
+                        });
+
+
                     }
                 });
 

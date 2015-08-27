@@ -10,9 +10,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseInstallation;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
@@ -26,19 +29,18 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
 
     private Context mContext;
     private List<Friend> mList;
-    private List<Friend> mFindFriendsList;
-    private List<ParseUser> mCurrentFriendsList;
+    private List<ParseUser> mCurrentPendingList;
+    private List<Boolean> mPendingCheckList;
 
 
-    public FindFriendsAdapter(Context mContext, List<Friend> friendslist, List<ParseUser> list) {
+    public FindFriendsAdapter(Context mContext, List<Friend> friendslist, List<ParseUser> list, List<ParseUser> pendingList) {
         this.mContext = mContext;
-        this.mFindFriendsList = friendslist;
-        this.mCurrentFriendsList = list;
+        mCurrentPendingList = pendingList;
 
         boolean isEqual = false;
         mList = new ArrayList<>();
-        for (Friend friend : mFindFriendsList) {
-            for (ParseUser user : mCurrentFriendsList) {
+        for (Friend friend : friendslist) {
+            for (ParseUser user : list) {
                 if (friend.getId().equals(user.get("fbId"))) {
                     isEqual = true;
                     break;
@@ -48,6 +50,23 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
                 mList.add(friend);
             }
             isEqual = false;
+        }
+
+        boolean isPending = false;
+        mPendingCheckList = new ArrayList<>();
+        for (Friend friend : mList) {
+            for (ParseUser pendingUser : mCurrentPendingList) {
+                if (friend.getId().equals(pendingUser.get("fbId"))) {
+                    isPending = true;
+                    break;
+                }
+            }
+            if (isPending) {
+                mPendingCheckList.add(true);
+            } else {
+                mPendingCheckList.add(false);
+            }
+            isPending = false;
         }
     }
 
@@ -72,37 +91,58 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
 
 
         // TODO : check if this friend is in pending list.
-        holder.request.setText("+ Add");
+        if (mPendingCheckList.get(position)) {
+            holder.request.setText("Sent");
+            holder.request.setOnClickListener(null);
+        } else {
+            holder.request.setText("+ Add");
+            holder.request.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    final ParseUser user = ParseUser.getCurrentUser();
+                    String name = user.get("first_name") + " " + user.get("last_name");
+                    try {
+                        JSONObject data = new JSONObject("{\"alert\": \"" + name + " wants to be your friend!" + "\"," +
+                                "\"profile_url\": \"" + friend.getThumbnailUrl() + "\"," +
+                                "\"objectId\": \"" + user.getObjectId() + "\"}");
+                        Toast.makeText(mContext, "Friend request is sent to " + friend.getName(), Toast.LENGTH_SHORT).show();
+                        holder.request.setText("sent");
+
+                        ParseQuery query = ParseInstallation.getQuery();
+                        query.whereEqualTo("fbId", friend.getId());
+                        ParsePush push = new ParsePush();
+                        push.setQuery(query);
+                        push.setData(data);
+                        push.sendInBackground();
 
 
+                        // after request, add to the pending list.
+                        ParseQuery<ParseUser> query1 = ParseQuery.getQuery("_User");
+                        query1.whereEqualTo("fbId", friend.getId());
+                        query1.findInBackground(new FindCallback<ParseUser>() {
+                            @Override
+                            public void done(List<ParseUser> list, ParseException e) {
+                                ParseRelation<ParseUser> relation = user.getRelation("pending_friends");
+                                relation.add(list.get(0));
+                                user.saveInBackground();
+                            }
+                        });
 
-        holder.request.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                ParseUser user = ParseUser.getCurrentUser();
-                String name = user.get("first_name") + " " + user.get("last_name");
-                try {
-                    JSONObject data = new JSONObject("{\"alert\": \"" + name + " wants to be your friend!" + "\"," +
-                            "\"profile_url\": \"" + friend.getThumbnailUrl() + "\"," +
-                            "\"objectId\": \"" + user.getObjectId() + "\"}");
-                    Toast.makeText(mContext, "Friend request is sent to " + friend.getName(), Toast.LENGTH_SHORT).show();
-                    holder.request.setText("sent");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                    ParseQuery query = ParseInstallation.getQuery();
-                    query.whereEqualTo("fbId", friend.getId());
-                    ParsePush push = new ParsePush();
-                    push.setQuery(query);
-                    push.setData(data);
-                    push.sendInBackground();
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
+            });
+        }
 
 
-            }
-        });
+
+
+
 
     }
 
@@ -123,7 +163,5 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
             name = (TextView) itemView.findViewById(R.id.name_friend);
             request = (Button) itemView.findViewById(R.id.button_request);
         }
-
-
     }
 }

@@ -4,7 +4,6 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
 
@@ -23,9 +22,6 @@ import java.util.Locale;
 import java.util.Random;
 
 public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
-
-    private Bitmap mBitmap;
-    private Context mContext;
 
 
     private JSONObject getPushData(Intent intent) {
@@ -85,6 +81,19 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                         me.saveInBackground();
                     }
                 });
+
+                // delete from pending friends list.
+                final ParseRelation<ParseUser> pendingRelation = me.getRelation("pending_friends");
+                pendingRelation.getQuery().whereEqualTo(Constants.EXTRA_KEY_OBJECT_ID, objectId).findInBackground(new FindCallback<ParseUser>() {
+                    @Override
+                    public void done(List<ParseUser> list, ParseException e) {
+                        ParseUser pending = list.get(0);
+                        pendingRelation.remove(pending);
+                        me.saveInBackground();
+                    }
+                });
+
+
             }
 
             return parseBuilder.build();
