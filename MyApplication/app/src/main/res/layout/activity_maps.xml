@@ -46,7 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button_filter"
-        android:src="@drawable/filter"
+        android:src="@drawable/ic_filter_list_white_24dp"
         app:elevation="6dp"
         app:layout_anchor="@id/app_bar"
         app:layout_anchorGravity="bottom|end"
