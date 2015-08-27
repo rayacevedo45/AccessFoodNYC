@@ -67,7 +67,7 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                 String objectId = pushData.optString(Constants.EXTRA_KEY_OBJECT_ID, "");
                 acceptIntent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
                 PendingIntent accept = PendingIntent.getActivity(context, Constants.REQUEST_CODE_FRIEND_ACCEPT, acceptIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-                parseBuilder.addAction(android.R.drawable.ic_input_add, "Accept", accept);
+                parseBuilder.addAction(R.drawable.ic_done_black_24dp, "Accept", accept);
                 parseBuilder.addAction(android.R.drawable.ic_menu_close_clear_cancel, "Decline", pDeleteIntent);
             }
 

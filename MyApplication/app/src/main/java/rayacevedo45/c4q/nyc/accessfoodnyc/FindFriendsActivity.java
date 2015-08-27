@@ -10,6 +10,11 @@ import com.facebook.AccessToken;
 import com.facebook.AccessTokenTracker;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -57,16 +62,28 @@ public class FindFriendsActivity extends AppCompatActivity {
                         }
                         Friend myFriend = new Friend(id, name, profile_url);
                         mList.add(myFriend);
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                mAdapter = new FindFriendsAdapter(getApplicationContext(), mList);
-                mRecyclerView.setAdapter(mAdapter);
+
+                ParseUser user = ParseUser.getCurrentUser();
+                ParseRelation<ParseUser> relation = user.getRelation("friends");
+                relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
+                    @Override
+                    public void done(List<ParseUser> list, ParseException e) {
+                        mAdapter = new FindFriendsAdapter(getApplicationContext(), mList, list);
+                        mRecyclerView.setAdapter(mAdapter);
+                    }
+                });
+
+
             }
         });
         Bundle parameters = new Bundle();
         parameters.putString("fields", "id,name,cover");
+        parameters.putString("limit", "50");
         parameters.putString("edges", "mutualfriends");
         request.setParameters(parameters);
         request.executeAsync();

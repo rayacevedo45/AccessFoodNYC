@@ -19,17 +19,36 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.FindFriendsViewHolder> {
 
     private Context mContext;
     private List<Friend> mList;
+    private List<Friend> mFindFriendsList;
+    private List<ParseUser> mCurrentFriendsList;
 
 
-    public FindFriendsAdapter(Context mContext, List<Friend> mList) {
+    public FindFriendsAdapter(Context mContext, List<Friend> friendslist, List<ParseUser> list) {
         this.mContext = mContext;
-        this.mList = mList;
+        this.mFindFriendsList = friendslist;
+        this.mCurrentFriendsList = list;
+
+        boolean isEqual = false;
+        mList = new ArrayList<>();
+        for (Friend friend : mFindFriendsList) {
+            for (ParseUser user : mCurrentFriendsList) {
+                if (friend.getId().equals(user.get("fbId"))) {
+                    isEqual = true;
+                    break;
+                }
+            }
+            if (!isEqual) {
+                mList.add(friend);
+            }
+            isEqual = false;
+        }
     }
 
     @Override
