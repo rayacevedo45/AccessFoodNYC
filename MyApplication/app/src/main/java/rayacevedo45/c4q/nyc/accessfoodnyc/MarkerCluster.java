@@ -11,12 +11,12 @@ import com.google.maps.android.clustering.ClusterItem;
 public class MarkerCluster implements ClusterItem {
     private final LatLng mPosition;
     private String mTitle;
+    private String mBusinessId;
 
-
-    public MarkerCluster(double lat, double lng, String title) {
+    public MarkerCluster(double lat, double lng, String title, String businessId) {
         mPosition = new LatLng(lat, lng);
         mTitle = title;
-
+        mBusinessId = businessId;
     }
 
     @Override
@@ -32,7 +32,9 @@ public class MarkerCluster implements ClusterItem {
         this.mTitle = title;
     }
 
-
+    public String getBizId() {
+        return mBusinessId;
+    }
 
 
 }

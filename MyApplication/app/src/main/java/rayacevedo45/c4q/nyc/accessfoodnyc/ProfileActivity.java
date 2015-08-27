@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,14 @@ import org.json.JSONObject;
 import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpBusinessSearchService;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+
+import static rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity.businessId;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -48,6 +57,9 @@ public class ProfileActivity extends AppCompatActivity {
 
     private ListView mListView;
     private FavoriteAdapter mAdapter;
+
+    private String mFavoriteBizName;
+    private TextView mName;
 
 
     @Override
@@ -88,20 +100,7 @@ public class ProfileActivity extends AppCompatActivity {
                     } catch (JSONException e2) {
                         e2.printStackTrace();
                     }
-
-
-
-//                    final ParseRelation<ParseUser> relation1 = friend.getRelation("friends");
-//                    ParseQuery<ParseUser> query1 = ParseQuery.getQuery("_User");
-//                    query1.whereEqualTo(Constants.EXTRA_KEY_OBJECT_ID, me.getObjectId());
-//                    query1.findInBackground(new FindCallback<ParseUser>() {
-//                        @Override
-//                        public void done(List<ParseUser> list, ParseException e) {
-//                            ParseUser me2 = list.get(0);
-//                            relation1.add(me2);
-//                            friend.saveInBackground();
-//                        }
-//                    });
+                    
                 }
             });
         }
@@ -199,20 +198,30 @@ public class ProfileActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
+
+
+
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 
             if (convertView == null) {
                 convertView = inflater.inflate(R.layout.list_item_favorite, parent, false);
             }
 
-            TextView name = (TextView) convertView.findViewById(R.id.favorite_name);
+            mName = (TextView) convertView.findViewById(R.id.favorite_name);
+
 
             ParseObject vendor = getItem(position);
 
+            String vendorName = vendor.getString("vendor_name");
 
+            if (vendorName != null) {
+                mName.setText(vendorName);
+            } else{
+                YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
+                yelpBizService.searchBusiness(businessId, new FavoriteBusinessSearchCallback());
+            }
 
-            name.setText(vendor.getString("vendor_name"));
-            name.setTextColor(Color.BLACK);
+            mName.setTextColor(Color.BLACK);
 
             return convertView;
         }
@@ -227,4 +236,31 @@ public class ProfileActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
+    protected class FavoriteBusinessSearchCallback implements Callback<Business> {
+
+        public String TAG = "FavoriteBusinessSearchCallback";
+
+        @Override
+        public void success(Business business, Response response) {
+            Log.d(TAG, "Success");
+
+            if (business != null) {
+                mFavoriteBizName = business.getName();
+                mName.setText(mFavoriteBizName);
+                Toast.makeText(getApplicationContext(), mFavoriteBizName, Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Log.e(TAG, error.getMessage());
+        }
+    }
+
+
 }
+
+
+

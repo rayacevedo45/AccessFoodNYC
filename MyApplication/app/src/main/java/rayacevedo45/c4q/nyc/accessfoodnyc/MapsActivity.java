@@ -26,8 +26,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -36,6 +39,7 @@ import com.parse.ParseUser;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -90,7 +94,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         buildGoogleApiClient();
         createLocationRequest();
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        final MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mMap = mapFragment.getMap();
 
@@ -128,7 +132,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected class YelpSearchCallback implements Callback<YelpResponse> {
 
         public String TAG = "YelpSearchCallback";
-
+        public HashMap < Marker, String> markerHashMap;
         @Override
         public void success(YelpResponse data, Response response) {
             Log.d(TAG, "Success");
@@ -149,14 +153,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 LatLng position = new LatLng(latitude, longitude);
                 // create marker
 //                MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title(business.getName());
-                MarkerCluster mc = new MarkerCluster(latitude, longitude, business.getName());
-                mClusterManager.addItem(mc);
+                Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(business.getName())); //...
+
+//
+//                MarkerCluster mc = new MarkerCluster(latitude, longitude, business.getName(),business.getId());
+//                mClusterManager.addItem(mc);
                 // Changing marker icon
-//                marker.icon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck));
+                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
+
+                markerHashMap = new HashMap<>();
+                markerHashMap.put(marker, business.getId());
 //                mMap.addMarker(marker);
             }
-            generateClusterManager(mClusterManager);
-            mClusterManager.cluster();
+//            generateClusterManager(mClusterManager);
+//            mClusterManager.cluster();
+
+            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                @Override
+                public void onInfoWindowClick(Marker marker) {
+                    String businessId = markerHashMap.get(marker);
+
+                    Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
+                    intent.putExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, businessId);
+                    startActivity(intent);
+                }
+            });
+
 
         }
 
@@ -279,7 +301,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         lastLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-        setUpClusterer();
+//        setUpClusterer();
 
         Geocoder geocoder;
         List<Address> addresses = null;
@@ -294,8 +316,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
 //        yelpService.searchFoodCarts(String.valueOf(lastLatLng), new YelpSearchCallback());
-            yelpService.searchFoodCarts(address+" "+postalCode, new YelpSearchCallback());
+            yelpService.searchFoodCarts(address + " " + postalCode, new YelpSearchCallback());
 //        yelpService.searchFoodCarts("3100 47th Ave 11101", new YelpSearchCallback());
+
+
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -393,5 +418,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
+
 }
+
+
 
