@@ -47,8 +47,6 @@
             android:theme="@style/Theme.AppCompat">
         </activity>
 
-
-
         <activity
             android:name=".accounts.LoginActivity"
             android:label="@string/title_activity_login"
@@ -100,16 +98,6 @@
             </intent-filter>
         </receiver>
 
-        <!--<receiver android:name="com.parse.ParsePushBroadcastReceiver"-->
-            <!--android:exported="false">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="com.parse.push.intent.RECEIVE" />-->
-                <!--<action android:name="com.parse.push.intent.DELETE" />-->
-                <!--<action android:name="com.parse.push.intent.OPEN" />-->
-                <!--<action android:name="com.parse.push.intent.ACCEPT"/>-->
-            <!--</intent-filter>-->
-        <!--</receiver>-->
-
         <receiver android:name="rayacevedo45.c4q.nyc.accessfoodnyc.FriendRequestReceiver"
             android:exported="false">
             <intent-filter>
@@ -126,9 +114,6 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <!--
-                  IMPORTANT: Change "com.parse.starter" to match your app's package name.
-                -->
                 <category android:name="rayacevedo45.c4q.nyc.accessfoodnyc" />
             </intent-filter>
         </receiver>
