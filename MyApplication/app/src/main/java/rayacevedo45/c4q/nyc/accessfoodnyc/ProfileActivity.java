@@ -198,9 +198,6 @@ public class ProfileActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
 
-
-
-
             LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
 
             if (convertView == null) {
