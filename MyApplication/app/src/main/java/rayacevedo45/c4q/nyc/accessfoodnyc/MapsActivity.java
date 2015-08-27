@@ -174,7 +174,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     String businessId = markerHashMap.get(marker);
 
                     Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
-                    intent.putExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, businessId);
+                    intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, businessId);
                     startActivity(intent);
                 }
             });

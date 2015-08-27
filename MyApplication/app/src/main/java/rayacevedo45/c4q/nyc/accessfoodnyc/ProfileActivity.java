@@ -100,7 +100,7 @@ public class ProfileActivity extends AppCompatActivity {
                     } catch (JSONException e2) {
                         e2.printStackTrace();
                     }
-                    
+
                 }
             });
         }
