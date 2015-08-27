@@ -16,13 +16,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
+import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -48,6 +55,57 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
 
+        String objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
+
+        if (objectId != null) {
+            final ParseUser me = ParseUser.getCurrentUser();
+            final ParseRelation<ParseUser> relation = me.getRelation("friends");
+
+            ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
+            query.whereEqualTo(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+            query.findInBackground(new FindCallback<ParseUser>() {
+                @Override
+                public void done(List<ParseUser> list, ParseException e) {
+                    final ParseUser friend = list.get(0);
+                    relation.add(friend);
+                    me.saveInBackground();
+                    Toast.makeText(getApplicationContext(), "Accepted!", Toast.LENGTH_SHORT).show();
+
+
+                    ParseUser user = ParseUser.getCurrentUser();
+                    String name = user.get("first_name") + " " + user.get("last_name");
+                    try {
+                        JSONObject data = new JSONObject("{\"alert\": \"" + name + " accepted your friend request!" + "\"," +
+                                "\"accepted\": \"" + user.getObjectId() + "\"}");
+
+                        ParseQuery query = ParseInstallation.getQuery();
+                        query.whereEqualTo("user", friend);
+                        ParsePush push = new ParsePush();
+                        push.setQuery(query);
+                        push.setData(data);
+                        push.sendInBackground();
+
+                    } catch (JSONException e2) {
+                        e2.printStackTrace();
+                    }
+
+
+
+//                    final ParseRelation<ParseUser> relation1 = friend.getRelation("friends");
+//                    ParseQuery<ParseUser> query1 = ParseQuery.getQuery("_User");
+//                    query1.whereEqualTo(Constants.EXTRA_KEY_OBJECT_ID, me.getObjectId());
+//                    query1.findInBackground(new FindCallback<ParseUser>() {
+//                        @Override
+//                        public void done(List<ParseUser> list, ParseException e) {
+//                            ParseUser me2 = list.get(0);
+//                            relation1.add(me2);
+//                            friend.saveInBackground();
+//                        }
+//                    });
+                }
+            });
+        }
+
         mImageViewProfile = (ImageView) findViewById(R.id.imageView_profile);
         first = (TextView) findViewById(R.id.first_name);
         last = (TextView) findViewById(R.id.last_name);
@@ -65,8 +123,6 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (list != null) {
-
-
                     mAdapter = new FavoriteAdapter(getApplicationContext(), list);
                     mListView.setAdapter(mAdapter);
 
@@ -74,8 +130,8 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        first.setText((String) user.get("first_name"));
-        last.setText((String) user.get("last_name"));
+        first.setText(user.getString("first_name"));
+        last.setText(user.getString("last_name"));
 
         Picasso.with(getApplicationContext()).load(user.getString("profile_url")).centerCrop().resize(400, 400).into(mImageViewProfile);
 
@@ -171,6 +227,4 @@ public class ProfileActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-
-
 }

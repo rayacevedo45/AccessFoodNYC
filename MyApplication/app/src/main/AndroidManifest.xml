@@ -116,7 +116,7 @@
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
                 <action android:name="com.parse.push.intent.OPEN" />
-                <action android:name="com.parse.push.intent.ACCEPT"/>
+                <action android:name="com.parse.push.intent.ACCEPTED"/>
             </intent-filter>
         </receiver>
 

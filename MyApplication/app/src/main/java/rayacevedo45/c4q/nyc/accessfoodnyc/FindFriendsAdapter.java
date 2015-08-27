@@ -65,7 +65,8 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
                 String name = user.get("first_name") + " " + user.get("last_name");
                 try {
                     JSONObject data = new JSONObject("{\"alert\": \"" + name + " wants to be your friend!" + "\"," +
-                            "\"profile_url\": \"" + friend.getThumbnailUrl() + "\"}");
+                            "\"profile_url\": \"" + friend.getThumbnailUrl() + "\"," +
+                            "\"objectId\": \"" + user.getObjectId() + "\"}");
                     Toast.makeText(mContext, "Friend request is sent to " + friend.getName(), Toast.LENGTH_SHORT).show();
                     holder.request.setText("sent");
 
