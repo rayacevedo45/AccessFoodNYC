@@ -24,6 +24,7 @@ import com.google.android.gms.common.SignInButton;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
@@ -101,7 +102,7 @@ public class LoginActivity extends Activity {
         mButtonFacebookLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, Arrays.asList("public_profile", "user_friends", "email"), new LogInCallback() {
+                ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, Arrays.asList("public_profile", "user_friends", "email", "user_birthday"), new LogInCallback() {
                     @Override
                     public void done(ParseUser user, ParseException err) {
                         if (user == null) {
@@ -112,7 +113,13 @@ public class LoginActivity extends Activity {
                             user.put("first_name", profile.getFirstName());
                             user.put("last_name", profile.getLastName());
                             user.put("profile_url", profile.getProfilePictureUri(300, 300).toString());
+                            user.put("fbId", profile.getId());
                             user.saveInBackground();
+
+                            ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                            installation.put("user", user);
+                            installation.put("fbId", profile.getId());
+                            installation.saveInBackground();
 
                             Toast.makeText(getApplicationContext(), "User signed up and logged in through Facebook!", Toast.LENGTH_SHORT).show();
                             Log.d("MyApp", "User signed up and logged in through Facebook!");

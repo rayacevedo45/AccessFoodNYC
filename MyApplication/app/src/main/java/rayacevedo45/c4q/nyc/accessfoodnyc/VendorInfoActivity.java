@@ -57,7 +57,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
 
         setContentView(R.layout.activity_vendor_info);
 
-        objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID);
+        objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
@@ -143,7 +143,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
                     fragment = new ReviewsFragment();
                     Bundle bundle = new Bundle();
 
-                    bundle.putString(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, objectId);
+                    bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
                     fragment.setArguments(bundle);
                     return new ReviewsFragment();
             }
