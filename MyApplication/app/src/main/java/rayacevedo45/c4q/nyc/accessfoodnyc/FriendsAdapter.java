@@ -46,6 +46,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
         return mList.size();
     }
 
+    public ParseUser getItem(int position) {
+        return mList.get(position);
+    }
+
     public static class FriendsViewHolder extends RecyclerView.ViewHolder {
 
         protected ImageView picture;

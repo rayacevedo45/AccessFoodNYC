@@ -116,7 +116,6 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
                         push.setData(data);
                         push.sendInBackground();
 
-
                         // after request, add to the pending list.
                         ParseQuery<ParseUser> query1 = ParseQuery.getQuery("_User");
                         query1.whereEqualTo("fbId", friend.getId());

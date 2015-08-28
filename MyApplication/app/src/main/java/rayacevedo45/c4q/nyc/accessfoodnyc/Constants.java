@@ -1,12 +1,13 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 
-// TODO : implementing filter button
-// TODO : yelp logo into each recyclerVIew item
-// TODO : profileActivity change listView to RecyclerVIew
-// TODO : friends reqeust notification profile picture loading picasso
-// TODO : for MapsActivity : find out official google material design thumbnail size
-// TODO : BUGFIX - after accept friend request, notification doesn't disappear
+// TODO : 1.implementing filter button
+// TODO : 2.yelp logo into each recyclerVIew item
+// TODO : 3.profileActivity change listView to RecyclerVIew
+// TODO : 4.friends reqeust notification profile picture loading picasso
+// TODO : 5.for MapsActivity : find out official google material design thumbnail size
+// TODO : 6.BUGFIX - after accept friend request, notification doesn't disappear
+// TODO : data localization - parse local database
 
 
 
