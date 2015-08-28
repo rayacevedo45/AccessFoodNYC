@@ -62,12 +62,10 @@ public class ProfileActivity extends AppCompatActivity {
     private String mFavoriteBizName;
     private TextView mName;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-
         String objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
 
         if (objectId != null) {
@@ -130,9 +128,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         first.setText(user.getString("first_name"));
         last.setText(user.getString("last_name"));
-
         Picasso.with(getApplicationContext()).load(user.getString("profile_url")).centerCrop().resize(400, 400).into(mImageViewProfile);
-
     }
 
     @Override
@@ -180,7 +176,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         private Context mContext;
         private List<ParseObject> mList;
-
 
         public FavoriteAdapter(Context context, List<ParseObject> list) {
             mContext = context;
@@ -261,9 +256,4 @@ public class ProfileActivity extends AppCompatActivity {
             Log.e(TAG, error.getMessage());
         }
     }
-
-
 }
-
-
-

@@ -1,9 +1,12 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -35,7 +38,24 @@ public class FriendsActivity extends AppCompatActivity {
             public void done(List<ParseUser> list, ParseException e) {
                 mAdapter = new FriendsAdapter(getApplicationContext(), list);
                 mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        String objectId = mAdapter.getItem(position).getObjectId();
+                        Intent intent = new Intent(getApplicationContext(), FriendProfileActivity.class);
+                        intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                        startActivity(intent);
+                    }
+                }));
             }
         });
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mRecyclerView.setOnClickListener(null);
     }
 }

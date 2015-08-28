@@ -96,6 +96,25 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
 
             }
 
+            if (pushData.has("removeId")) {
+
+                String objectId = pushData.optString("removeId", "");
+                final ParseUser me = ParseUser.getCurrentUser();
+                final ParseRelation<ParseUser> relation = me.getRelation("friends");
+                ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
+                query.whereEqualTo(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                query.findInBackground(new FindCallback<ParseUser>() {
+                    @Override
+                    public void done(List<ParseUser> list, ParseException e) {
+                        ParseUser noLongerFriend = list.get(0);
+                        relation.remove(noLongerFriend);
+                        me.saveInBackground();
+                    }
+                });
+
+                return null;
+            }
+
             return parseBuilder.build();
         } else {
             return null;

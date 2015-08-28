@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseObject;
 import com.parse.ParseUser;
@@ -29,6 +30,15 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
     @Override
     public FriendsViewHolder onCreateViewHolder(ViewGroup parent, int position) {
         View row = LayoutInflater.from(mContext).inflate(R.layout.list_item_friend, parent, false);
+        row.setTag(position);
+        row.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                int position = (int) v.getTag();
+                Toast.makeText(mContext, "Long pressed!!! " + position, Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
         return new FriendsViewHolder(row);
     }
 
@@ -44,6 +54,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
     @Override
     public int getItemCount() {
         return mList.size();
+    }
+
+    public ParseUser getItem(int position) {
+        return mList.get(position);
     }
 
     public static class FriendsViewHolder extends RecyclerView.ViewHolder {

@@ -32,7 +32,6 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
     private List<ParseUser> mCurrentPendingList;
     private List<Boolean> mPendingCheckList;
 
-
     public FindFriendsAdapter(Context mContext, List<Friend> friendslist, List<ParseUser> list, List<ParseUser> pendingList) {
         this.mContext = mContext;
         mCurrentPendingList = pendingList;
@@ -116,7 +115,6 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
                         push.setData(data);
                         push.sendInBackground();
 
-
                         // after request, add to the pending list.
                         ParseQuery<ParseUser> query1 = ParseQuery.getQuery("_User");
                         query1.whereEqualTo("fbId", friend.getId());
@@ -128,22 +126,12 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
                                 user.saveInBackground();
                             }
                         });
-
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-
                 }
             });
         }
-
-
-
-
-
-
     }
 
     @Override

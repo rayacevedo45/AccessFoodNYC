@@ -71,6 +71,10 @@
             android:label="Friends">
         </activity>
 
+        <activity android:name=".FriendProfileActivity"
+            android:label="Profile">
+        </activity>
+
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
@@ -108,7 +112,6 @@
                 <action android:name="com.parse.push.intent.RECEIVE" />
                 <action android:name="com.parse.push.intent.DELETE" />
                 <action android:name="com.parse.push.intent.OPEN" />
-                <action android:name="com.parse.push.intent.ACCEPTED"/>
             </intent-filter>
         </receiver>
 
