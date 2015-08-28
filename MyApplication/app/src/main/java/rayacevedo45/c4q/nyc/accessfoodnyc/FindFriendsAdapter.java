@@ -32,7 +32,6 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
     private List<ParseUser> mCurrentPendingList;
     private List<Boolean> mPendingCheckList;
 
-
     public FindFriendsAdapter(Context mContext, List<Friend> friendslist, List<ParseUser> list, List<ParseUser> pendingList) {
         this.mContext = mContext;
         mCurrentPendingList = pendingList;
@@ -127,22 +126,12 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
                                 user.saveInBackground();
                             }
                         });
-
-
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
-
                 }
             });
         }
-
-
-
-
-
-
     }
 
     @Override

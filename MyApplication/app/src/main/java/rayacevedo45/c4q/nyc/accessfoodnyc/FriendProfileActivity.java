@@ -1,13 +1,15 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -20,6 +22,7 @@ public class FriendProfileActivity extends AppCompatActivity {
     private String objectId;
     private ImageView mImageView;
     private TextView mTextViewName;
+    private Button mButtonRemove;
     private RecyclerView mRecyclerViewFavorites;
     private VendorListAdapter mAdapter;
 
@@ -36,6 +39,7 @@ public class FriendProfileActivity extends AppCompatActivity {
 
         mImageView = (ImageView) findViewById(R.id.imageView_friend_profile);
         mTextViewName = (TextView) findViewById(R.id.friend_name);
+        mButtonRemove = (Button) findViewById(R.id.button_friend_remove);
         mRecyclerViewFavorites = (RecyclerView) findViewById(R.id.recyclerView_friend_favorites);
 
         ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
@@ -49,8 +53,27 @@ public class FriendProfileActivity extends AppCompatActivity {
             }
         });
 
-
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mButtonRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager manager = getSupportFragmentManager();
+                RemoveDialogFragment dialog = new RemoveDialogFragment();
+                Bundle argument = new Bundle();
+                argument.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                dialog.setArguments(argument);
+                dialog.show(manager, "Remove Friend");
+            }
+        });
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mButtonRemove.setOnClickListener(null);
+    }
 }

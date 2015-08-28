@@ -8,6 +8,7 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 // TODO : 5.for MapsActivity : find out official google material design thumbnail size
 // TODO : 6.BUGFIX - after accept friend request, notification doesn't disappear
 // TODO : data localization - parse local database
+// TODO : BUGFIX - find friends profile picture loading issue
 
 
 
