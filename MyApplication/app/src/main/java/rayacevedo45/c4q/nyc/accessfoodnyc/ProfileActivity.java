@@ -54,6 +54,7 @@ public class ProfileActivity extends AppCompatActivity {
     //private Button maps;
     private Button mButtonLogOut;
     private Button mButtonFindFriends;
+    private Button mButtonFriends;
 
     private ListView mListView;
     private FavoriteAdapter mAdapter;
@@ -108,13 +109,11 @@ public class ProfileActivity extends AppCompatActivity {
         mImageViewProfile = (ImageView) findViewById(R.id.imageView_profile);
         first = (TextView) findViewById(R.id.first_name);
         last = (TextView) findViewById(R.id.last_name);
-        //maps = (Button) findViewById(R.id.button_maps);
         mButtonFindFriends = (Button) findViewById(R.id.find_friends);
+        mButtonFriends = (Button) findViewById(R.id.button_friends_list);
         mButtonLogOut = (Button) findViewById(R.id.log_out);
         mListView = (ListView) findViewById(R.id.listView_favorites);
-        yf = (TextView) findViewById(R.id.yfID);
 
-        yf.setPaintFlags(yf.getPaintFlags() |   Paint.UNDERLINE_TEXT_FLAG);
 
         ParseUser user = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> relation = user.getRelation("favorite");
@@ -163,9 +162,17 @@ public class ProfileActivity extends AppCompatActivity {
                     logOut();
                 }
             });
+            mButtonFriends.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(), FriendsActivity.class);
+                    startActivity(intent);
+                }
+            });
         } else {
             mButtonFindFriends.setOnClickListener(null);
             mButtonLogOut.setOnClickListener(null);
+            mButtonFriends.setOnClickListener(null);
         }
     }
 
@@ -206,7 +213,6 @@ public class ProfileActivity extends AppCompatActivity {
 
             mName = (TextView) convertView.findViewById(R.id.favorite_name);
 
-
             ParseObject vendor = getItem(position);
 
             String vendorName = vendor.getString("vendor_name");
@@ -225,7 +231,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void logOut() {
-        LoginManager.getInstance().logOut();
+        LoginManager.getInstance().logOut(); // facebook logout
         ParseUser.logOut();
         Toast.makeText(getApplicationContext(), "Successfully logged out!", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

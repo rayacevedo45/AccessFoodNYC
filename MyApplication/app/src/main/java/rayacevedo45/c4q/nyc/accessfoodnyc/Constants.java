@@ -6,6 +6,7 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 // TODO : profileActivity change listView to RecyclerVIew
 // TODO : friends reqeust notification profile picture loading picasso
 // TODO : for MapsActivity : find out official google material design thumbnail size
+// TODO : BUGFIX - after accept friend request, notification doesn't disappear
 
 
 
