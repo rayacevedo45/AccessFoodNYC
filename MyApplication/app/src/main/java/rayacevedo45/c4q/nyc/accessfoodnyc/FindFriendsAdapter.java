@@ -72,7 +72,7 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
 
     @Override
     public FindFriendsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View row = LayoutInflater.from(mContext).inflate(R.layout.list_item_friends, parent, false);
+        View row = LayoutInflater.from(mContext).inflate(R.layout.list_item_find_friends, parent, false);
         return new FindFriendsViewHolder(row);
     }
 
