@@ -93,7 +93,7 @@ public class FindFriendsActivity extends AppCompatActivity {
         Bundle parameters = new Bundle();
         parameters.putString("fields", "id,name,cover");
         parameters.putString("limit", "50");
-        parameters.putString("edges", "mutualfriends");
+        //parameters.putString("edges", "mutualfriends");
         request.setParameters(parameters);
         request.executeAsync();
 

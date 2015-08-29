@@ -3,11 +3,13 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
@@ -20,7 +22,7 @@ import retrofit.client.Response;
 import static rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity.businessId;
 
 
-public class VendorInfoActivity extends FragmentActivity implements ActionBar.TabListener {
+public class VendorInfoActivity extends AppCompatActivity implements ActionBar.TabListener {
 
     // Tab titles
     private static final String[] TABS = { "Details", "Menu", "Reviews" };
@@ -35,14 +37,15 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
      * derivative, which will keep every loaded fragment in memory. If this becomes too memory
      * intensive, it may be best to switch to a {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    AppSectionsPagerAdapter mAppSectionsPagerAdapter;
+    ViewPagerAdapter mViewPagerAdapter;
 
     /**
      * The {@link ViewPager} that will display the three primary sections of the app, one at a
      * time.
      */
-    ViewPager mViewPager;
-    ActionBar actionBar;
+    private ViewPager mViewPager;
+    private Toolbar mToolbar;
+    private TabLayout mTabLayout;
 
     // Tab titles
     private String[] tabs = { "Details", "Menu", "Reviews" };
@@ -53,52 +56,55 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
         super.onCreate(savedInstanceState);
 
 
-
-
         setContentView(R.layout.activity_vendor_info);
 
         objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
 
         // Create the adapter that will return a fragment for each of the three primary sections
         // of the app.
-        //mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the action bar.
-        actionBar = getActionBar();
-
-        // Specify that the Home/Up button should not be enabled, since there is no hierarchical
-        // parent.
-        actionBar.setHomeButtonEnabled(false);
-
-        // Specify that we will be displaying tabs in the action bar.
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        //mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
 
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_vendor);
+        setSupportActionBar(mToolbar);
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        setupViewPager(mViewPager);
+        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        mTabLayout.setupWithViewPager(mViewPager);
 
 
         // Set up the ViewPager, attaching the adapter and setting up a listener for when the
         // user swipes between sections.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mAppSectionsPagerAdapter);
+
+        mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 // When swiping between different app sections, select the corresponding tab.
                 // We can also use ActionBar.Tab#select() to do this if we have a reference to the
                 // Tab.
-                actionBar.setSelectedNavigationItem(position);
+                mToolbar.setSelectedNavigationItem(position);
             }
         });
 
 
         for (String tab_name : TABS) {
-            actionBar.addTab(actionBar.newTab().setText(tab_name)
+
+            mToolbar.addTab(mToolbar.newTab().setText(tab_name)
                     .setTabListener(this));
         }
 
         YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
         yelpBizService.searchBusiness(businessId, new YelpBusinessSearchCallback());
 
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.accent_material_light)), "CAT");
+        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.ripple_material_light)), "DOG");
+        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.button_material_dark)), "MOUSE");
+        viewPager.setAdapter(adapter);
     }
 
     @Override
@@ -120,9 +126,9 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
      * sections of the app.
      */
-    public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+    public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-        public AppSectionsPagerAdapter(FragmentManager fm) {
+        public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
@@ -172,9 +178,9 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
             Log.d(TAG, "Success");
 
             if (business != null) {
-                mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
+                mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-                mViewPager.setAdapter(mAppSectionsPagerAdapter);
+                mViewPager.setAdapter(mViewPagerAdapter);
                 mViewPager.setOffscreenPageLimit(3);
 
                 mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
@@ -183,7 +189,7 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
                         // When swiping between different app sections, select the corresponding tab.
                         // We can also use ActionBar.Tab#select() to do this if we have a reference to the
                         // Tab.
-                        actionBar.setSelectedNavigationItem(position);
+                        mToolbar.setSelectedNavigationItem(position);
                     }
                 });
 //                mCurrentDetailsFragment.onYelpData(business);

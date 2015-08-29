@@ -5,12 +5,16 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.internal.view.menu.MenuBuilder;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -55,7 +59,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, View.OnClickListener, GoogleMap.OnCameraChangeListener {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, GoogleMap.OnCameraChangeListener {
 
     private static final String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
     private static final String LOCATION_KEY = "location-key";
@@ -69,6 +73,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean mRequestingLocationUpdates;
     private String mLastUpdateTime;
 
+    private Toolbar mToolbar;
+    private CollapsingToolbarLayout mToolbarLayout;
     private FloatingActionButton mButtonFilter;
 
     private RecyclerView mRecyclerView;
@@ -99,6 +105,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = mapFragment.getMap();
 
         initializeViews();
+
+
+        //setSupportActionBar(mToolbar);
+        mToolbar.setTitle("Maps");
+        //mToolbar.inflateMenu(R.menu.menu_map);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+        mToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
+
 
     }
 
@@ -240,6 +257,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void initializeViews() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mButtonFilter = (FloatingActionButton) findViewById(R.id.button_filter);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
@@ -272,8 +290,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             case R.id.action_settings:
                 break;
         }
-
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -319,21 +335,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             yelpService.searchFoodCarts(address + " " + postalCode, new YelpSearchCallback());
 //        yelpService.searchFoodCarts("3100 47th Ave 11101", new YelpSearchCallback());
 
-
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
         mMap.moveCamera(CameraUpdateFactory.newLatLng(lastLatLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
-
-
-
-
-
     }
 
     protected void startLocationUpdates() {
@@ -383,11 +389,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onClick(View v) {
-
-    }
-
-    @Override
     public void onCameraChange(CameraPosition cameraPosition) {
 
     }
@@ -405,9 +406,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                mapMarkers.remove(objId);
 //            }
 //        }
-
     }
-
 
     private void logOut() {
         LoginManager.getInstance().logOut();
@@ -418,9 +417,4 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-
-
 }
-
-
-

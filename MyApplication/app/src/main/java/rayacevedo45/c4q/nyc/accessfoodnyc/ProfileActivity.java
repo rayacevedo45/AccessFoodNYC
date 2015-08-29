@@ -49,7 +49,6 @@ public class ProfileActivity extends AppCompatActivity {
     private ImageView mImageViewProfile;
     private TextView first;
     private TextView last;
-    private TextView yf;
 
     //private Button maps;
     private Button mButtonLogOut;
@@ -82,13 +81,11 @@ public class ProfileActivity extends AppCompatActivity {
                     me.saveInBackground();
                     Toast.makeText(getApplicationContext(), "Accepted!", Toast.LENGTH_SHORT).show();
 
-
                     ParseUser user = ParseUser.getCurrentUser();
                     String name = user.get("first_name") + " " + user.get("last_name");
                     try {
                         JSONObject data = new JSONObject("{\"alert\": \"" + name + " accepted your friend request!" + "\"," +
                                 "\"accepted\": \"" + user.getObjectId() + "\"}");
-
                         ParseQuery query = ParseInstallation.getQuery();
                         query.whereEqualTo("user", friend);
                         ParsePush push = new ParsePush();
