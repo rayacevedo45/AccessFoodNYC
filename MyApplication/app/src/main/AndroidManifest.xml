@@ -54,7 +54,8 @@
 
         <activity
             android:name=".VendorInfoActivity"
-            android:label="@string/title_activity_vendor">
+            android:label="@string/title_activity_vendor"
+            android:theme="@style/MapsTheme">
         </activity>
 
         <activity android:name=".ProfileActivity"

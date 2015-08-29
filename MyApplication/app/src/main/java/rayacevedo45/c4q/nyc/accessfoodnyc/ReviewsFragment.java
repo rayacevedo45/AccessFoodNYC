@@ -1,7 +1,9 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +13,8 @@ import android.widget.ListView;
 
 public class ReviewsFragment extends Fragment implements View.OnClickListener {
 
-    private Button mButtonReview;
-    private ListView mListView;
+    private FloatingActionButton mButtonReview;
+    private RecyclerView mRecyclerView;
     private String objectId;
 
     private String b1Name;
@@ -22,9 +24,8 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_reviews, container, false);
-
-        mButtonReview = (Button) rootView.findViewById(R.id.button_review);
-        mListView = (ListView) rootView.findViewById(R.id.listView_reviews);
+        mButtonReview = (FloatingActionButton) rootView.findViewById(R.id.button_review);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_review);
 //        objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
 
 //        ParseUser user = ParseUser.getCurrentUser();

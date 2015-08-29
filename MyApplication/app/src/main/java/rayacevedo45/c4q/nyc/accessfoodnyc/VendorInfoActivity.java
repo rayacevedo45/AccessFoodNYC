@@ -12,6 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpBusinessSearchService;
@@ -60,39 +63,27 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
 
         objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
 
-        // Create the adapter that will return a fragment for each of the three primary sections
-        // of the app.
-        //mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-
-
         mToolbar = (Toolbar) findViewById(R.id.toolbar_vendor);
         setSupportActionBar(mToolbar);
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        setupViewPager(mViewPager);
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
-        mTabLayout.setupWithViewPager(mViewPager);
 
 
-        // Set up the ViewPager, attaching the adapter and setting up a listener for when the
-        // user swipes between sections.
-
-        mViewPager.setAdapter(mViewPagerAdapter);
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onPageSelected(int position) {
-                // When swiping between different app sections, select the corresponding tab.
-                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-                // Tab.
-                mToolbar.setSelectedNavigationItem(position);
+            public void onTabSelected(TabLayout.Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
             }
         });
 
-
-        for (String tab_name : TABS) {
-
-            mToolbar.addTab(mToolbar.newTab().setText(tab_name)
-                    .setTabListener(this));
-        }
 
         YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
         yelpBizService.searchBusiness(businessId, new YelpBusinessSearchCallback());
@@ -101,9 +92,6 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.accent_material_light)), "CAT");
-        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.ripple_material_light)), "DOG");
-        adapter.addFrag(new DummyFragment(getResources().getColor(R.color.button_material_dark)), "MOUSE");
         viewPager.setAdapter(adapter);
     }
 
@@ -128,32 +116,8 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
      */
     public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-        public ViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Fragment fragment;
-            switch (position) {
-                case 0:
-                    mCurrentDetailsFragment = new DetailsFragment();
-                    // Detail fragment activity
-
-                    return mCurrentDetailsFragment;
-                case 1:
-                    // Menu fragment activity
-                    return new MenuFragment();
-                case 2:
-
-                    fragment = new ReviewsFragment();
-                    Bundle bundle = new Bundle();
-
-                    bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
-                    fragment.setArguments(bundle);
-                    return new ReviewsFragment();
-            }
-            return null;
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
         }
 
         @Override
@@ -163,11 +127,39 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Section " + (position + 1);
+            switch (position) {
+                case 0:
+                    return "Details";
+                case 1:
+                    return "Twitter";
+                case 2:
+                    return "Reviews";
+            }
+            return null;
         }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment;
+            switch (position) {
+                case 0:
+                    mCurrentDetailsFragment = new DetailsFragment();
+                    // Detail fragment activity
+                    return mCurrentDetailsFragment;
+                case 1:
+                    // Menu fragment activity
+                    return new MenuFragment();
+                case 2:
+                    fragment = new ReviewsFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                    fragment.setArguments(bundle);
+                    return new ReviewsFragment();
+            }
+            return null;
+        }
+
     }
-
-
 
     protected class YelpBusinessSearchCallback implements Callback<Business> {
 
@@ -178,20 +170,9 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
             Log.d(TAG, "Success");
 
             if (business != null) {
-                mViewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-                mViewPager.setAdapter(mViewPagerAdapter);
-                mViewPager.setOffscreenPageLimit(3);
-
-                mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                    @Override
-                    public void onPageSelected(int position) {
-                        // When swiping between different app sections, select the corresponding tab.
-                        // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-                        // Tab.
-                        mToolbar.setSelectedNavigationItem(position);
-                    }
-                });
+                setupViewPager(mViewPager);
+                mTabLayout.setupWithViewPager(mViewPager);
 //                mCurrentDetailsFragment.onYelpData(business);
 
                 if (mCurrentDetailsFragment != null) {
@@ -201,14 +182,10 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
                     Log.d("YelpDataGenerator", "mCurrentDetailsFragment was null!!!!");
                 }
             }
-
         }
-
         @Override
         public void failure(RetrofitError error) {
             Log.e(TAG, error.getMessage());
         }
     }
-
-
 }
