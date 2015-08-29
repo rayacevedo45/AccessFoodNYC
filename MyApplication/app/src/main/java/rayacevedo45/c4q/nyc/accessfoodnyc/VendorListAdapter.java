@@ -8,8 +8,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
@@ -24,6 +30,21 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
     public VendorListAdapter(Context context, List<Business> list) {
         mContext = context;
         mList = list;
+
+//        for (Business business : list) {
+//            String yelpId = business.getId();
+//            ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+//            query.whereContainsAll("")
+//            query.whereEqualTo("yelpId", yelpId);
+//            query.findInBackground(new FindCallback<ParseObject>() {
+//                @Override
+//                public void done(List<ParseObject> list, ParseException e) {
+//                    if (list)
+//                }
+//            });
+//            ParseObject newVendor = new ParseObject("Vendor");
+//        }
+
     }
 
     @Override

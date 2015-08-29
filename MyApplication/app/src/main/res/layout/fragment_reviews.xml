@@ -8,13 +8,13 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="match_parent"
+        android:layout_marginBottom="56dp">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView_review"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="match_parent"/>
 
 
         <android.support.design.widget.FloatingActionButton
@@ -28,9 +28,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             app:pressedTranslationZ="12dp"
-            android:layout_alignParentEnd="true" />
-
-
+            />
 
 
 

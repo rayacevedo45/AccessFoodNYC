@@ -49,18 +49,16 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
     private ViewPager mViewPager;
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
+    private boolean isYelp;
 
-    // Tab titles
-    private String[] tabs = { "Details", "Menu", "Reviews" };
-    String vendorName;
     private String objectId;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_vendor_info);
 
+        isYelp = getIntent().getBooleanExtra(Constants.EXTRA_KEY_IS_YELP, false);
         objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_vendor);
@@ -153,12 +151,12 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
                     fragment = new ReviewsFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                    bundle.putBoolean(Constants.EXTRA_KEY_IS_YELP, isYelp);
                     fragment.setArguments(bundle);
                     return new ReviewsFragment();
             }
             return null;
         }
-
     }
 
     protected class YelpBusinessSearchCallback implements Callback<Business> {
@@ -172,6 +170,7 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
             if (business != null) {
 
                 setupViewPager(mViewPager);
+                mViewPager.setOffscreenPageLimit(3);
                 mTabLayout.setupWithViewPager(mViewPager);
 //                mCurrentDetailsFragment.onYelpData(business);
 
