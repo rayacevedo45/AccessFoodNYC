@@ -44,19 +44,18 @@
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_map"
-            android:theme="@style/Theme.AppCompat">
+            android:theme="@style/MapsTheme">
         </activity>
 
         <activity
             android:name=".accounts.LoginActivity"
-            android:label="@string/title_activity_login"
-            android:theme="@style/MyCustomTheme">
+            android:label="@string/title_activity_login">
         </activity>
 
         <activity
             android:name=".VendorInfoActivity"
             android:label="@string/title_activity_vendor"
-            android:theme="@style/Base.ThemeOverlay.AppCompat.ActionBar">
+            android:theme="@style/MapsTheme">
         </activity>
 
         <activity android:name=".ProfileActivity"
@@ -80,7 +79,6 @@
                 "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             android:label="@string/app_name" />
-
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

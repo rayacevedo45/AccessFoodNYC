@@ -23,14 +23,12 @@
     <android.support.design.widget.TextInputLayout
         android:layout_marginTop="150dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/usernameField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/orange"
             android:ems="10"
             android:hint="@string/username_hint"
             android:textColor="@color/orange"
@@ -40,36 +38,28 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">>
+        android:layout_height="wrap_content">>
 
         <EditText
             android:id="@+id/passwordField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/orange"
             android:ems="10"
             android:hint="@string/password_hint"
-            android:inputType="textPassword"
-            android:textColor="@color/orange"
-            android:textColorHint="@color/orange" />
+            android:inputType="textPassword" />
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">
+        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/usernameField2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/orange"
             android:ems="10"
             android:hint="New Username"
-            android:textColor="@color/orange"
-            android:textColorHint="@color/orange"
             android:visibility="gone" />
 
     </android.support.design.widget.TextInputLayout>
@@ -77,20 +67,16 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">>
+        android:layout_height="wrap_content">
 
 
         <EditText
             android:id="@+id/passwordField2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/orange"
             android:ems="10"
             android:hint="New Password"
             android:inputType="textPassword"
-            android:textColor="@color/orange"
-            android:textColorHint="@color/orange"
             android:visibility="gone" />
 
     </android.support.design.widget.TextInputLayout>
@@ -98,19 +84,15 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:hintTextAppearance="@style/TextAppearence.App.TextInputLayout">>
+        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/emailFieldID"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/orange"
             android:ems="10"
             android:hint="@string/email_hint"
             android:inputType="textEmailAddress"
-            android:textColor="@color/orange"
-            android:textColorHint="@color/orange"
             android:visibility="gone"/>
 
     </android.support.design.widget.TextInputLayout>
