@@ -243,7 +243,6 @@ public class ProfileActivity extends AppCompatActivity {
             if (business != null) {
                 mFavoriteBizName = business.getName();
                 mName.setText(mFavoriteBizName);
-                Toast.makeText(getApplicationContext(), mFavoriteBizName, Toast.LENGTH_SHORT).show();
             }
 
         }
