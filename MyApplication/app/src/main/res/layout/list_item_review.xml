@@ -5,12 +5,15 @@
 
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_margin="8dp"
         android:id="@+id/imageView_review_profile"
+        android:layout_gravity="top"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
 
     <LinearLayout
+        android:layout_marginLeft="8dp"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">

@@ -88,7 +88,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
 
         List<String> address = DetailsFragment.addressGenerator(business);
         holder.name.setText(Integer.toString(position + 1) + ". " + business.getName());
-        holder.address.setText(address.get(1));
+        holder.address.setText(address.get(0) + ", " + address.get(1));
     }
 
     public static class VendorViewHolder extends RecyclerView.ViewHolder {
