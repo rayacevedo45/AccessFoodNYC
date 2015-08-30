@@ -4,17 +4,22 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -26,7 +31,8 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
     private String objectId;
     private boolean isYelp;
 
-    private String b1Name;
+    private ImageView mImageViewUserFace;
+    private TextView mTextViewName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -35,8 +41,27 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.fragment_reviews, container, false);
         mButtonReview = (FloatingActionButton) rootView.findViewById(R.id.button_review);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_review);
+        mImageViewUserFace = (ImageView) rootView.findViewById(R.id.review_profile);
+        mTextViewName = (TextView) rootView.findViewById(R.id.review_user_name);
+
+        mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager lm = new LinearLayoutManager(getActivity());
+        lm.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(lm);
+
+
+        ParseUser user = ParseUser.getCurrentUser();
+
+        Picasso.with(getActivity()).load(user.getString("profile_url")).resize(300, 300).centerCrop().into(mImageViewUserFace);
+        String name = user.getString("first_name") + " " + user.getString("last_name");
+        mTextViewName.setText(name);
+
         objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
         isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
+
+
+
+
 
         return rootView;
 
@@ -79,36 +104,26 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
             query.whereEqualTo("yelpId", objectId).findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
+                    ReviewDialogFragment dialog = new ReviewDialogFragment();
+                    Bundle argument = new Bundle();
                     if (list.size() == 0) {
-                        ParseObject newVendor = new ParseObject("Vendor");
-                        newVendor.put("yelpId", objectId);
-                        // parseobject when do they create object id?
-                        newVendor.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-
-
-                            }
-                        });
+                        argument.putBoolean(Constants.EXTRA_KEY_IS_YELP, true);
                     } else {
                         objectId = list.get(0).getObjectId();
-                        ReviewDialogFragment dialog = new ReviewDialogFragment();
-                        Bundle argument = new Bundle();
-                        argument.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
-                        dialog.setArguments(argument);
-                        dialog.show(manager, "Review");
+                        argument.putBoolean(Constants.EXTRA_KEY_IS_YELP, false);
                     }
+                    argument.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                    dialog.setArguments(argument);
+                    dialog.show(manager, "Review");
                 }
             });
         } else {
             ReviewDialogFragment dialog = new ReviewDialogFragment();
             Bundle argument = new Bundle();
             argument.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+            argument.putBoolean(Constants.EXTRA_KEY_IS_YELP, false);
             dialog.setArguments(argument);
             dialog.show(manager, "Review");
-
         }
-
     }
-
 }

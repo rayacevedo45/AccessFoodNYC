@@ -50,16 +50,16 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
     private boolean isYelp;
-
     private String objectId;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isYelp = getIntent().getBooleanExtra(Constants.EXTRA_KEY_IS_YELP, false);
+        objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
 
         setContentView(R.layout.activity_vendor_info);
 
-        isYelp = getIntent().getBooleanExtra(Constants.EXTRA_KEY_IS_YELP, false);
-        objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
+
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_vendor);
         setSupportActionBar(mToolbar);
@@ -82,9 +82,11 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
             }
         });
 
+        if (isYelp) {
+            YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
+            yelpBizService.searchBusiness(objectId, new YelpBusinessSearchCallback());
+        }
 
-        YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
-        yelpBizService.searchBusiness(businessId, new YelpBusinessSearchCallback());
 
     }
 
@@ -153,7 +155,7 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
                     bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
                     bundle.putBoolean(Constants.EXTRA_KEY_IS_YELP, isYelp);
                     fragment.setArguments(bundle);
-                    return new ReviewsFragment();
+                    return fragment;
             }
             return null;
         }

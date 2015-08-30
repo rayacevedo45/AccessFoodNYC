@@ -9,7 +9,7 @@
         <item name="android:navigationBarColor">@color/primaryColor</item>
     </style>
 
-    <style name="MapsTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="MapsTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
         <item name="android:colorPrimary">@color/primaryColor</item>
         <item name="android:colorPrimaryDark">@color/primaryColorDark</item>
