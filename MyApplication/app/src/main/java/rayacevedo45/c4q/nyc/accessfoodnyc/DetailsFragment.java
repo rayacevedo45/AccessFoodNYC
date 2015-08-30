@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -38,7 +39,7 @@ public class DetailsFragment extends Fragment {
     private Button add;
     private ParseObject selectedVendor;
 
-    private TextView mVendorRatingNum;
+    //private TextView mVendorRatingNum;
     private static String RatingNumStr;
     private static List <String> addList;
 
@@ -78,8 +79,8 @@ public class DetailsFragment extends Fragment {
         String vendorRatingUrlLarge = business.getRatingImgUrlLarge();
         Picasso.with(getActivity()).load(vendorRatingUrlLarge).into(mVendorRatingImage);
 
-        mVendorRatingNum = (TextView)getActivity().findViewById(R.id.rating_num);
-        mVendorRatingNum.setText(String.valueOf(business.getRating()));
+//        mVendorRatingNum = (TextView)getActivity().findViewById(R.id.rating_num);
+//        mVendorRatingNum.setText(String.valueOf(business.getRating()));
 
         addressGenerator(business);
         LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.address);
@@ -115,7 +116,7 @@ public class DetailsFragment extends Fragment {
         return mCategories;
     }
 
-    public static List <String> addressGenerator (Business business){
+    public static List<String> addressGenerator(Business business){
 
         Location bizLocation = business.getLocation();
         addList = bizLocation.getDisplayAddress();
@@ -140,10 +141,9 @@ public class DetailsFragment extends Fragment {
                 query.whereStartsWith("yelpId", mId);
 
                 query.getFirstInBackground(new GetCallback<ParseObject>() {
-                    public void done(ParseObject object, ParseException e) {
+                    public void done(final ParseObject object, ParseException e) {
                         if (e == null) {
                             //object exists
-
                             selectedVendor = object;
                             relation.add(selectedVendor);
 
@@ -151,6 +151,7 @@ public class DetailsFragment extends Fragment {
                                 @Override
                                 public void done(ParseException e) {
                                     if (e == null) {
+                                        ParsePush.subscribeInBackground(object.getObjectId());
                                         Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(getActivity(), ProfileActivity.class);
                                         startActivity(intent);
@@ -177,6 +178,7 @@ public class DetailsFragment extends Fragment {
                                             @Override
                                             public void done(ParseException e) {
                                                 if (e == null) {
+                                                    ParsePush.subscribeInBackground(selectedVendor.getObjectId());
                                                     Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
                                                     Intent intent = new Intent(getActivity(), ProfileActivity.class);
                                                     startActivity(intent);

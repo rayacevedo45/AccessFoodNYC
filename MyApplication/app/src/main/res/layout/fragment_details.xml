@@ -1,106 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<RelativeLayout
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#ffffff"
-    android:padding="10dp"
-    android:clickable="true">
+    android:orientation="vertical">
 
 
-    <!--<ImageView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/vendor_pic"-->
-        <!--android:adjustViewBounds="true"-->
-        <!--android:scaleType="fitXY"-->
-        <!--android:textColor="#FFFFFF"/>-->
-
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/vendor_pic"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        app:border_width="2dp"
-        app:border_color="#FFFFFF"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp" />
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/yelp_logo"
-        android:layout_toRightOf="@id/vendor_pic"
-        android:src="@drawable/yelp_logo"
-        android:layout_marginTop="40dp"
-        />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/vendor_name"
-        android:textSize="25dp"
-        android:text=""
-        android:layout_below="@+id/vendor_pic"
-        android:layout_centerHorizontal="true"
-        android:textColor="#303030" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/category"
-        android:textSize="15dp"
-        android:text=""
-        android:layout_below="@+id/vendor_name"
-        android:layout_centerHorizontal="true"
-        android:textColor="#303030" />
-
-    <ImageView
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:id="@+id/vendor_rating"
-        android:layout_alignTop="@+id/rating_num"
-        android:layout_centerHorizontal="true" />
-
-
-    <TextView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rating_num"
-        android:textSize="15dp"
-        android:layout_toRightOf="@id/vendor_rating"
-        android:layout_below="@+id/category"
-        android:textColor="#303030" />
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/address"
-        android:layout_below="@+id/vendor_rating"
+        android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_centerHorizontal="true"
-        android:gravity = "center">
-
-    </LinearLayout>
-
+        android:background="#ffffff"
+        android:padding="10dp"
+        android:clickable="true">
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/phone"
-        android:textSize="15dp"
-        android:layout_below="@+id/address"
-        android:layout_centerHorizontal="true"
-        android:textColor="#303030" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/vendor_pic"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:border_width="2dp"
+            app:border_color="#FFFFFF"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/yelp_logo"
+            android:layout_toRightOf="@id/vendor_pic"
+            android:src="@drawable/yelp_logo"
+            android:layout_marginTop="40dp"
+            />
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/vendor_name"
+            android:textSize="25dp"
+            android:text=""
+            android:layout_below="@+id/vendor_pic"
+            android:layout_centerHorizontal="true"
+            android:textColor="#303030" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/category"
+            android:textSize="15dp"
+            android:text=""
+            android:layout_below="@+id/vendor_name"
+            android:layout_centerHorizontal="true"
+            android:textColor="#303030" />
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:id="@+id/vendor_rating"
+            android:layout_alignTop="@+id/rating_num"
+            android:layout_centerHorizontal="true" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rating_num"
+            android:textSize="15dp"
+            android:layout_toRightOf="@id/vendor_rating"
+            android:layout_below="@+id/category"
+            android:textColor="#303030" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/address"
+            android:layout_below="@+id/vendor_rating"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:gravity = "center">
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/phone"
+            android:textSize="15dp"
+            android:layout_below="@+id/address"
+            android:layout_centerHorizontal="true"
+            android:textColor="#303030" />
 
 
 
@@ -116,14 +111,24 @@
             android:scrollbars = "vertical"/>
 
 
-    <Button
-        android:id="@+id/button_add"
-        android:text="add to favorite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="-10dp" />
+        <Button
+            android:id="@+id/button_add"
+            android:text="add to favorite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-10dp" />
 
 
-</RelativeLayout>
-</ScrollView>
+        <TextView
+            android:text="Here is what your friends say"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+

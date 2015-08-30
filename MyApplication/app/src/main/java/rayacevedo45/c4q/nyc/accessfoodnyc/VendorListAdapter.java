@@ -78,32 +78,32 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
 //    }
 
     @Override
-    public void onBindViewHolder(VendorViewHolder vendorViewHolder, int position) {
+    public void onBindViewHolder(VendorViewHolder holder, int position) {
         Business business = mList.get(position);
         String businessImgUrl = (business.getImageUrl());
-        Picasso.with(mContext).load(businessImgUrl).centerCrop().resize(250, 250).into(vendorViewHolder.thumbnail);
+        Picasso.with(mContext).load(businessImgUrl).centerCrop().resize(250, 250).into(holder.thumbnail);
 
         String ratingImgUrl = (business.getRatingImgUrl());
-        Picasso.with(mContext).load(ratingImgUrl).into(vendorViewHolder.ratingImage);
+        Picasso.with(mContext).load(ratingImgUrl).into(holder.ratingImage);
 
-        vendorViewHolder.name.setText(Integer.toString(position + 1) + ". " + business.getName());
-        vendorViewHolder.rating.setText(String.valueOf(business.getRating()));
-
+        List<String> address = DetailsFragment.addressGenerator(business);
+        holder.name.setText(Integer.toString(position + 1) + ". " + business.getName());
+        holder.address.setText(address.get(1));
     }
 
     public static class VendorViewHolder extends RecyclerView.ViewHolder {
 
         protected ImageView thumbnail;
-        protected TextView rating;
         protected TextView name;
         protected ImageView ratingImage;
+        protected TextView address;
 
         public VendorViewHolder(View itemView) {
             super(itemView);
             thumbnail = (ImageView) itemView.findViewById(R.id.imageView_vendor);
-            rating = (TextView) itemView.findViewById(R.id.vendor_rating);
             name = (TextView) itemView.findViewById(R.id.vendor_name);
             ratingImage = (ImageView) itemView.findViewById(R.id.vendor_rating_img);
+            address = (TextView) itemView.findViewById(R.id.textView_address);
         }
 
 

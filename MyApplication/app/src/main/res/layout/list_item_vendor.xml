@@ -39,30 +39,42 @@
             android:textColor="@color/black"/>
 
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/vendor_rating_img"
+                android:layout_width="100dp"
+                android:layout_height="20dp" />
 
-        <ImageView
-            android:id="@+id/vendor_rating_img"
-            android:layout_width="100dp"
-            android:layout_height="20dp"
+            <ImageView
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/yelp_logo"
+                android:src="@drawable/yelp_logo"
+                />
 
-            />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/vendor_rating"
+            android:id="@+id/textView_address"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"/>
+            android:layout_height="wrap_content" />
+        <!--<TextView-->
+            <!--android:id="@+id/vendor_rating"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textColor="@color/black"/>-->
 
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/favoriteborder"
-            android:layout_gravity="right"
-            />
-
-
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/favoriteborder"-->
+            <!--android:layout_gravity="right"-->
+            <!--/>-->
 
     </LinearLayout>
 
