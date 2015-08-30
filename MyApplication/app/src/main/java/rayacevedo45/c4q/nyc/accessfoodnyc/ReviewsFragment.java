@@ -28,6 +28,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
 
     private FloatingActionButton mButtonReview;
     private RecyclerView mRecyclerView;
+    private ReviewAdapter mAdapter;
     private String objectId;
     private boolean isYelp;
 
@@ -59,6 +60,42 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
         objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
         isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
 
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+        if (isYelp) {
+
+            query.whereEqualTo("yelpId", objectId).findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    if (list.size() != 0) {
+                        ParseObject vendor = list.get(0);
+                        ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
+                        reviewQuery.include("writer");
+                        reviewQuery.whereEqualTo("vendor", vendor).findInBackground(new FindCallback<ParseObject>() {
+                            @Override
+                            public void done(List<ParseObject> list, ParseException e) {
+                                mAdapter = new ReviewAdapter(getActivity(), list);
+                                mRecyclerView.setAdapter(mAdapter);
+                            }
+                        });
+                    }
+                }
+            });
+        } else {
+            query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, ParseException e) {
+                    ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
+                    reviewQuery.include("writer");
+                    reviewQuery.whereEqualTo("vendor", parseObject).findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> list, ParseException e) {
+                            mAdapter = new ReviewAdapter(getActivity(), list);
+                            mRecyclerView.setAdapter(mAdapter);
+                        }
+                    });
+                }
+            });
+        }
 
 
 
