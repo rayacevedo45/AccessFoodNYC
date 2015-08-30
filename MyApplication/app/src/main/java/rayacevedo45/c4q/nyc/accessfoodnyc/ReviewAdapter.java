@@ -1,35 +1,93 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHolder> {
 
+    private Context mContext;
+    private List<ParseObject> mList;
 
-    public ReviewAdapter() {
+    public ReviewAdapter(Context context, List<ParseObject> list) {
+        mContext = context;
+        mList = list;
     }
 
     @Override
-    public ReviewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+    public ReviewHolder onCreateViewHolder(ViewGroup parent, int position) {
+        View row = LayoutInflater.from(mContext).inflate(R.layout.list_item_review, parent, false);
+        return new ReviewHolder(row);
     }
 
     @Override
     public void onBindViewHolder(ReviewHolder holder, int position) {
+        ParseObject review = mList.get(position);
+        ParseUser user = review.getParseUser("writer");
+        int rating = review.getInt("rating");
+
+        Picasso.with(mContext).load(user.getString("profile_url")).resize(200, 200).centerCrop().into(holder.picture);
+        holder.name.setText(user.getString("first_name") + " " + user.getString("last_name"));
+        holder.date.setText(review.getCreatedAt().toString());
+        holder.title.setText(review.getString("title"));
+        holder.description.setText(review.getString("description"));
+        switch (rating) {
+            case 1:
+                holder.grade2.setVisibility(View.GONE);
+            case 2:
+                holder.grade3.setVisibility(View.GONE);
+            case 3:
+                holder.grade4.setVisibility(View.GONE);
+            case 4:
+                holder.grade5.setVisibility(View.GONE);
+        }
 
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mList.size();
     }
 
     public static class ReviewHolder extends RecyclerView.ViewHolder {
 
+        protected ImageView picture;
+        protected TextView name;
+        protected TextView date;
+        protected TextView title;
+        protected TextView description;
+
+        protected ImageView grade1;
+        protected ImageView grade2;
+        protected ImageView grade3;
+        protected ImageView grade4;
+        protected ImageView grade5;
+
         public ReviewHolder(View itemView) {
             super(itemView);
+            picture = (ImageView) itemView.findViewById(R.id.imageView_review_profile);
+            grade1 = (ImageView) itemView.findViewById(R.id.grade_1);
+            grade2 = (ImageView) itemView.findViewById(R.id.grade_2);
+            grade3 = (ImageView) itemView.findViewById(R.id.grade_3);
+            grade4 = (ImageView) itemView.findViewById(R.id.grade_4);
+            grade5 = (ImageView) itemView.findViewById(R.id.grade_5);
+            name = (TextView) itemView.findViewById(R.id.textView_review_name);
+            date = (TextView) itemView.findViewById(R.id.textView_review_date);
+            title = (TextView) itemView.findViewById(R.id.textView_review_title);
+            description = (TextView) itemView.findViewById(R.id.textView_review_description);
         }
     }
 }
