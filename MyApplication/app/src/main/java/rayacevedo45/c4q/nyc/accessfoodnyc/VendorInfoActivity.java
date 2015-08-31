@@ -2,6 +2,7 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -11,15 +12,21 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpBusinessSearchService;
@@ -68,6 +75,7 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
 
         mToolbar = (Toolbar) findViewById(R.id.toolbar_vendor);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // back button
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
 
@@ -202,5 +210,43 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
         public void failure(RetrofitError error) {
             Log.e(TAG, error.getMessage());
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_map, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()) {
+            case R.id.action_profile:
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_logout:
+                logOut();
+                break;
+            case R.id.action_settings:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void logOut() {
+        LoginManager.getInstance().logOut();
+        ParseUser.logOut();
+        Toast.makeText(getApplicationContext(), "Successfully logged out!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

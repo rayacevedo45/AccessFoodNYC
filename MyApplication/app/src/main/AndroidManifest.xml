@@ -54,20 +54,21 @@
 
         <activity
             android:name=".VendorInfoActivity"
-            android:label="@string/title_activity_vendor"
-            android:theme="@style/MapsTheme">
+            android:theme="@style/MapsTheme"
+            android:parentActivityName=".MapsActivity">
         </activity>
 
-        <activity android:name=".ProfileActivity"
-            android:label="Profile">
+        <activity android:name=".ProfileActivity">
         </activity>
 
         <activity android:name=".FindFriendsActivity"
-            android:label="Find Friends">
+            android:label="Find Friends"
+            android:parentActivityName=".ProfileActivity">
         </activity>
 
         <activity android:name=".FriendsActivity"
-            android:label="Friends">
+            android:label="Friends"
+            android:parentActivityName=".ProfileActivity">
         </activity>
 
         <activity android:name=".FriendProfileActivity"

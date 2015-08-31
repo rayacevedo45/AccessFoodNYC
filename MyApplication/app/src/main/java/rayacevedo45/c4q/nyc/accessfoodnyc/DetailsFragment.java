@@ -4,6 +4,7 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,11 +52,15 @@ public class DetailsFragment extends Fragment {
 
     private static String mId;
 
+    private RecyclerView mRecyclerViewReview;
+    private ReviewAdapter mAdapter;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
         Bundle args = getArguments();
         add = (Button) rootView.findViewById(R.id.button_add);
+        mRecyclerViewReview = (RecyclerView) rootView.findViewById(R.id.recyclerView_friends_review);
 
 
 
@@ -192,12 +197,7 @@ public class DetailsFragment extends Fragment {
                         }
                     }
                 });
-
-
-
             }
         });
-
     }
-
 }

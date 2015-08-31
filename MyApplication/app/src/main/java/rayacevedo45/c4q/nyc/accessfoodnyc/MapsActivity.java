@@ -111,7 +111,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mToolbar.setTitle("Maps");
         //mToolbar.inflateMenu(R.menu.menu_map);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // this is enable to back button arrow icon
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         mToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
