@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +52,8 @@ public class ProfileActivity extends AppCompatActivity {
     private TextView first;
     private TextView last;
 
+    private Toolbar mToolbar;
+
     //private Button maps;
     private Button mButtonLogOut;
     private Button mButtonFindFriends;
@@ -67,8 +71,16 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         String objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
 
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_profile);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        final ParseUser me = ParseUser.getCurrentUser();
+
+        getSupportActionBar().setTitle(me.getString("first_name") + " " + me.getString("last_name") + "'s Profile");
+
+
         if (objectId != null) {
-            final ParseUser me = ParseUser.getCurrentUser();
+
             final ParseRelation<ParseUser> relation = me.getRelation("friends");
 
             ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
@@ -106,7 +118,6 @@ public class ProfileActivity extends AppCompatActivity {
         mButtonFindFriends = (Button) findViewById(R.id.find_friends);
         mButtonFriends = (Button) findViewById(R.id.button_friends_list);
         mButtonLogOut = (Button) findViewById(R.id.log_out);
-        mListView = (ListView) findViewById(R.id.listView_favorites);
 
 
         ParseUser user = ParseUser.getCurrentUser();

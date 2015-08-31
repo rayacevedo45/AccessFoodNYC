@@ -1,99 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingTop="24dp"
-    android:background="@color/white">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView_profile"
-        android:layout_width="wrap_content"
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.design.widget.AppBarLayout
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
-
-    <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center">
+        android:theme="@style/AppTheme">
 
-        <TextView
-            android:textSize="30sp"
-            android:id="@+id/first_name"
-            android:layout_marginRight="5dp"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_profile"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="24dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"/>
+            android:layout_gravity="center"/>
 
-        <TextView
-            android:textSize="30sp"
-            android:id="@+id/last_name"
-            android:layout_marginLeft="5dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"/>
-
-
-
-    </LinearLayout>
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:textSize="30sp"
-            android:text="Favorites"
-            android:textColor="@color/black"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center_vertical|center_horizontal" />
+            android:gravity="center">
 
-        <ListView
-            android:id="@+id/listView_favorites"
+            <TextView
+                android:textSize="30sp"
+                android:id="@+id/first_name"
+                android:layout_marginRight="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:textSize="30sp"
+                android:id="@+id/last_name"
+                android:layout_marginLeft="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+
+
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
+            android:orientation="vertical">
 
-        </ListView>
+            <TextView
+                android:textSize="30sp"
+                android:text="Favorites"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_vertical|center_horizontal" />
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="8dp"
+                android:id="@+id/recyclerView_profile_favorite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
+            android:orientation="vertical">
+
+
+            <Button
+                android:background="@color/accentColor"
+                android:text="Find Friends"
+                android:id="@+id/find_friends"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+            <Button
+                android:id="@+id/log_out"
+                android:text="@string/logout_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/amber"/>
+
+            <Button
+                android:id="@+id/button_friends_list"
+                android:background="@color/accentColor"
+                android:text="Friends List"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="bottom"
-        android:orientation="vertical">
 
 
-        <Button
-            android:background="@color/accentColor"
-            android:text="Find Friends"
-            android:id="@+id/find_friends"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
 
-        <Button
-            android:id="@+id/log_out"
-            android:text="@string/logout_label"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/amber"/>
-
-        <Button
-            android:id="@+id/button_friends_list"
-            android:background="@color/accentColor"
-            android:text="Friends List"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
 
 
-</LinearLayout>
+
+
+
