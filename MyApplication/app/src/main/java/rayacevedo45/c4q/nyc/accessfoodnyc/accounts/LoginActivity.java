@@ -126,6 +126,10 @@ public class LoginActivity extends Activity {
                             goToMapsActivity();
                         } else {
                             Profile profile = Profile.getCurrentProfile();
+                            ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                            installation.put("user", user);
+                            installation.put("fbId", profile.getId());
+                            installation.saveInBackground();
                             Toast.makeText(getApplicationContext(), "User logged in through Facebook!", Toast.LENGTH_SHORT).show();
                             Log.d("MyApp", "User logged in through Facebook!");
                             goToMapsActivity();
