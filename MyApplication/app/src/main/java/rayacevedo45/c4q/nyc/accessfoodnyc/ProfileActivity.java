@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -59,8 +61,8 @@ public class ProfileActivity extends AppCompatActivity {
     private Button mButtonFindFriends;
     private Button mButtonFriends;
 
-    private ListView mListView;
-    private FavoriteAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private VendorListAdapter mAdapter;
 
     private String mFavoriteBizName;
     private TextView mName;
@@ -118,6 +120,11 @@ public class ProfileActivity extends AppCompatActivity {
         mButtonFindFriends = (Button) findViewById(R.id.find_friends);
         mButtonFriends = (Button) findViewById(R.id.button_friends_list);
         mButtonLogOut = (Button) findViewById(R.id.log_out);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_profile_favorite);
+        mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        lm.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(lm);
 
 
         ParseUser user = ParseUser.getCurrentUser();

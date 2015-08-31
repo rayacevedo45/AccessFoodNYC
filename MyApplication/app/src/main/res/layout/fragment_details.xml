@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
+    android:id="@+id/nestedScrollView"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
@@ -133,12 +133,10 @@
             android:layout_height="1dp"
             android:background="@color/dividerColor"/>
 
-
         <TextView
             android:text="Here is what your friends say"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
 
         <View
             android:layout_margin="8dp"
@@ -148,18 +146,12 @@
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="500dp"
             android:id="@+id/recyclerView_friends_review">
-
-
 
         </android.support.v7.widget.RecyclerView>
 
-
     </LinearLayout>
-
-
-
 
 
 </android.support.v4.widget.NestedScrollView>

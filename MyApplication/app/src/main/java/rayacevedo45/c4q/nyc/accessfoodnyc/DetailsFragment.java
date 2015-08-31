@@ -4,6 +4,8 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -25,6 +28,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
@@ -40,8 +44,6 @@ public class DetailsFragment extends Fragment {
     private Button add;
     private ParseObject selectedVendor;
 
-    //private TextView mVendorRatingNum;
-    private static String RatingNumStr;
     private static List <String> addList;
 
     private TextView mCategoriesText;
@@ -55,12 +57,87 @@ public class DetailsFragment extends Fragment {
     private RecyclerView mRecyclerViewReview;
     private ReviewAdapter mAdapter;
 
+    private boolean isYelp;
+    private String objectId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-        Bundle args = getArguments();
         add = (Button) rootView.findViewById(R.id.button_add);
         mRecyclerViewReview = (RecyclerView) rootView.findViewById(R.id.recyclerView_friends_review);
+        mRecyclerViewReview.setHasFixedSize(true);
+        LinearLayoutManager lm = new LinearLayoutManager(getActivity());
+        lm.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerViewReview.setLayoutManager(lm);
+
+        objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
+        isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
+
+        ParseUser user = ParseUser.getCurrentUser();
+        final ParseRelation<ParseUser> relation = user.getRelation("friends");
+        if (isYelp) {
+            ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
+            findVendor.whereEqualTo("yelpId", objectId).findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    if (list.size() != 0) {
+                        final ParseObject vendor = list.get(0);
+                        relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
+                            @Override
+                            public void done(List<ParseUser> list, ParseException e) {
+                                if (list.size() != 0) {
+                                    ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Review");
+                                    query1.include("writer");
+                                    query1.whereEqualTo("vendor", vendor).whereContainedIn("writer", list);
+                                    query1.findInBackground(new FindCallback<ParseObject>() {
+                                        @Override
+                                        public void done(List<ParseObject> list, ParseException e) {
+                                            if (list.size() != 0) {
+                                                mAdapter = new ReviewAdapter(getActivity(), list);
+                                                mRecyclerViewReview.setAdapter(mAdapter);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        } else {
+            relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
+                @Override
+                public void done(List<ParseUser> list, ParseException e) {
+
+                    ParseQuery<ParseObject> findVendorQuery = ParseQuery.getQuery("Vendor");
+                    findVendorQuery.getInBackground(objectId, new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(final ParseObject vendor, ParseException e) {
+                            relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
+                                @Override
+                                public void done(List<ParseUser> list, ParseException e) {
+                                    if (list.size() != 0) {
+                                        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Review");
+                                        query1.include("writer");
+                                        query1.whereEqualTo("vendor", vendor).whereContainedIn("writer", list);
+                                        query1.findInBackground(new FindCallback<ParseObject>() {
+                                            @Override
+                                            public void done(List<ParseObject> list, ParseException e) {
+                                                if (list.size() != 0) {
+                                                    mAdapter = new ReviewAdapter(getActivity(), list);
+                                                    mRecyclerViewReview.setAdapter(mAdapter);
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                }
+            });
+        }
 
 
 
@@ -104,6 +181,9 @@ public class DetailsFragment extends Fragment {
         mPhoneText.setText(business.getSnippetText());
 
         mId = business.getId();
+
+
+
     }
 
     public static String catListIterator (Business business){
