@@ -34,6 +34,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
 
     private ImageView mImageViewUserFace;
     private TextView mTextViewName;
+    private TextView mTextViewNoReview;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,6 +45,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_review);
         mImageViewUserFace = (ImageView) rootView.findViewById(R.id.review_profile);
         mTextViewName = (TextView) rootView.findViewById(R.id.review_user_name);
+        mTextViewNoReview = (TextView) rootView.findViewById(R.id.textView_no_review);
 
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
@@ -73,8 +75,13 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                         reviewQuery.whereEqualTo("vendor", vendor).findInBackground(new FindCallback<ParseObject>() {
                             @Override
                             public void done(List<ParseObject> list, ParseException e) {
-                                mAdapter = new ReviewAdapter(getActivity(), list);
-                                mRecyclerView.setAdapter(mAdapter);
+                                if (list.size() == 0) {
+                                    mTextViewNoReview.setText("No reviews yet :( \nWhy don't you write one?");
+                                    mTextViewNoReview.setVisibility(View.VISIBLE);
+                                } else {
+                                    mAdapter = new ReviewAdapter(getActivity(), list);
+                                    mRecyclerView.setAdapter(mAdapter);
+                                }
                             }
                         });
                     }
@@ -96,8 +103,6 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                 }
             });
         }
-
-
 
 
         return rootView;

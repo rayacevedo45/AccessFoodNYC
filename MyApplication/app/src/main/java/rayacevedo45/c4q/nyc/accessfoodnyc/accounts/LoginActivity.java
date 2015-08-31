@@ -26,6 +26,7 @@ import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.util.Arrays;
@@ -104,7 +105,7 @@ public class LoginActivity extends Activity {
             public void onClick(View view) {
                 ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, Arrays.asList("public_profile", "user_friends", "email", "user_birthday"), new LogInCallback() {
                     @Override
-                    public void done(ParseUser user, ParseException err) {
+                    public void done(final ParseUser user, ParseException err) {
                         if (user == null) {
                             Toast.makeText(getApplicationContext(), "Uh oh. The user cancelled the Facebook login.", Toast.LENGTH_SHORT).show();
                             Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
@@ -126,6 +127,10 @@ public class LoginActivity extends Activity {
                             goToMapsActivity();
                         } else {
                             Profile profile = Profile.getCurrentProfile();
+                            ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+                            installation.put("user", user);
+                            installation.put("fbId", profile.getId());
+                            installation.saveInBackground();
                             Toast.makeText(getApplicationContext(), "User logged in through Facebook!", Toast.LENGTH_SHORT).show();
                             Log.d("MyApp", "User logged in through Facebook!");
                             goToMapsActivity();

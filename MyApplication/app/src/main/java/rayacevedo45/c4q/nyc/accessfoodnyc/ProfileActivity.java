@@ -96,7 +96,6 @@ public class ProfileActivity extends AppCompatActivity {
                     } catch (JSONException e2) {
                         e2.printStackTrace();
                     }
-
                 }
             });
         }
@@ -207,7 +206,7 @@ public class ProfileActivity extends AppCompatActivity {
 
             ParseObject vendor = getItem(position);
 
-            String vendorName = vendor.getString("vendor_name");
+            String vendorName = vendor.getString("name");
 
             if (vendorName != null) {
                 mName.setText(vendorName);

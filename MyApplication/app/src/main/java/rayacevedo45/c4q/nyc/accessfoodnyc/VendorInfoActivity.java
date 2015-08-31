@@ -12,6 +12,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,6 +90,14 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
         if (isYelp) {
             YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
             yelpBizService.searchBusiness(objectId, new YelpBusinessSearchCallback());
+        } else {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+            query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, ParseException e) {
+                    mToolbar.setTitle(parseObject.getString("name"));
+                }
+            });
         }
 
 
@@ -174,6 +187,7 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
                 setupViewPager(mViewPager);
                 mViewPager.setOffscreenPageLimit(3);
                 mTabLayout.setupWithViewPager(mViewPager);
+                mToolbar.setTitle(business.getName());
 //                mCurrentDetailsFragment.onYelpData(business);
 
                 if (mCurrentDetailsFragment != null) {

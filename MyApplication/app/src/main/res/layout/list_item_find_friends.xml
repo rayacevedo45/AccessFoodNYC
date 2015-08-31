@@ -8,6 +8,7 @@
     android:layout_height="match_parent">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_margin="8dp"
         android:id="@+id/imageView_friend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
@@ -23,7 +24,8 @@
 
 
         <TextView
-            android:textSize="30sp"
+            android:layout_marginLeft="8dp"
+            android:textSize="25sp"
             android:textColor="@color/black"
             android:id="@+id/name_friend"
             android:layout_width="wrap_content"
