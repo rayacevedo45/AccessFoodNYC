@@ -162,19 +162,19 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
         @Override
         public Fragment getItem(int position) {
             Fragment fragment;
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+            bundle.putBoolean(Constants.EXTRA_KEY_IS_YELP, isYelp);
             switch (position) {
                 case 0:
                     mCurrentDetailsFragment = new DetailsFragment();
-                    // Detail fragment activity
+                    mCurrentDetailsFragment.setArguments(bundle);
                     return mCurrentDetailsFragment;
                 case 1:
                     // Menu fragment activity
                     return new MenuFragment();
                 case 2:
                     fragment = new ReviewsFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
-                    bundle.putBoolean(Constants.EXTRA_KEY_IS_YELP, isYelp);
                     fragment.setArguments(bundle);
                     return fragment;
             }
