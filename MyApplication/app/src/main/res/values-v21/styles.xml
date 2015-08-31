@@ -7,6 +7,7 @@
         <item name="android:colorAccent">@color/accentColor</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:navigationBarColor">@color/primaryColor</item>
+        <item name="android:editTextColor">@color/accentColor</item>
     </style>
 
     <style name="MapsTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -16,6 +17,7 @@
         <item name="android:colorAccent">@color/accentColor</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:navigationBarColor">@color/primaryColor</item>
+        <item name="android:editTextColor">@color/accentColor</item>
 
     </style>
 

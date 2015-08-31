@@ -26,6 +26,7 @@ import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.util.Arrays;
@@ -104,7 +105,7 @@ public class LoginActivity extends Activity {
             public void onClick(View view) {
                 ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, Arrays.asList("public_profile", "user_friends", "email", "user_birthday"), new LogInCallback() {
                     @Override
-                    public void done(ParseUser user, ParseException err) {
+                    public void done(final ParseUser user, ParseException err) {
                         if (user == null) {
                             Toast.makeText(getApplicationContext(), "Uh oh. The user cancelled the Facebook login.", Toast.LENGTH_SHORT).show();
                             Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");

@@ -153,15 +153,13 @@ public class DetailsFragment extends Fragment {
                                     if (e == null) {
                                         ParsePush.subscribeInBackground(object.getObjectId());
                                         Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(getActivity(), ProfileActivity.class);
-                                        startActivity(intent);
+
                                     } else {
                                         Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                                     }
                                 }
                             });
-                            Intent intent = new Intent(getActivity(), ProfileActivity.class);
-                            startActivity(intent);
+
                         } else {
                             if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
                                 //object doesn't exist
@@ -180,8 +178,7 @@ public class DetailsFragment extends Fragment {
                                                 if (e == null) {
                                                     ParsePush.subscribeInBackground(selectedVendor.getObjectId());
                                                     Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
-                                                    Intent intent = new Intent(getActivity(), ProfileActivity.class);
-                                                    startActivity(intent);
+
                                                 } else {
                                                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
                                                 }

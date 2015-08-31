@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
@@ -13,7 +14,8 @@
         android:layout_height="wrap_content"
         android:stepSize="1"
         android:id="@+id/ratingBar"
-        android:layout_gravity="center_horizontal" />
+        android:layout_gravity="center_horizontal"
+        android:backgroundTint="@color/accentColor"/>
 
     <TextView
         android:id="@+id/dialog_review_rating"
@@ -24,7 +26,8 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:textColor="@color/accentColor">
 
         <EditText
             android:hint="Title"
@@ -37,7 +40,8 @@
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:textColor="@color/accentColor">
 
         <EditText
             android:hint="Description"

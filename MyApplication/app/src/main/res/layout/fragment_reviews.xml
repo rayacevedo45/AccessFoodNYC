@@ -43,7 +43,27 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_vertical|center_horizontal" />
 
+            <View
+                android:layout_margin="8dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:textSize="20sp"
+                android:textColor="@color/textColorSecondary"
+                android:id="@+id/textView_no_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" />
+
         </LinearLayout>
+
+
+
+
 
 
 
