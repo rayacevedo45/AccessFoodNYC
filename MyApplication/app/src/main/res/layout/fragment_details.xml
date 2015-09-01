@@ -37,8 +37,15 @@
                 android:id="@+id/yelp_logo"
                 android:layout_toRightOf="@id/vendor_pic"
                 android:src="@drawable/yelp_logo"
+                android:layout_marginTop="40dp"/>
+
+            <ImageButton
+                android:id="@+id/cbid"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                />
+                android:layout_toLeftOf="@id/vendor_pic"
+                android:src="@drawable/camerapic"/>
 
 
             <TextView

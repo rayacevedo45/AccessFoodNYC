@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,9 +31,11 @@ import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Location;
+import rayacevedo45.c4q.nyc.accessfoodnyc.vendor.PicDialog;
 
 
 public class DetailsFragment extends Fragment {
+
     private static final String TAG = DetailsFragment.class.getName();
 
     private TextView mVendorNameText;
@@ -57,10 +60,22 @@ public class DetailsFragment extends Fragment {
     private boolean isYelp;
     private String objectId;
 
+    private ImageButton cb;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
         add = (Button) rootView.findViewById(R.id.button_add);
+        cb = (ImageButton) rootView.findViewById(R.id.cbid);
+
+        cb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PicDialog picDialog = new PicDialog();
+                picDialog.show(getActivity().getSupportFragmentManager(), "picD");
+            }
+        });
+
         mRecyclerViewReview = (RecyclerView) rootView.findViewById(R.id.recyclerView_friends_review);
         //mRecyclerViewReview.setHasFixedSize(true);
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
@@ -314,3 +329,4 @@ public class DetailsFragment extends Fragment {
         });
     }
 }
+
