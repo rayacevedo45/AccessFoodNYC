@@ -2,11 +2,14 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -18,6 +21,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -30,6 +34,7 @@ public class ReviewDialogFragment extends DialogFragment {
     private TextView mTextViewRating;
     private EditText mEditTextTitle;
     private EditText mEditTextDescription;
+    private TextView mTextViewCounter;
     private View mDialogView;
 
     @Override
@@ -45,6 +50,28 @@ public class ReviewDialogFragment extends DialogFragment {
         mTextViewRating = (TextView) mDialogView.findViewById(R.id.dialog_review_rating);
         mEditTextTitle = (EditText) mDialogView.findViewById(R.id.editText_dialog_title);
         mEditTextDescription = (EditText) mDialogView.findViewById(R.id.editText_dialog_description);
+        mTextViewCounter = (TextView) mDialogView.findViewById(R.id.textView_counter);
+
+        mEditTextDescription.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                int remaining = 140 - s.length();
+                mTextViewCounter.setText(remaining + "");
+                if (remaining <= 0) {
+                    mTextViewCounter.setTextColor(getResources().getColor(R.color.red));
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         mRatingBar.setStepSize(1);
         mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -75,6 +102,8 @@ public class ReviewDialogFragment extends DialogFragment {
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        
+
                         final String title = mEditTextTitle.getText().toString();
                         final String description = mEditTextDescription.getText().toString();
                         final int rating = Math.round(mRatingBar.getRating());

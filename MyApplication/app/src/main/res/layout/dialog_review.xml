@@ -52,6 +52,11 @@
     </android.support.design.widget.TextInputLayout>
 
 
+    <TextView
+        android:text="140"
+        android:id="@+id/textView_counter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 
