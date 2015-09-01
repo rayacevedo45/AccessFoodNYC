@@ -28,17 +28,17 @@
 
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:background="@color/amber"
             android:layout_height="200dp">
 
 
             <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:background="@color/amber"
-                android:layout_height="match_parent">
+                android:layout_height="150dp">
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/imageView_profile"
@@ -46,52 +46,55 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"/>
 
-                <TextView
-                    android:textSize="20sp"
-                    android:id="@+id/profile_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"/>
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent">
+
+
+
+                    <Button
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:id="@+id/button_profile_favorite"
+                        android:background="@color/amber"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <Button
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:id="@+id/button_user_reviews"
+                        android:background="@color/amber"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <Button
+                        android:textSize="20sp"
+                        android:layout_weight="1"
+                        android:id="@+id/button_friends_list"
+                        android:background="@color/amber"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+
+
+
+                </LinearLayout>
+
+
+
+
+
 
 
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent">
-
-
-
-                <Button
-                    android:textSize="20sp"
-                    android:layout_weight="1"
-                    android:id="@+id/button_profile_favorite"
-                    android:background="@color/amber"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <Button
-                    android:textSize="20sp"
-                    android:layout_weight="1"
-                    android:id="@+id/button_user_reviews"
-                    android:background="@color/amber"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <Button
-                    android:textSize="20sp"
-                    android:layout_weight="1"
-                    android:id="@+id/button_friends_list"
-                    android:background="@color/amber"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-
-
-
-            </LinearLayout>
-
-
+            <TextView
+                android:textSize="20sp"
+                android:id="@+id/profile_name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:textColor="@color/white"/>
 
 
 
