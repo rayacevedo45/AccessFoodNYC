@@ -23,7 +23,7 @@ import static rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity.businessId;
 public class VendorInfoActivity extends FragmentActivity implements ActionBar.TabListener {
 
     // Tab titles
-    private static final String[] TABS = { "Details", "Menu", "Reviews" };
+    private static final String[] TABS = { "Details", "Twitter", "Reviews" };
 
     public static ParseApplication sApplication;
 
@@ -45,14 +45,16 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
     ActionBar actionBar;
 
     // Tab titles
-    private String[] tabs = { "Details", "Menu", "Reviews" };
+//    private String[] tabs = { "Details", "Twitter", "Reviews" };
     String vendorName;
     private String objectId;
 
+    //Twitter
+//    public String twitterHandle;
+
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
 
         setContentView(R.layout.activity_vendor_info);
@@ -136,8 +138,12 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
 
                     return mCurrentDetailsFragment;
                 case 1:
-                    // Menu fragment activity
-                    return new MenuFragment();
+//                    fragment = new ReviewsFragment();
+//                    Bundle bundle = new Bundle();
+//                    twitterHandle = getTwitterHandle();
+//                    bundle.putString("Twitter Handle", twitterHandle);
+//                    fragment.setArguments(bundle);
+                    return new TwitterFragment();
                 case 2:
 
                     fragment = new ReviewsFragment();
@@ -203,6 +209,8 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
             Log.e(TAG, error.getMessage());
         }
     }
+
+
 
 
 }
