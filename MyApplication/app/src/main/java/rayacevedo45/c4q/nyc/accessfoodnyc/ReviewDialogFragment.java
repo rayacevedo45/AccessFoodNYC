@@ -10,6 +10,8 @@ import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +22,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.squareup.picasso.Picasso;
 
 public class ReviewDialogFragment extends DialogFragment {
 
@@ -31,6 +34,7 @@ public class ReviewDialogFragment extends DialogFragment {
     private EditText mEditTextTitle;
     private EditText mEditTextDescription;
     private View mDialogView;
+    private ImageView mImageViewRiviewDialogUserFace;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,10 @@ public class ReviewDialogFragment extends DialogFragment {
         mTextViewRating = (TextView) mDialogView.findViewById(R.id.dialog_review_rating);
         mEditTextTitle = (EditText) mDialogView.findViewById(R.id.editText_dialog_title);
         mEditTextDescription = (EditText) mDialogView.findViewById(R.id.editText_dialog_description);
+        mImageViewRiviewDialogUserFace =(ImageView) mDialogView. findViewById(R.id.review_dialog_round_pic);
+
+        ParseUser user = ParseUser.getCurrentUser();
+        Picasso.with(getActivity()).load(user.getString("profile_url")).resize(100, 100).centerCrop().into(mImageViewRiviewDialogUserFace);
 
         mRatingBar.setStepSize(1);
         mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {

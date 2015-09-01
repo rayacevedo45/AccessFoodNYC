@@ -17,7 +17,13 @@
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryColorDark</item>
         <item name="android:windowBackground">@color/white</item>
+    </style>
 
+    <style name="translucent" parent="android:style/Theme.Translucent">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <!--true背景灰色 false背景白色 -->
     </style>
 
 
