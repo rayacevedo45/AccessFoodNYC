@@ -2,14 +2,28 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+
+import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpBusinessSearchService;
@@ -17,10 +31,8 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import static rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity.businessId;
 
-
-public class VendorInfoActivity extends FragmentActivity implements ActionBar.TabListener {
+public class VendorInfoActivity extends AppCompatActivity implements ActionBar.TabListener {
 
     // Tab titles
     private static final String[] TABS = { "Details", "Twitter", "Reviews" };
@@ -35,72 +47,81 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
      * derivative, which will keep every loaded fragment in memory. If this becomes too memory
      * intensive, it may be best to switch to a {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
-    AppSectionsPagerAdapter mAppSectionsPagerAdapter;
+    ViewPagerAdapter mViewPagerAdapter;
 
     /**
      * The {@link ViewPager} that will display the three primary sections of the app, one at a
      * time.
      */
-    ViewPager mViewPager;
+
     ActionBar actionBar;
 
     // Tab titles
 //    private String[] tabs = { "Details", "Twitter", "Reviews" };
     String vendorName;
-    private String objectId;
 
-    //Twitter
-//    public String twitterHandle;
+    private ViewPager mViewPager;
+    private Toolbar mToolbar;
+    private TabLayout mTabLayout;
+    private boolean isYelp;
+
+    private String objectId;
 
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        isYelp = getIntent().getBooleanExtra(Constants.EXTRA_KEY_IS_YELP, false);
+        objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
 
         setContentView(R.layout.activity_vendor_info);
 
-        objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_VENDOR_OBJECT_ID);
-
-        // Create the adapter that will return a fragment for each of the three primary sections
-        // of the app.
-        //mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
-
-        // Set up the action bar.
-        actionBar = getActionBar();
-
-        // Specify that the Home/Up button should not be enabled, since there is no hierarchical
-        // parent.
-        actionBar.setHomeButtonEnabled(false);
-
-        // Specify that we will be displaying tabs in the action bar.
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 
-
-
-        // Set up the ViewPager, attaching the adapter and setting up a listener for when the
-        // user swipes between sections.
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_vendor);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // back button
         mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mAppSectionsPagerAdapter);
-        mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+        mTabLayout = (TabLayout) findViewById(R.id.tabLayout);
+
+
+        mTabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onPageSelected(int position) {
-                // When swiping between different app sections, select the corresponding tab.
-                // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-                // Tab.
-                actionBar.setSelectedNavigationItem(position);
+            public void onTabSelected(TabLayout.Tab tab) {
+                mViewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
             }
         });
 
-
-        for (String tab_name : TABS) {
-            actionBar.addTab(actionBar.newTab().setText(tab_name)
-                    .setTabListener(this));
+        if (isYelp) {
+            YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
+            yelpBizService.searchBusiness(objectId, new YelpBusinessSearchCallback());
+        } else {
+            setupViewPager(mViewPager);
+            mViewPager.setOffscreenPageLimit(3);
+            mTabLayout.setupWithViewPager(mViewPager);
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+            query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject parseObject, ParseException e) {
+                    mToolbar.setTitle(parseObject.getString("name"));
+                }
+            });
         }
 
-        YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
-        yelpBizService.searchBusiness(businessId, new YelpBusinessSearchCallback());
 
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
     }
 
     @Override
@@ -122,38 +143,10 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to one of the primary
      * sections of the app.
      */
-    public class AppSectionsPagerAdapter extends FragmentPagerAdapter {
+    public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-        public AppSectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Fragment fragment;
-            switch (position) {
-                case 0:
-                    mCurrentDetailsFragment = new DetailsFragment();
-                    // Detail fragment activity
-
-                    return mCurrentDetailsFragment;
-                case 1:
-//                    fragment = new ReviewsFragment();
-//                    Bundle bundle = new Bundle();
-//                    twitterHandle = getTwitterHandle();
-//                    bundle.putString("Twitter Handle", twitterHandle);
-//                    fragment.setArguments(bundle);
-                    return new TwitterFragment();
-                case 2:
-
-                    fragment = new ReviewsFragment();
-                    Bundle bundle = new Bundle();
-
-                    bundle.putString(Constants.EXTRA_KEY_VENDOR_OBJECT_ID, objectId);
-                    fragment.setArguments(bundle);
-                    return new ReviewsFragment();
-            }
-            return null;
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
         }
 
         @Override
@@ -163,11 +156,43 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
 
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Section " + (position + 1);
+            switch (position) {
+                case 0:
+                    return "Details";
+                case 1:
+                    return "Twitter";
+                case 2:
+                    return "Reviews";
+            }
+            return null;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment fragment;
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+            bundle.putBoolean(Constants.EXTRA_KEY_IS_YELP, isYelp);
+            switch (position) {
+                case 0:
+                    mCurrentDetailsFragment = new DetailsFragment();
+                    mCurrentDetailsFragment.setArguments(bundle);
+                    return mCurrentDetailsFragment;
+                case 1:
+//                    fragment = new ReviewsFragment();
+//                    Bundle bundle = new Bundle();
+//                    twitterHandle = getTwitterHandle();
+//                    bundle.putString("Twitter Handle", twitterHandle);
+//                    fragment.setArguments(bundle);
+                    return new TwitterFragment();
+                case 2:
+                    fragment = new ReviewsFragment();
+                    fragment.setArguments(bundle);
+                    return fragment;
+            }
+            return null;
         }
     }
-
-
 
     protected class YelpBusinessSearchCallback implements Callback<Business> {
 
@@ -178,39 +203,64 @@ public class VendorInfoActivity extends FragmentActivity implements ActionBar.Ta
             Log.d(TAG, "Success");
 
             if (business != null) {
-                mAppSectionsPagerAdapter = new AppSectionsPagerAdapter(getSupportFragmentManager());
 
-                mViewPager.setAdapter(mAppSectionsPagerAdapter);
+                setupViewPager(mViewPager);
                 mViewPager.setOffscreenPageLimit(3);
-
-                mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
-                    @Override
-                    public void onPageSelected(int position) {
-                        // When swiping between different app sections, select the corresponding tab.
-                        // We can also use ActionBar.Tab#select() to do this if we have a reference to the
-                        // Tab.
-                        actionBar.setSelectedNavigationItem(position);
-                    }
-                });
+                mTabLayout.setupWithViewPager(mViewPager);
+                mToolbar.setTitle(business.getName());
 //                mCurrentDetailsFragment.onYelpData(business);
 
-                if (mCurrentDetailsFragment != null) {
+                if (mCurrentDetailsFragment != null && isYelp) {
 
                     mCurrentDetailsFragment.onYelpData(business);
                 } else {
                     Log.d("YelpDataGenerator", "mCurrentDetailsFragment was null!!!!");
                 }
             }
-
         }
-
         @Override
         public void failure(RetrofitError error) {
             Log.e(TAG, error.getMessage());
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_map, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()) {
+            case R.id.action_profile:
+                Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_logout:
+                logOut();
+                break;
+            case R.id.action_settings:
+                break;
+        }
 
 
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void logOut() {
+        LoginManager.getInstance().logOut();
+        ParseUser.logOut();
+        Toast.makeText(getApplicationContext(), "Successfully logged out!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 
 }

@@ -5,27 +5,20 @@
         <item name="android:colorPrimary">@color/primaryColor</item>
         <item name="android:colorPrimaryDark">@color/primaryColorDark</item>
         <item name="android:colorAccent">@color/accentColor</item>
-        <item name="android:statusBarColor">@color/primaryColorDark</item>
+        <item name="android:windowBackground">@color/white</item>
         <item name="android:navigationBarColor">@color/primaryColor</item>
+        <!--<item name="android:editTextColor">@color/accentColor</item>-->
     </style>
 
+    <style name="MapsTheme" parent="Theme.AppCompat.Light.NoActionBar">
 
-    <style name="MyCustomTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:statusBarColor">@color/red</item>
-        <item name="android:colorPrimary">@color/red</item>
-        <item name="android:colorAccent">@color/red</item>
-        <item name="android:navigationBarColor">@color/red</item>
+        <item name="android:colorPrimary">@color/primaryColor</item>
+        <item name="android:colorPrimaryDark">@color/primaryColorDark</item>
+        <item name="android:colorAccent">@color/accentColor</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:navigationBarColor">@color/primaryColor</item>
+        <!--<item name="android:editTextColor">@color/accentColor</item>-->
+
     </style>
-
-    <style name="TextAppearence.App.TextInputLayout" parent="@android:style/TextAppearance">
-        <item name="android:textColor">@color/red</item>
-        <item name="android:textColorHint">@color/red</item>
-        <item name="colorAccent">@color/red</item>
-        <item name="colorControlNormal">@color/red</item>
-        <item name="colorControlActivated">@color/red</item>
-    </style>
-
-
 
 </resources>

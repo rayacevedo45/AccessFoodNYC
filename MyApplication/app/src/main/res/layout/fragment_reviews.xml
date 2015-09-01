@@ -1,22 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button_review"
-        android:text="write a review"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="fill_parent"
+        android:gravity="bottom"
+        android:layout_marginBottom="56dp">
 
-    <ListView
-        android:id="@+id/listView_reviews"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
 
+        <LinearLayout
+            android:id="@+id/writer_info"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_margin="16dp"
+                android:id="@+id/review_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:textSize="20sp"
+                android:id="@+id/review_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold"
+                android:gravity="center_vertical|center_horizontal" />
+
+            <TextView
+                android:text="Rate this truck"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical|center_horizontal" />
+
+            <View
+                android:layout_margin="8dp"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"/>
+
+            <TextView
+                android:layout_marginTop="8dp"
+                android:visibility="gone"
+                android:textSize="20sp"
+                android:textColor="@color/textColorSecondary"
+                android:id="@+id/textView_no_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" />
+
+        </LinearLayout>
+
+
+
+
+
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_review"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/writer_info"/>
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/button_review"
+            android:src="@drawable/ic_add_white_24dp"
+            app:elevation="6dp"
+            app:backgroundTint="@color/accentColor"
+            android:layout_margin="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            app:pressedTranslationZ="12dp"
+            />
+
+
+
+    </RelativeLayout>
 
 
 
 </LinearLayout>
+

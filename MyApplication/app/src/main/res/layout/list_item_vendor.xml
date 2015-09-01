@@ -1,62 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:background="#FFFFFF">
 
-    <!--<ImageView-->
-        <!--android:id="@+id/imageView_vendor"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-         <!--/>-->
-    <de.hdodenhof.circleimageview.CircleImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/imageView_vendor"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        app:border_width="2dp"
-        app:border_color="#FFFFFF"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+    <LinearLayout
+        android:padding="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView_vendor"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+
+
+    </LinearLayout>
+
+
 
     <LinearLayout
         android:orientation="vertical"
+        android:paddingTop="8dp"
+        android:paddingLeft="8dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/vendor_name"
             android:textSize="20sp"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/black"/>
 
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/vendor_rating_img"
+                android:layout_width="100dp"
+                android:layout_height="20dp" />
 
-        <ImageView
-            android:id="@+id/vendor_rating_img"
-            android:layout_width="100dp"
-            android:layout_height="20dp"
+            <ImageView
+                android:visibility="gone"
+                android:layout_marginLeft="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/yelp_logo"
+                android:src="@drawable/yelp_logo"/>
 
-            />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/vendor_rating"
-            android:layout_width="wrap_content"
+            android:textSize="16sp"
+            android:id="@+id/textView_address"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"/>
+            android:textColor="@color/textColorSecondary"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="16sp"
+                android:id="@+id/textView_hour"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/textColorSecondary"/>
 
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/favoriteborder"
-            android:layout_gravity="right"
-            />
+        </LinearLayout>
 
+        <View
+            android:layout_marginTop="12dp"
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/dividerColor"/>
+        <!--<TextView-->
+            <!--android:id="@+id/vendor_rating"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textColor="@color/black"/>-->
 
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/favoriteborder"-->
+            <!--android:layout_gravity="right"-->
+            <!--/>-->
 
     </LinearLayout>
 
