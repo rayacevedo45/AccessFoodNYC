@@ -39,7 +39,12 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
     //private List<Business> mList;
     private List<Object> mList;
 
-    public VendorListAdapter(Context context, List<Business> list) {
+    public VendorListAdapter(Context context) {
+        mContext = context;
+        mList = new ArrayList<>();
+    }
+
+    public VendorListAdapter(Context context, List<ParseObject> list) {
         mContext = context;
         mList = new ArrayList<>();
         mList.addAll(list);
@@ -58,10 +63,21 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
     }
 
 
+    public void addList(List<ParseObject> list) {
+        mList.addAll(list);
+        notifyItemRangeInserted(0, list.size());
+    }
+
+    public void addYelpItem(Business business) {
+        mList.add(business);
+        notifyItemInserted(mList.size()-1);
+        notifyItemChanged(mList.size()-1);
+    }
 
     public Object getItem(int position) {
         return mList.get(position);
     }
+
 
 
 

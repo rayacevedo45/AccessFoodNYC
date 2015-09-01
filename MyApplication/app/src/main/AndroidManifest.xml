@@ -119,7 +119,15 @@
         <activity
             android:name=".UserReviewActivity"
             android:label="@string/title_activity_user_review"
-            android:parentActivityName=".ProfileActivity">
+            android:parentActivityName=".ProfileActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="rayacevedo45.c4q.nyc.accessfoodnyc.ProfileActivity" />
+        </activity>
+        <activity
+            android:name=".UserFavoriteActivity"
+            android:label="@string/title_activity_user_favorite"
+            android:parentActivityName=".ProfileActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="rayacevedo45.c4q.nyc.accessfoodnyc.ProfileActivity" />
