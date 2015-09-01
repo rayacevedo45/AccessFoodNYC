@@ -1,10 +1,8 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -28,7 +26,6 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
@@ -162,6 +159,7 @@ public class DetailsFragment extends Fragment {
     }
 
     public void onYelpData(Business business) {
+
         Log.d(TAG, "inside onYelpData.");
         mVendorNameText = (TextView)getActivity().findViewById(R.id.vendor_name);
         mVendorNameText.setText(business.getName());

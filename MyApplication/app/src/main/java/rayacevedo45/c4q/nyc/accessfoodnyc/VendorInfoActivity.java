@@ -23,9 +23,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
@@ -34,13 +31,11 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import static rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity.businessId;
-
 
 public class VendorInfoActivity extends AppCompatActivity implements ActionBar.TabListener {
 
     // Tab titles
-    private static final String[] TABS = { "Details", "Menu", "Reviews" };
+    private static final String[] TABS = { "Details", "Twitter", "Reviews" };
 
     public static ParseApplication sApplication;
 
@@ -58,11 +53,20 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
      * The {@link ViewPager} that will display the three primary sections of the app, one at a
      * time.
      */
+
+    ActionBar actionBar;
+
+    // Tab titles
+//    private String[] tabs = { "Details", "Twitter", "Reviews" };
+    String vendorName;
+
     private ViewPager mViewPager;
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
     private boolean isYelp;
+
     private String objectId;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,8 +179,12 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
                     mCurrentDetailsFragment.setArguments(bundle);
                     return mCurrentDetailsFragment;
                 case 1:
-                    // Menu fragment activity
-                    return new MenuFragment();
+//                    fragment = new ReviewsFragment();
+//                    Bundle bundle = new Bundle();
+//                    twitterHandle = getTwitterHandle();
+//                    bundle.putString("Twitter Handle", twitterHandle);
+//                    fragment.setArguments(bundle);
+                    return new TwitterFragment();
                 case 2:
                     fragment = new ReviewsFragment();
                     fragment.setArguments(bundle);
@@ -241,6 +249,7 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
                 break;
         }
 
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -253,4 +262,5 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
 }
