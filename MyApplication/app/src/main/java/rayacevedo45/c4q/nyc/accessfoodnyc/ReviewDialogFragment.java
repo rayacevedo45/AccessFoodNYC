@@ -2,10 +2,8 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
@@ -15,15 +13,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
-import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 public class ReviewDialogFragment extends DialogFragment {
 

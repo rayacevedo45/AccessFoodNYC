@@ -18,16 +18,13 @@ import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
-import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.SignInButton;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseInstallation;
-import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.util.Arrays;
