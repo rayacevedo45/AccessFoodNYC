@@ -51,7 +51,7 @@ import retrofit.client.Response;
 
 import static rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity.businessId;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView mImageViewProfile;
     private TextView first;
@@ -64,6 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Button mButtonFindFriends;
     private Button mButtonFriends;
     private Button mButtonReviews;
+    private Button mButtonFavorite;
 
     private RecyclerView mRecyclerView;
     private VendorListAdapter mAdapter;
@@ -127,6 +128,7 @@ public class ProfileActivity extends AppCompatActivity {
         mButtonFriends = (Button) findViewById(R.id.button_friends_list);
         mButtonLogOut = (Button) findViewById(R.id.log_out);
         mButtonReviews = (Button) findViewById(R.id.button_user_reviews);
+        mButtonFavorite = (Button) findViewById(R.id.button_profile_favorite);
 
 //        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_profile_favorite);
 //        mRecyclerView.setHasFixedSize(true);
@@ -201,11 +203,13 @@ public class ProfileActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+            mButtonFavorite.setOnClickListener(this);
         } else {
             mButtonFindFriends.setOnClickListener(null);
             mButtonLogOut.setOnClickListener(null);
             mButtonFriends.setOnClickListener(null);
             mButtonReviews.setOnClickListener(null);
+            mButtonFavorite.setOnClickListener(null);
         }
     }
 
@@ -220,9 +224,18 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_profile_favorite:
+                Intent intent = new Intent(getApplicationContext(), UserFavoriteActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
 
 
-//    public class SearchAllYelpTask extends AsyncTask<List<ParseObject>, Void, List<Business>> {
+    //    public class SearchAllYelpTask extends AsyncTask<List<ParseObject>, Void, List<Business>> {
 //        @Override
 //        protected List<Business> doInBackground(List<ParseObject>... params) {
 //
