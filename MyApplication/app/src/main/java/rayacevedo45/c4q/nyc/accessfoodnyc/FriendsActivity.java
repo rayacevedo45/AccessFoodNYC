@@ -32,7 +32,7 @@ public class FriendsActivity extends AppCompatActivity {
         ParseUser user = ParseUser.getCurrentUser();
 
         mPendingRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_pending_friends);
-        mPendingRecyclerView.setHasFixedSize(true);
+        //mPendingRecyclerView.setHasFixedSize(true);
         LinearLayoutManager lm1 = new LinearLayoutManager(this);
         lm1.setOrientation(LinearLayoutManager.VERTICAL);
         mPendingRecyclerView.setLayoutManager(lm1);
