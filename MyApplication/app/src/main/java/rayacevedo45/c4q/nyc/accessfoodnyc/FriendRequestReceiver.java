@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParsePushBroadcastReceiver;
 import com.parse.ParseQuery;
@@ -65,6 +66,19 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                 PendingIntent accept = PendingIntent.getActivity(context, Constants.REQUEST_CODE_FRIEND_ACCEPT, acceptIntent, PendingIntent.FLAG_ONE_SHOT);
                 parseBuilder.addAction(R.drawable.ic_done_black_24dp, "Accept", accept);
                 parseBuilder.addAction(R.drawable.ic_clear_black_18dp, "Decline", pDeleteIntent);
+
+                ParseUser parseUser = ParseUser.getCurrentUser();
+                final ParseRelation<ParseUser> friendRequests = parseUser.getRelation("friend_requests");
+
+                ParseQuery<ParseUser> friend = ParseQuery.getQuery("_User");
+                friend.getInBackground(objectId, new GetCallback<ParseUser>() {
+                    @Override
+                    public void done(ParseUser parseUser, ParseException e) {
+                        friendRequests.add(parseUser);
+                        parseUser.saveInBackground();
+                    }
+                });
+
             }
 
             if (pushData.has("accepted")) {
