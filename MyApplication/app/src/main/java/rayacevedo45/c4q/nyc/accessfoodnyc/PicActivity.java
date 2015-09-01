@@ -1,7 +1,9 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,16 +20,28 @@ import java.util.Date;
 import java.util.Locale;
 
 public class PicActivity extends AppCompatActivity {
-    private static final int CAPTURE_IMAGE = 1;
     private Uri imageUri;
-    static final int REQUEST_IMAGE_CAPTURE = 1;
     private ImageView imageView;
+    Bitmap bitmap;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        takePic();
+
+        int flag = getIntent().getIntExtra(Constants.EXTRA_PICTIRE, -1);
+
+
+        switch (flag) {
+            case 1:
+                takePic();
+                break;
+            case 2:
+                usePic();
+                break;
+        }
+
+
 
         setContentView(R.layout.activity_pic);
         imageView = (ImageView) findViewById(R.id.imageID);
@@ -68,7 +82,7 @@ public class PicActivity extends AppCompatActivity {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(mediaFile));
-        this.startActivityForResult(takePictureIntent, CAPTURE_IMAGE);
+        this.startActivityForResult(takePictureIntent, Constants.FLAG_CAMERA);
 
 
 
@@ -76,15 +90,16 @@ public class PicActivity extends AppCompatActivity {
 //            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
 //        }
     }
+    public void usePic() {
+        Intent choosePictureIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(choosePictureIntent, Constants.FLAG_GALLERY);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-
-//            Bundle extras = data.getExtras();
-//            Bitmap imageBitmap = (Bitmap) extras.get("data");
-//            mImageView.setImageBitmap(imageBitmap);
+        if (requestCode == Constants.FLAG_CAMERA && resultCode == RESULT_OK) {
 
             Bitmap bitmap = null;
             try {
@@ -94,6 +109,26 @@ public class PicActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             imageView.setImageBitmap(bitmap);
+        }
+        else if(requestCode == Constants.FLAG_GALLERY && resultCode == RESULT_OK) {
+
+            Uri pickedImage = data.getData();
+            // Let's read picked image path using content resolver
+            String[] filePath = { MediaStore.Images.Media.DATA };
+            Cursor cursor = getContentResolver().query(pickedImage, filePath, null, null, null);
+            cursor.moveToFirst();
+            String imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
+            imageView.setImageBitmap(bitmap);
+
+            // Do something with the bitmap
+
+
+            // At the end remember to close the cursor or you will end with the RuntimeException!
+            cursor.close();
         }
     }
 }

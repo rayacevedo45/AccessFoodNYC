@@ -12,4 +12,8 @@ public class Constants {
     public static final String VENDOR = "vendor";
     public static final String YELP_ID = "yelpId";
 
+    public static final int FLAG_CAMERA = 1;
+    public static final int FLAG_GALLERY = 2;
+    public static final String EXTRA_PICTIRE = "picture";
+
 }
