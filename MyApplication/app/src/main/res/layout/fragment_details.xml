@@ -115,17 +115,13 @@
                 android:scrollbars = "vertical"/>
 
 
-
-
         </RelativeLayout>
 
         <Button
             android:id="@+id/button_add"
             android:text="add to favorite"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="-10dp" />
+            android:layout_height="wrap_content" />
 
         <View
             android:layout_margin="8dp"
@@ -146,7 +142,7 @@
 
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="250dp"
             android:id="@+id/recyclerView_friends_review">
 
         </android.support.v7.widget.RecyclerView>
