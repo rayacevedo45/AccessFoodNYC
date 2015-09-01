@@ -56,8 +56,8 @@ public class PendingFriendsAdapter extends RecyclerView.Adapter<PendingFriendsAd
 
                         Intent acceptIntent = new Intent(mContext, ProfileActivity.class);
                         acceptIntent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, user.getObjectId());
-                        acceptIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        acceptIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        acceptIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        acceptIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         mContext.startActivity(acceptIntent);
 
                     }
