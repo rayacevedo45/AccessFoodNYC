@@ -52,7 +52,7 @@ public class ReviewDialogFragment extends DialogFragment {
         mImageViewRiviewDialogUserFace =(ImageView) mDialogView. findViewById(R.id.review_dialog_round_pic);
 
         ParseUser user = ParseUser.getCurrentUser();
-        Picasso.with(getActivity()).load(user.getString("profile_url")).resize(100, 100).centerCrop().into(mImageViewRiviewDialogUserFace);
+        Picasso.with(getActivity()).load(user.getString("profile_url")).resize(150, 150).centerCrop().into(mImageViewRiviewDialogUserFace);
 
         mRatingBar.setStepSize(1);
         mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {

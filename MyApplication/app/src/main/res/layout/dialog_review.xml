@@ -1,41 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <LinearLayout
-        android:id="@+id/linearlayout1"
-        android:layout_marginBottom="-35dp"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#00FF0000">
-
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/review_dialog_round_pic"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center_horizontal" />
-
-    </LinearLayout>
+    android:layout_height="match_parent"
+    android:background="#00000000">
 
     <LinearLayout
-        android:id="@+id/linearlayout2"
-        android:orientation="vertical"
+        android:id="@+id/linearlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="70dp"
+        android:orientation="vertical">
 
         <ImageView
-            android:scaleType="fitStart"
             android:id="@+id/review_background_pic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/reviewpic"
-            android:layout_marginBottom="-55dp" />
-
+            android:layout_marginBottom="-55dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/reviewpic" />
 
         <TextView
             android:id="@+id/dialog_review_title"
@@ -43,20 +26,20 @@
             android:layout_height="wrap_content" />
 
         <RatingBar
-            android:paddingTop="3dp"
+            android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:stepSize="1"
-            android:id="@+id/ratingBar"
             android:layout_gravity="center_horizontal"
-            android:clickable="true" />
+            android:clickable="true"
+            android:paddingTop="3dp"
+            android:stepSize="1" />
 
         <TextView
             android:id="@+id/dialog_review_rating"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:textStyle="bold" />
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -64,10 +47,10 @@
             android:textColor="@color/accentColor">
 
             <EditText
-                android:hint="Title"
                 android:id="@+id/editText_dialog_title"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="Title" />
 
         </android.support.design.widget.TextInputLayout>
 
@@ -78,11 +61,28 @@
             android:textColor="@color/accentColor">
 
             <EditText
-                android:hint="Description"
                 android:id="@+id/editText_dialog_description"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:hint="Description" />
 
         </android.support.design.widget.TextInputLayout>
     </LinearLayout>
-</LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/linearlayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00ff0000">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/review_dialog_round_pic"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
