@@ -140,7 +140,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
                     close.setMinutes(Integer.valueOf(closing.substring(2)));
 
                     if (now.after(open) && now.before(close)) {
-                        holder.hour.setText("Open until" + close.toString());
+                        holder.hour.setText("Open until " + close.getHours() + ":" + close.getMinutes());
                     } else {
                         holder.hour.setText("Closed now");
                     }

@@ -85,7 +85,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final ParseUser me = ParseUser.getCurrentUser();
 
-        getSupportActionBar().setTitle(me.getString("first_name") + " " + me.getString("last_name") + "'s Profile");
+        getSupportActionBar().setTitle(me.getString("first_name") + " " + me.getString("last_name"));
 
 
         if (objectId != null) {
