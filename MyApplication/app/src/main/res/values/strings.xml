@@ -37,4 +37,7 @@
     <string name="title_activity_vendor">Vendor Info</string>
 
     <string name="detail_section_text">Vendor Details</string>
+    <string name="title_activity_user_review">UserReviewActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>

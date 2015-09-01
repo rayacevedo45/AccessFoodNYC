@@ -63,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Button mButtonLogOut;
     private Button mButtonFindFriends;
     private Button mButtonFriends;
+    private Button mButtonReviews;
 
     private RecyclerView mRecyclerView;
     private VendorListAdapter mAdapter;
@@ -125,6 +126,8 @@ public class ProfileActivity extends AppCompatActivity {
         mButtonFindFriends = (Button) findViewById(R.id.find_friends);
         mButtonFriends = (Button) findViewById(R.id.button_friends_list);
         mButtonLogOut = (Button) findViewById(R.id.log_out);
+        mButtonReviews = (Button) findViewById(R.id.button_user_reviews);
+
 //        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_profile_favorite);
 //        mRecyclerView.setHasFixedSize(true);
 //        LinearLayoutManager lm = new LinearLayoutManager(this);
@@ -191,10 +194,18 @@ public class ProfileActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+            mButtonReviews.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), UserReviewActivity.class);
+                    startActivity(intent);
+                }
+            });
         } else {
             mButtonFindFriends.setOnClickListener(null);
             mButtonLogOut.setOnClickListener(null);
             mButtonFriends.setOnClickListener(null);
+            mButtonReviews.setOnClickListener(null);
         }
     }
 
