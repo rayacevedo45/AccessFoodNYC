@@ -1,11 +1,13 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -71,6 +73,26 @@ public class UserFavoriteActivity extends AppCompatActivity {
                 mAdapter.addList(vendors);
             }
         });
+
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
+                        Object object = mAdapter.getItem(position);
+                        if (object instanceof Business) {
+                            Business business = (Business) mAdapter.getItem(position);
+                            String businessId = business.getId();
+                            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
+                            intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, businessId);
+                        } else {
+                            ParseObject vendor = (ParseObject) object;
+                            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
+                            intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, vendor.getObjectId());
+                        }
+                        startActivity(intent);
+                    }
+                })
+        );
 
     }
 
