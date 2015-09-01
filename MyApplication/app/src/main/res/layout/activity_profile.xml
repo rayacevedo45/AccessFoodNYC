@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
+
+
+
+
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -61,30 +65,11 @@
         </LinearLayout>
 
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:textSize="30sp"
-                android:text="Favorites"
-                android:textColor="@color/black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_vertical|center_horizontal" />
-
-            <android.support.v7.widget.RecyclerView
-                android:layout_marginTop="8dp"
-                android:id="@+id/recyclerView_profile_favorite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-
-
-        </LinearLayout>
+        <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:layout_marginTop="8dp"-->
+            <!--android:id="@+id/recyclerView_profile_favorite"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="500dp"/>-->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,6 +77,17 @@
             android:gravity="bottom"
             android:orientation="vertical">
 
+
+            <Button
+                android:text="Reviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <Button
+                android:text="Favorites"
+                android:background="@color/primaryColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <Button
                 android:background="@color/accentColor"
@@ -106,7 +102,7 @@
                 android:text="@string/logout_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/amber"/>
+                android:background="@color/primaryColor"/>
 
             <Button
                 android:id="@+id/button_friends_list"

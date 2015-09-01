@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +38,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
@@ -66,6 +69,8 @@ public class ProfileActivity extends AppCompatActivity {
 
     private String mFavoriteBizName;
     private TextView mName;
+    private List<ParseObject> mOurVendorList;
+    private List<Business> result = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,25 +125,32 @@ public class ProfileActivity extends AppCompatActivity {
         mButtonFindFriends = (Button) findViewById(R.id.find_friends);
         mButtonFriends = (Button) findViewById(R.id.button_friends_list);
         mButtonLogOut = (Button) findViewById(R.id.log_out);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_profile_favorite);
-        mRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager lm = new LinearLayoutManager(this);
-        lm.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(lm);
+//        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_profile_favorite);
+//        mRecyclerView.setHasFixedSize(true);
+//        LinearLayoutManager lm = new LinearLayoutManager(this);
+//        lm.setOrientation(LinearLayoutManager.VERTICAL);
+//        mRecyclerView.setLayoutManager(lm);
 
 
         ParseUser user = ParseUser.getCurrentUser();
-        ParseRelation<ParseObject> relation = user.getRelation("favorite");
-        relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (list != null) {
-                    mAdapter = new FavoriteAdapter(getApplicationContext(), list);
-                    mListView.setAdapter(mAdapter);
-
-                }
-            }
-        });
+//        ParseRelation<ParseObject> relation = user.getRelation("favorite");
+//        relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
+//            @Override
+//            public void done(List<ParseObject> list, ParseException e) {
+//                if (list != null) {
+//                    mOurVendorList = new ArrayList<ParseObject>();
+//                    List<ParseObject> yelpList = new ArrayList<ParseObject>();
+//                    for (ParseObject vendor : list) {
+//                        if (vendor.getString("yelpId") == null) {
+//                            mOurVendorList.add(vendor);
+//                        } else {
+//                            yelpList.add(vendor);
+//                        }
+//                    }
+//                    new SearchAllYelpTask().execute(yelpList);
+//                }
+//            }
+//        });
 
         first.setText(user.getString("first_name"));
         last.setText(user.getString("last_name"));
@@ -186,58 +198,6 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
-    private class FavoriteAdapter extends BaseAdapter {
-
-        private Context mContext;
-        private List<ParseObject> mList;
-
-        public FavoriteAdapter(Context context, List<ParseObject> list) {
-            mContext = context;
-            mList = list;
-        }
-
-        @Override
-        public int getCount() {
-            return mList.size();
-        }
-
-        @Override
-        public ParseObject getItem(int position) {
-            return mList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.list_item_favorite, parent, false);
-            }
-
-            mName = (TextView) convertView.findViewById(R.id.favorite_name);
-
-            ParseObject vendor = getItem(position);
-
-            String vendorName = vendor.getString("name");
-
-            if (vendorName != null) {
-                mName.setText(vendorName);
-            } else{
-                YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
-                yelpBizService.searchBusiness(businessId, new FavoriteBusinessSearchCallback());
-            }
-
-            mName.setTextColor(Color.BLACK);
-
-            return convertView;
-        }
-    }
 
     private void logOut() {
         LoginManager.getInstance().logOut(); // facebook logout
@@ -249,24 +209,40 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    protected class FavoriteBusinessSearchCallback implements Callback<Business> {
 
-        public String TAG = "FavoriteBusinessSearchCallback";
 
-        @Override
-        public void success(Business business, Response response) {
-            Log.d(TAG, "Success");
-
-            if (business != null) {
-                mFavoriteBizName = business.getName();
-                mName.setText(mFavoriteBizName);
-            }
-
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-            Log.e(TAG, error.getMessage());
-        }
-    }
+//    public class SearchAllYelpTask extends AsyncTask<List<ParseObject>, Void, List<Business>> {
+//        @Override
+//        protected List<Business> doInBackground(List<ParseObject>... params) {
+//
+//            //final List<Business> result = new ArrayList<>();
+//            List<ParseObject> vendors = params[0];
+//            for (ParseObject vendor : vendors) {
+//                String yelpId = vendor.getString("yelpId");
+//                YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
+//                yelpBizService.searchBusiness(yelpId, new Callback<Business>() {
+//                    @Override
+//                    public void success(Business business, Response response) {
+//                        result.add(business);
+//                    }
+//
+//                    @Override
+//                    public void failure(RetrofitError error) {
+//                        LinearLayout layout;
+//
+//                    }
+//                });
+//
+//            }
+//            int size = result.size();
+//            return result;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<Business> businesses) {
+//            mAdapter = new VendorListAdapter(getApplicationContext(), businesses, mOurVendorList);
+//            mRecyclerView.setAdapter(mAdapter);
+//
+//        }
+//    }
 }

@@ -65,7 +65,7 @@ public class DetailsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
         add = (Button) rootView.findViewById(R.id.button_add);
         mRecyclerViewReview = (RecyclerView) rootView.findViewById(R.id.recyclerView_friends_review);
-        mRecyclerViewReview.setHasFixedSize(true);
+        //mRecyclerViewReview.setHasFixedSize(true);
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerViewReview.setLayoutManager(lm);
@@ -138,6 +138,23 @@ public class DetailsFragment extends Fragment {
                 }
             });
         }
+
+        if (!isYelp) {
+            mVendorPicImage = (ImageView) rootView.findViewById(R.id.vendor_pic);
+            mVendorNameText = (TextView) rootView.findViewById(R.id.vendor_name);
+            mSnippetText = (TextView) rootView.findViewById(R.id.snippet_text);
+
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+            query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject vendor, ParseException e) {
+                    mVendorNameText.setText(vendor.getString("name"));
+                    mSnippetText.setText(vendor.getString("description"));
+                    Picasso.with(getActivity()).load(vendor.getString("profile_url")).centerCrop().resize(350, 350).noFade().into(mVendorPicImage);
+                }
+            });
+        }
+
 
 
 

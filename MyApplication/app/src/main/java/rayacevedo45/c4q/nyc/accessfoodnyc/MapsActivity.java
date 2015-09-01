@@ -36,12 +36,20 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -157,10 +165,49 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.d(TAG, "Success");
             sApplication = ParseApplication.getInstance();
             sApplication.sYelpResponse = data;
-            List<Business> businessList = sApplication.sYelpResponse.getBusinesses();
+            final List<Business> businessList = sApplication.sYelpResponse.getBusinesses();
 
-            mAdapter = new VendorListAdapter(getApplicationContext(), businessList);
-            mRecyclerView.setAdapter(mAdapter);
+            markerHashMap = new HashMap<>();
+            Calendar calendar = Calendar.getInstance();
+            final int day = calendar.get(Calendar.DAY_OF_WEEK);
+
+            //ParseGeoPoint point = new ParseGeoPoint(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+//            query.whereNear();
+            query.setLimit(50).findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    List<ParseObject> ourVendors = new ArrayList<ParseObject>();
+                    for (ParseObject object : list) {
+                        if (object.getString("yelpId") == null) {
+                            ourVendors.add(object);
+                            String today = "day" + Integer.toString(day);
+                            String json = object.getString(today);
+                            try {
+                                JSONObject info = new JSONObject(json);
+                                double latitude = info.getDouble("latitude");
+                                double longitude = info.getDouble("longitude");
+                                ParseGeoPoint location = new ParseGeoPoint(latitude, longitude);
+                                object.put("location", location);
+                                object.saveInBackground();
+                                LatLng position = new LatLng(latitude, longitude);
+                                Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(object.getString("name")));
+                                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
+                                markerHashMap.put(marker, object.getObjectId());
+                            } catch (JSONException e1) {
+                                e1.printStackTrace();
+                            }
+                        }
+
+
+                    }
+                    mAdapter = new VendorListAdapter(getApplicationContext(), businessList, ourVendors);
+                    mRecyclerView.setAdapter(mAdapter);
+                }
+            });
+
+
+
             int i = 1;
             for (Business business : businessList) {
                 rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Location location = business.getLocation();
@@ -180,7 +227,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 // Changing marker icon
                 marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
 
-                markerHashMap = new HashMap<>();
+
                 markerHashMap.put(marker, business.getId());
 //                mMap.addMarker(marker);
             }
@@ -231,10 +278,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    businessId = mAdapter.getItem(position).getId();
                     Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
-                    intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
-                    intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, businessId);
+                    Object object = mAdapter.getItem(position);
+                    if (object instanceof Business) {
+                        Business business = (Business) mAdapter.getItem(position);
+                        businessId = business.getId();
+                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
+                        intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, businessId);
+                    } else {
+                        ParseObject vendor = (ParseObject) object;
+                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
+                        intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, vendor.getObjectId());
+                    }
                     startActivity(intent);
                 }
             })

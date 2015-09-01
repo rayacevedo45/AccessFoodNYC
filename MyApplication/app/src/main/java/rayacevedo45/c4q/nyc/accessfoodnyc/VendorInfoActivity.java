@@ -66,6 +66,7 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         isYelp = getIntent().getBooleanExtra(Constants.EXTRA_KEY_IS_YELP, false);
         objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
 
@@ -99,6 +100,9 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
             YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
             yelpBizService.searchBusiness(objectId, new YelpBusinessSearchCallback());
         } else {
+            setupViewPager(mViewPager);
+            mViewPager.setOffscreenPageLimit(3);
+            mTabLayout.setupWithViewPager(mViewPager);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
                 @Override
@@ -198,7 +202,7 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
                 mToolbar.setTitle(business.getName());
 //                mCurrentDetailsFragment.onYelpData(business);
 
-                if (mCurrentDetailsFragment != null) {
+                if (mCurrentDetailsFragment != null && isYelp) {
 
                     mCurrentDetailsFragment.onYelpData(business);
                 } else {
