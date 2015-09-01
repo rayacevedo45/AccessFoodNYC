@@ -145,7 +145,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         favoriteRelation.getQuery().countInBackground(new CountCallback() {
             @Override
             public void done(int i, ParseException e) {
-                mButtonFavorite.setText(i + "\nfavorites");
+                mButtonFavorite.setText(i + "\nfavs");
             }
         });
 
