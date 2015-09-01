@@ -6,11 +6,9 @@
         <item name="android:colorPrimaryDark">@color/primaryColorDark</item>
         <item name="android:colorAccent">@color/accentColor</item>
         <item name="android:windowBackground">@color/white</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:popupMenuStyle">@style/Theme.AppCompat.Light.Dialog</item>
         <item name="android:navigationBarColor">@color/primaryColor</item>
-        <item name="android:editTextColor">@color/accentColor</item>
-        <item name="android:textColorSecondary">@color/accentColor</item>
-        <item name="android:textColorHint">@color/accentColor</item>
-        <item name="color">@color/accentColor</item>
 
     </style>
 
@@ -22,7 +20,20 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="android:navigationBarColor">@color/primaryColor</item>
         <item name="android:editTextColor">@color/accentColor</item>
+        <item name="android:dialogTheme">@style/Theme.AppCompat.Light.Dialog</item>
 
+    </style>
+
+    <style name="LoginTheme" parent="AppTheme.Base">
+        <item name="android:colorPrimary">@color/primaryColor</item>
+        <item name="android:colorPrimaryDark">@color/primaryColorDark</item>
+        <item name="android:colorAccent">@color/accentColor</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:navigationBarColor">@color/primaryColor</item>
+        <item name="android:editTextColor">@color/accentColor</item>
+        <item name="android:textColorSecondary">@color/accentColor</item>
+        <item name="android:textColorHint">@color/accentColor</item>
+        <item name="color">@color/accentColor</item>
     </style>
 
 </resources>

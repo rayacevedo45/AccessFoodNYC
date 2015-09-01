@@ -54,7 +54,8 @@
 
         <activity
             android:name=".accounts.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:theme="@style/LoginTheme">
         </activity>
 
         <activity
