@@ -96,8 +96,13 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                     reviewQuery.whereEqualTo("vendor", parseObject).findInBackground(new FindCallback<ParseObject>() {
                         @Override
                         public void done(List<ParseObject> list, ParseException e) {
-                            mAdapter = new ReviewAdapter(getActivity(), list);
-                            mRecyclerView.setAdapter(mAdapter);
+                            if (list.size() == 0) {
+                                mTextViewNoReview.setText("No reviews yet :( \nWhy don't you write one?");
+                                mTextViewNoReview.setVisibility(View.VISIBLE);
+                            } else {
+                                mAdapter = new ReviewAdapter(getActivity(), list);
+                                mRecyclerView.setAdapter(mAdapter);
+                            }
                         }
                     });
                 }

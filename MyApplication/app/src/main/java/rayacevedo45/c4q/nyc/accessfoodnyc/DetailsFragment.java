@@ -1,20 +1,22 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -29,9 +31,11 @@ import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Location;
+import rayacevedo45.c4q.nyc.accessfoodnyc.vendor.PicDialog;
 
 
 public class DetailsFragment extends Fragment {
+
     private static final String TAG = DetailsFragment.class.getName();
 
     private TextView mVendorNameText;
@@ -40,8 +44,6 @@ public class DetailsFragment extends Fragment {
     private Button add;
     private ParseObject selectedVendor;
 
-    //private TextView mVendorRatingNum;
-    private static String RatingNumStr;
     private static List <String> addList;
 
     private TextView mCategoriesText;
@@ -55,12 +57,116 @@ public class DetailsFragment extends Fragment {
     private RecyclerView mRecyclerViewReview;
     private ReviewAdapter mAdapter;
 
+    private boolean isYelp;
+    private String objectId;
+
+    private ImageButton cb;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-        Bundle args = getArguments();
         add = (Button) rootView.findViewById(R.id.button_add);
+        cb = (ImageButton) rootView.findViewById(R.id.cbid);
+
+        cb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PicDialog picDialog = new PicDialog();
+                picDialog.show(getActivity().getSupportFragmentManager(), "picD");
+            }
+        });
+
         mRecyclerViewReview = (RecyclerView) rootView.findViewById(R.id.recyclerView_friends_review);
+        //mRecyclerViewReview.setHasFixedSize(true);
+        LinearLayoutManager lm = new LinearLayoutManager(getActivity());
+        lm.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerViewReview.setLayoutManager(lm);
+
+        objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
+        isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
+
+        ParseUser user = ParseUser.getCurrentUser();
+        final ParseRelation<ParseUser> relation = user.getRelation("friends");
+        if (isYelp) {
+            ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
+            findVendor.whereEqualTo("yelpId", objectId).findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> list, ParseException e) {
+                    if (list.size() != 0) {
+                        final ParseObject vendor = list.get(0);
+                        relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
+                            @Override
+                            public void done(List<ParseUser> list, ParseException e) {
+                                if (list.size() != 0) {
+                                    ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Review");
+                                    query1.include("writer");
+                                    query1.whereEqualTo("vendor", vendor).whereContainedIn("writer", list);
+                                    query1.findInBackground(new FindCallback<ParseObject>() {
+                                        @Override
+                                        public void done(List<ParseObject> list, ParseException e) {
+                                            if (list.size() != 0) {
+                                                mAdapter = new ReviewAdapter(getActivity(), list);
+                                                mRecyclerViewReview.setAdapter(mAdapter);
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+        } else {
+            relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
+                @Override
+                public void done(List<ParseUser> list, ParseException e) {
+
+                    ParseQuery<ParseObject> findVendorQuery = ParseQuery.getQuery("Vendor");
+                    findVendorQuery.getInBackground(objectId, new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(final ParseObject vendor, ParseException e) {
+                            relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
+                                @Override
+                                public void done(List<ParseUser> list, ParseException e) {
+                                    if (list.size() != 0) {
+                                        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Review");
+                                        query1.include("writer");
+                                        query1.whereEqualTo("vendor", vendor).whereContainedIn("writer", list);
+                                        query1.findInBackground(new FindCallback<ParseObject>() {
+                                            @Override
+                                            public void done(List<ParseObject> list, ParseException e) {
+                                                if (list.size() != 0) {
+                                                    mAdapter = new ReviewAdapter(getActivity(), list);
+                                                    mRecyclerViewReview.setAdapter(mAdapter);
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                }
+            });
+        }
+
+        if (!isYelp) {
+            mVendorPicImage = (ImageView) rootView.findViewById(R.id.vendor_pic);
+            mVendorNameText = (TextView) rootView.findViewById(R.id.vendor_name);
+            mSnippetText = (TextView) rootView.findViewById(R.id.snippet_text);
+
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+            query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject vendor, ParseException e) {
+                    mVendorNameText.setText(vendor.getString("name"));
+                    mSnippetText.setText(vendor.getString("description"));
+                    Picasso.with(getActivity()).load(vendor.getString("profile_url")).centerCrop().resize(350, 350).noFade().into(mVendorPicImage);
+                }
+            });
+        }
+
 
 
 
@@ -68,6 +174,7 @@ public class DetailsFragment extends Fragment {
     }
 
     public void onYelpData(Business business) {
+
         Log.d(TAG, "inside onYelpData.");
         mVendorNameText = (TextView)getActivity().findViewById(R.id.vendor_name);
         mVendorNameText.setText(business.getName());
@@ -104,6 +211,9 @@ public class DetailsFragment extends Fragment {
         mPhoneText.setText(business.getSnippetText());
 
         mId = business.getId();
+
+
+
     }
 
     public static String catListIterator (Business business){
@@ -141,63 +251,82 @@ public class DetailsFragment extends Fragment {
                 final ParseRelation<ParseObject> relation = user.getRelation("favorite");
 
                 //check if the yelpID is already in parse.com or not
+                if (isYelp) {
 
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-                query.whereStartsWith("yelpId", mId);
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+                    query.whereStartsWith("yelpId", mId);
 
-                query.getFirstInBackground(new GetCallback<ParseObject>() {
-                    public void done(final ParseObject object, ParseException e) {
-                        if (e == null) {
-                            //object exists
-                            selectedVendor = object;
-                            relation.add(selectedVendor);
+                    query.getFirstInBackground(new GetCallback<ParseObject>() {
+                        public void done(final ParseObject object, ParseException e) {
+                            if (e == null) {
+                                //object exists
+                                selectedVendor = object;
+                                relation.add(selectedVendor);
 
+                                user.saveInBackground(new SaveCallback() {
+                                    @Override
+                                    public void done(ParseException e) {
+                                        if (e == null) {
+                                            ParsePush.subscribeInBackground(object.getObjectId());
+                                            Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
+
+                                        } else {
+                                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    }
+                                });
+
+                            } else {
+                                if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
+                                    //object doesn't exist
+
+                                    //add yelpID as new vendor in parse.com
+                                    selectedVendor = new ParseObject("Vendor");
+                                    selectedVendor.put("yelpId", mId);
+                                    selectedVendor.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            relation.add(selectedVendor);
+
+                                            user.saveInBackground(new SaveCallback() {
+                                                @Override
+                                                public void done(ParseException e) {
+                                                    if (e == null) {
+                                                        ParsePush.subscribeInBackground(selectedVendor.getObjectId());
+                                                        Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
+
+                                                    } else {
+                                                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    //unknown error, debug
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+                    query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject vendor, ParseException e) {
+                            relation.add(vendor);
                             user.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
-                                    if (e == null) {
-                                        ParsePush.subscribeInBackground(object.getObjectId());
-                                        Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
-
-                                    } else {
-                                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                    }
+                                    ParsePush.subscribeInBackground(objectId);
+                                    Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
                                 }
                             });
-
-                        } else {
-                            if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
-                                //object doesn't exist
-
-                                //add yelpID as new vendor in parse.com
-                                selectedVendor = new ParseObject("Vendor");
-                                selectedVendor.put("yelpId", mId);
-                                selectedVendor.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        relation.add(selectedVendor);
-
-                                        user.saveInBackground(new SaveCallback() {
-                                            @Override
-                                            public void done(ParseException e) {
-                                                if (e == null) {
-                                                    ParsePush.subscribeInBackground(selectedVendor.getObjectId());
-                                                    Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
-
-                                                } else {
-                                                    Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                                }
-                                            }
-                                        });
-                                    }
-                                });
-                            } else {
-                                //unknown error, debug
-                            }
                         }
-                    }
-                });
+                    });
+                }
+
             }
         });
     }
 }
+

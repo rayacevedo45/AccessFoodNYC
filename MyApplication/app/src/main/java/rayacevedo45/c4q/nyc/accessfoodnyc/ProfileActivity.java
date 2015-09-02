@@ -1,26 +1,20 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseInstallation;
@@ -34,19 +28,13 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
-import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
-import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpBusinessSearchService;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
-import static rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity.businessId;
-
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView mImageViewProfile;
     private TextView first;
@@ -58,12 +46,16 @@ public class ProfileActivity extends AppCompatActivity {
     private Button mButtonLogOut;
     private Button mButtonFindFriends;
     private Button mButtonFriends;
+    private Button mButtonReviews;
+    private Button mButtonFavorite;
 
-    private ListView mListView;
-    private FavoriteAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+    private VendorListAdapter mAdapter;
 
     private String mFavoriteBizName;
     private TextView mName;
+    private List<ParseObject> mOurVendorList;
+    private List<Business> result = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +67,9 @@ public class ProfileActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         final ParseUser me = ParseUser.getCurrentUser();
+        String name = me.getString("first_name") + " " + me.getString("last_name");
 
-        getSupportActionBar().setTitle(me.getString("first_name") + " " + me.getString("last_name") + "'s Profile");
+        getSupportActionBar().setTitle(name);
 
 
         if (objectId != null) {
@@ -113,29 +106,42 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         mImageViewProfile = (ImageView) findViewById(R.id.imageView_profile);
-        first = (TextView) findViewById(R.id.first_name);
-        last = (TextView) findViewById(R.id.last_name);
-        mButtonFindFriends = (Button) findViewById(R.id.find_friends);
+        //first = (TextView) findViewById(R.id.profile_name);
+        //mButtonFindFriends = (Button) findViewById(R.id.find_friends);
         mButtonFriends = (Button) findViewById(R.id.button_friends_list);
-        mButtonLogOut = (Button) findViewById(R.id.log_out);
+        //mButtonLogOut = (Button) findViewById(R.id.log_out);
+        mButtonReviews = (Button) findViewById(R.id.button_user_reviews);
+        mButtonFavorite = (Button) findViewById(R.id.button_profile_favorite);
 
-
-        ParseUser user = ParseUser.getCurrentUser();
-        ParseRelation<ParseObject> relation = user.getRelation("favorite");
-        relation.getQuery().findInBackground(new FindCallback<ParseObject>() {
+        ParseRelation<ParseUser> friendRelation = me.getRelation("friends");
+        friendRelation.getQuery().countInBackground(new CountCallback() {
             @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if (list != null) {
-                    mAdapter = new FavoriteAdapter(getApplicationContext(), list);
-                    mListView.setAdapter(mAdapter);
-
-                }
+            public void done(int i, ParseException e) {
+                mButtonFriends.setText(i + "\nfriends");
             }
         });
 
-        first.setText(user.getString("first_name"));
-        last.setText(user.getString("last_name"));
-        Picasso.with(getApplicationContext()).load(user.getString("profile_url")).centerCrop().resize(400, 400).into(mImageViewProfile);
+        ParseRelation<ParseUser> favoriteRelation = me.getRelation("favorite");
+        favoriteRelation.getQuery().countInBackground(new CountCallback() {
+            @Override
+            public void done(int i, ParseException e) {
+                mButtonFavorite.setText(i + "\nfavorites");
+            }
+        });
+
+        ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
+        reviewQuery.whereEqualTo("writer", me).countInBackground(new CountCallback() {
+            @Override
+            public void done(int i, ParseException e) {
+                mButtonReviews.setText(i + "\nreviews");
+            }
+        });
+
+
+
+
+        //first.setText(name);
+        Picasso.with(getApplicationContext()).load(me.getString("profile_url")).centerCrop().resize(400, 400).into(mImageViewProfile);
     }
 
     @Override
@@ -152,19 +158,19 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void setUpListeners(boolean isResumed) {
         if (isResumed) {
-            mButtonFindFriends.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(), FindFriendsActivity.class);
-                    startActivity(intent);
-                }
-            });
-            mButtonLogOut.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    logOut();
-                }
-            });
+//            mButtonFindFriends.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    Intent intent = new Intent(getApplicationContext(), FindFriendsActivity.class);
+//                    startActivity(intent);
+//                }
+//            });
+//            mButtonLogOut.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View view) {
+//                    logOut();
+//                }
+//            });
             mButtonFriends.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -172,65 +178,23 @@ public class ProfileActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+            mButtonReviews.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getApplicationContext(), UserReviewActivity.class);
+                    startActivity(intent);
+                }
+            });
+            mButtonFavorite.setOnClickListener(this);
         } else {
-            mButtonFindFriends.setOnClickListener(null);
-            mButtonLogOut.setOnClickListener(null);
+            //mButtonFindFriends.setOnClickListener(null);
+            //mButtonLogOut.setOnClickListener(null);
             mButtonFriends.setOnClickListener(null);
+            mButtonReviews.setOnClickListener(null);
+            mButtonFavorite.setOnClickListener(null);
         }
     }
 
-    private class FavoriteAdapter extends BaseAdapter {
-
-        private Context mContext;
-        private List<ParseObject> mList;
-
-        public FavoriteAdapter(Context context, List<ParseObject> list) {
-            mContext = context;
-            mList = list;
-        }
-
-        @Override
-        public int getCount() {
-            return mList.size();
-        }
-
-        @Override
-        public ParseObject getItem(int position) {
-            return mList.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-
-            LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(LAYOUT_INFLATER_SERVICE);
-
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.list_item_favorite, parent, false);
-            }
-
-            mName = (TextView) convertView.findViewById(R.id.favorite_name);
-
-            ParseObject vendor = getItem(position);
-
-            String vendorName = vendor.getString("name");
-
-            if (vendorName != null) {
-                mName.setText(vendorName);
-            } else{
-                YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
-                yelpBizService.searchBusiness(businessId, new FavoriteBusinessSearchCallback());
-            }
-
-            mName.setTextColor(Color.BLACK);
-
-            return convertView;
-        }
-    }
 
     private void logOut() {
         LoginManager.getInstance().logOut(); // facebook logout
@@ -242,24 +206,77 @@ public class ProfileActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    protected class FavoriteBusinessSearchCallback implements Callback<Business> {
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.button_profile_favorite:
+                Intent intent = new Intent(getApplicationContext(), UserFavoriteActivity.class);
+                startActivity(intent);
+                break;
+        }
+    }
 
-        public String TAG = "FavoriteBusinessSearchCallback";
 
-        @Override
-        public void success(Business business, Response response) {
-            Log.d(TAG, "Success");
+    //    public class SearchAllYelpTask extends AsyncTask<List<ParseObject>, Void, List<Business>> {
+//        @Override
+//        protected List<Business> doInBackground(List<ParseObject>... params) {
+//
+//            //final List<Business> result = new ArrayList<>();
+//            List<ParseObject> vendors = params[0];
+//            for (ParseObject vendor : vendors) {
+//                String yelpId = vendor.getString("yelpId");
+//                YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
+//                yelpBizService.searchBusiness(yelpId, new Callback<Business>() {
+//                    @Override
+//                    public void success(Business business, Response response) {
+//                        result.add(business);
+//                    }
+//
+//                    @Override
+//                    public void failure(RetrofitError error) {
+//                        LinearLayout layout;
+//
+//                    }
+//                });
+//
+//            }
+//            int size = result.size();
+//            return result;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<Business> businesses) {
+//            mAdapter = new VendorListAdapter(getApplicationContext(), businesses, mOurVendorList);
+//            mRecyclerView.setAdapter(mAdapter);
+//
+//        }
+//    }
 
-            if (business != null) {
-                mFavoriteBizName = business.getName();
-                mName.setText(mFavoriteBizName);
-            }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+
+        switch (item.getItemId()) {
+            case R.id.action_find_friends:
+                Intent intent = new Intent(getApplicationContext(), FindFriendsActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.action_logout:
+                logOut();
+                break;
+            case R.id.action_settings:
+                break;
         }
 
-        @Override
-        public void failure(RetrofitError error) {
-            Log.e(TAG, error.getMessage());
-        }
+        return super.onOptionsItemSelected(item);
     }
 }

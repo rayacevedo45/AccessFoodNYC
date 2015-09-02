@@ -23,9 +23,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
@@ -34,13 +31,11 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import static rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity.businessId;
-
 
 public class VendorInfoActivity extends AppCompatActivity implements ActionBar.TabListener {
 
     // Tab titles
-    private static final String[] TABS = { "Details", "Menu", "Reviews" };
+    private static final String[] TABS = { "Details", "Twitter", "Reviews" };
 
     public static ParseApplication sApplication;
 
@@ -58,14 +53,24 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
      * The {@link ViewPager} that will display the three primary sections of the app, one at a
      * time.
      */
+
+    ActionBar actionBar;
+
+    // Tab titles
+//    private String[] tabs = { "Details", "Twitter", "Reviews" };
+    String vendorName;
+
     private ViewPager mViewPager;
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
     private boolean isYelp;
+
     private String objectId;
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         isYelp = getIntent().getBooleanExtra(Constants.EXTRA_KEY_IS_YELP, false);
         objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
 
@@ -99,6 +104,9 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
             YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
             yelpBizService.searchBusiness(objectId, new YelpBusinessSearchCallback());
         } else {
+            setupViewPager(mViewPager);
+            mViewPager.setOffscreenPageLimit(3);
+            mTabLayout.setupWithViewPager(mViewPager);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
                 @Override
@@ -162,19 +170,23 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
         @Override
         public Fragment getItem(int position) {
             Fragment fragment;
+            Bundle bundle = new Bundle();
+            bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+            bundle.putBoolean(Constants.EXTRA_KEY_IS_YELP, isYelp);
             switch (position) {
                 case 0:
                     mCurrentDetailsFragment = new DetailsFragment();
-                    // Detail fragment activity
+                    mCurrentDetailsFragment.setArguments(bundle);
                     return mCurrentDetailsFragment;
                 case 1:
-                    // Menu fragment activity
-                    return new MenuFragment();
+//                    fragment = new ReviewsFragment();
+//                    Bundle bundle = new Bundle();
+//                    twitterHandle = getTwitterHandle();
+//                    bundle.putString("Twitter Handle", twitterHandle);
+//                    fragment.setArguments(bundle);
+                    return new TwitterFragment();
                 case 2:
                     fragment = new ReviewsFragment();
-                    Bundle bundle = new Bundle();
-                    bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
-                    bundle.putBoolean(Constants.EXTRA_KEY_IS_YELP, isYelp);
                     fragment.setArguments(bundle);
                     return fragment;
             }
@@ -198,7 +210,7 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
                 mToolbar.setTitle(business.getName());
 //                mCurrentDetailsFragment.onYelpData(business);
 
-                if (mCurrentDetailsFragment != null) {
+                if (mCurrentDetailsFragment != null && isYelp) {
 
                     mCurrentDetailsFragment.onYelpData(business);
                 } else {
@@ -237,6 +249,7 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
                 break;
         }
 
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -249,4 +262,5 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
 }
