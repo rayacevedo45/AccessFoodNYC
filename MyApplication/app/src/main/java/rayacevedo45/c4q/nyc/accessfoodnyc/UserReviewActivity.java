@@ -19,6 +19,7 @@ import java.util.List;
 public class UserReviewActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
+    private UserReviewAdapter mAdapter;
     private Toolbar mToolbar;
 
     @Override
@@ -38,11 +39,13 @@ public class UserReviewActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(lm);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Review");
-
+        query.include("writer");
+        query.include("vendor");
         query.whereEqualTo("writer", user).findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-
+                mAdapter = new UserReviewAdapter(getApplicationContext(), list);
+                mRecyclerView.setAdapter(mAdapter);
             }
         });
 
