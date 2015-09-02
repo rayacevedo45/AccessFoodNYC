@@ -3,73 +3,10 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <TextView
+        android:id="@+id/yelp_review_vendor"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <LinearLayout
-            android:padding="8dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/user_review_vendor_picture"
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:paddingTop="8dp"
-            android:paddingLeft="8dp"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:textColor="@color/white"
-                    android:id="@+id/user_review_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/user_review_vendor"
-                    android:textSize="20sp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"/>
-
-            </LinearLayout>
-
-
-
-
-            <TextView
-                android:textSize="16sp"
-                android:id="@+id/user_review_vendor_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textColorSecondary"/>
-
-            <TextView
-                android:textSize="16sp"
-                android:id="@+id/user_review_vendor_hour"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/textColorSecondary"/>
-
-
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -79,7 +16,7 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_margin="8dp"
-            android:id="@+id/user_review_user_picture"
+            android:id="@+id/yelp_review_user_picture"
             android:layout_gravity="top"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -90,7 +27,8 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/user_review_writer"
+                android:textColor="@color/black"
+                android:id="@+id/yelp_review_writer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -131,19 +69,22 @@
 
 
                 <TextView
-                    android:id="@+id/user_review_date"
+                    android:textColor="@color/black"
+                    android:id="@+id/yelp_review_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/user_review_title"
+                android:textColor="@color/black"
+                android:id="@+id/yelp_review_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/user_review_description"
+                android:textColor="@color/black"
+                android:id="@+id/yelp_review_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -158,5 +99,7 @@
         android:layout_width="fill_parent"
         android:layout_height="1dp"
         android:background="@color/dividerColor"/>
+
+
 
 </LinearLayout>

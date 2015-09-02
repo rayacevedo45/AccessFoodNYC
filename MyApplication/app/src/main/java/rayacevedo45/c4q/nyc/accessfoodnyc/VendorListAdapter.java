@@ -106,22 +106,22 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.address.setText(address.get(0) + ", " + address.get(1));
             holder.yelpLogo.setVisibility(View.VISIBLE);
         } else {
-            ParseObject item = (ParseObject) object;
+            ParseObject vendor = (ParseObject) object;
 
             holder.yelpLogo.setVisibility(View.GONE);
             holder.ratingImage.setVisibility(View.GONE);
             holder.hour.setVisibility(View.VISIBLE);
 
-            if (item.get("profile_url") != null) {
-                Picasso.with(mContext).load((String) item.get("profile_url")).centerCrop().resize(250, 250).into(holder.thumbnail);
+            if (vendor.get("profile_url") != null) {
+                Picasso.with(mContext).load(vendor.getString("profile_url")).centerCrop().resize(250, 250).into(holder.thumbnail);
             }
-            holder.name.setText(Integer.toString(position + 1) + ". " + (String) item.get("name"));
+            holder.name.setText(Integer.toString(position + 1) + ". " + (String) vendor.get("name"));
 
             Calendar calendar = Calendar.getInstance();
             int day = calendar.get(Calendar.DAY_OF_WEEK);
 
             String today = "day" + Integer.toString(day);
-            String json = item.getString(today);
+            String json = vendor.getString(today);
             try {
                 JSONObject info = new JSONObject(json);
                 holder.address.setText(info.getString("address"));
