@@ -19,7 +19,7 @@
         <item name="android:windowBackground">@color/white</item>
     </style>
 
-    <style name="translucent" parent="android:style/Theme.Translucent">
+    <style name="translucent" parent="translucent">
         <item name="android:windowBackground">@color/transparent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">true</item>
