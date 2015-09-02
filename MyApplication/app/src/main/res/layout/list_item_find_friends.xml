@@ -5,28 +5,24 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp">
+    android:layout_marginTop="16dp"
+    android:layout_marginBottom="16dp"
+    android:layout_marginRight="16dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView_friend"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" />
-
-
-
-
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView_friend"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <TextView
-            android:textSize="25sp"
+            android:textSize="20sp"
             android:textColor="@color/black"
             android:id="@+id/name_friend"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
-
-
-
+            android:layout_weight="1"
+            android:singleLine="true"/>
 
         <Button
             android:id="@+id/button_request"
@@ -34,14 +30,5 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/accentColor"/>
-
-
-
-    <!--<View-->
-        <!--android:layout_marginTop="12dp"-->
-        <!--android:layout_width="fill_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:background="@color/dividerColor"/>-->
-
 
 </LinearLayout>
