@@ -21,8 +21,8 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="android:navigationBarColor">@color/primaryColor</item>
         <item name="android:editTextColor">@color/accentColor</item>
-        <item name="android:textColorPrimary">@color/primaryText</item>
-        <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <!--<item name="android:textColorPrimary">@color/primaryText</item>-->
+        <!--<item name="android:textColorSecondary">@color/textColorSecondary</item>-->
         <item name="android:dialogTheme">@style/Theme.AppCompat.Light.Dialog</item>
 
     </style>
@@ -38,5 +38,7 @@
         <item name="android:textColorHint">@color/accentColor</item>
         <item name="color">@color/accentColor</item>
     </style>
+
+
 
 </resources>

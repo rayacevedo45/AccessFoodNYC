@@ -2,6 +2,8 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.parse.GetCallback;
@@ -39,10 +42,16 @@ public class ReviewDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+
         objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
         isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         mDialogView = inflater.inflate(R.layout.dialog_review, null);
+
+        RelativeLayout background = (RelativeLayout) mDialogView.findViewById(R.id.background_view);
+        background.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+
         mRatingBar = (RatingBar) mDialogView.findViewById(R.id.ratingBar);
         mTextViewTitle = (TextView) mDialogView.findViewById(R.id.dialog_review_title);
         mTextViewRating = (TextView) mDialogView.findViewById(R.id.dialog_review_rating);
