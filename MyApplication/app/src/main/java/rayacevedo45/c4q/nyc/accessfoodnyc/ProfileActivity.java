@@ -141,7 +141,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 
         //first.setText(name);
-        Picasso.with(getApplicationContext()).load(me.getString("profile_url")).centerCrop().resize(400, 400).into(mImageViewProfile);
+        Picasso.with(getApplicationContext()).load(me.getString("profile_url")).into(mImageViewProfile);
     }
 
     @Override
