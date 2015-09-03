@@ -44,6 +44,8 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         mList = new ArrayList<>();
     }
 
+
+
     public VendorListAdapter(Context context, List<ParseObject> list) {
         mContext = context;
         mList = new ArrayList<>();
@@ -63,9 +65,16 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
     }
 
 
+    public void addYelpList(List<Business> list) {
+        mList.addAll(list);
+        notifyItemRangeInserted(mList.size() - 1, list.size());
+        notifyItemRangeChanged(mList.size()-1, list.size());
+    }
+
     public void addList(List<ParseObject> list) {
         mList.addAll(list);
-        notifyItemRangeInserted(0, list.size());
+        notifyItemRangeInserted(mList.size()-1, list.size());
+        notifyItemRangeChanged(mList.size()-1, list.size());
     }
 
     public void addYelpItem(Business business) {
@@ -115,7 +124,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             if (vendor.get("profile_url") != null) {
                 Picasso.with(mContext).load(vendor.getString("profile_url")).centerCrop().resize(250, 250).into(holder.thumbnail);
             }
-            holder.name.setText(Integer.toString(position + 1) + ". " + (String) vendor.get("name"));
+            holder.name.setText(vendor.getString("name"));
 
             Calendar calendar = Calendar.getInstance();
             int day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -127,7 +136,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
                 try {
                     JSONObject info = new JSONObject(json);
                     holder.address.setText(info.getString("address"));
-                    
+
                     String opening = info.getString("openAt");
                     String closing = info.getString("closeAt");
 

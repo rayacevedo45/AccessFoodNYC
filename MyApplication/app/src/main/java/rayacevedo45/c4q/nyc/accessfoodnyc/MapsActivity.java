@@ -129,6 +129,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    private void initializeViews() {
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mButtonFilter = (FloatingActionButton) findViewById(R.id.button_filter);
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        lm.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+        mRecyclerView.setLayoutManager(lm);
+    }
+
     private void setUpClusterer() {
 
         // Initialize the manager with the context and the map.
@@ -167,6 +178,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             sApplication.sYelpResponse = data;
             final List<Business> businessList = sApplication.sYelpResponse.getBusinesses();
 
+            mAdapter.addYelpList(businessList);
+
             markerHashMap = new HashMap<>();
             Calendar calendar = Calendar.getInstance();
             final int day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -201,8 +214,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
                     }
-                    mAdapter = new VendorListAdapter(getApplicationContext(), businessList, ourVendors);
-                    mRecyclerView.setAdapter(mAdapter);
+//                    mAdapter = new VendorListAdapter(getApplicationContext(), businessList, ourVendors);
+//                    mRecyclerView.setAdapter(mAdapter);
                 }
             });
 
@@ -314,15 +327,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onStop();
     }
 
-    private void initializeViews() {
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        mButtonFilter = (FloatingActionButton) findViewById(R.id.button_filter);
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
-        LinearLayoutManager lm = new LinearLayoutManager(this);
-        lm.setOrientation(LinearLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(lm);
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -374,6 +379,43 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
 
         lastLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
+        mAdapter = new VendorListAdapter(getApplicationContext());
+        mRecyclerView.setAdapter(mAdapter);
+
+
+        ParseGeoPoint point = new ParseGeoPoint(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                List<ParseObject> ourVendors = new ArrayList<ParseObject>();
+                for (ParseObject object : list) {
+                    if (object.getString("yelpId") == null) {
+                        ourVendors.add(object);
+//                        String today = "day" + Integer.toString(day);
+//                        String json = object.getString(today);
+//                        try {
+//                            JSONObject info = new JSONObject(json);
+//                            double latitude = info.getDouble("latitude");
+//                            double longitude = info.getDouble("longitude");
+//                            ParseGeoPoint location = new ParseGeoPoint(latitude, longitude);
+//                            object.put("location", location);
+//                            object.saveInBackground();
+//                            LatLng position = new LatLng(latitude, longitude);
+//                            Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(object.getString("name")));
+//                            marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
+//                            markerHashMap.put(marker, object.getObjectId());
+//                        } catch (JSONException e1) {
+//                            e1.printStackTrace();
+//                        }
+                    }
+
+
+                }
+                mAdapter.addList(ourVendors);
+            }
+        });
 
 //        setUpClusterer();
 
