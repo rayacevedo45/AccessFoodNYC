@@ -205,9 +205,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mAdapter.addYelpList(mYelpList);
 
 
-
-
-
             markerHashMap = new HashMap<>();
 //            Calendar calendar = Calendar.getInstance();
 //            final int day = calendar.get(Calendar.DAY_OF_WEEK);
