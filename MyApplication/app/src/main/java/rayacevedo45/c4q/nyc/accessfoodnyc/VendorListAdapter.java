@@ -122,11 +122,12 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
 
             String today = "day" + Integer.toString(day);
             String json = vendor.getString(today);
-            try {
-                JSONObject info = new JSONObject(json);
-                holder.address.setText(info.getString("address"));
-                if (info.getBoolean("isOpen")) {
 
+            if (json == null || json.equals("closed")) {
+                try {
+                    JSONObject info = new JSONObject(json);
+                    holder.address.setText(info.getString("address"));
+                    
                     String opening = info.getString("openAt");
                     String closing = info.getString("closeAt");
 
@@ -145,13 +146,13 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
                         holder.hour.setText("Closed now");
                     }
 
-                } else {
-                    holder.hour.setText("Closed now");
+                } catch (JSONException e1) {
+                    e1.printStackTrace();
                 }
-
-            } catch (JSONException e1) {
-                e1.printStackTrace();
+            } else {
+                holder.hour.setText("Closed today");
             }
+
 
         }
 
