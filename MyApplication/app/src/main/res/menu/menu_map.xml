@@ -11,6 +11,14 @@
         android:title="Search"/>
 
     <item
+        android:icon="@drawable/ic_filter_list_white_24dp"
+        android:id="@+id/action_filter"
+        android:title="Filter"
+        app:showAsAction="always">
+
+    </item>
+
+    <item
         android:id="@+id/action_list"
         android:icon="@drawable/ic_view_list_white_24dp"
         android:title="List"

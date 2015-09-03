@@ -24,27 +24,34 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Coordinate;
 
 
 public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.VendorViewHolder> {
 
     private Context mContext;
-//    private List<ParseObject> mList;
-    //private List<Business> mList;
     private List<Object> mList;
+    private ParseGeoPoint mPoint;
 
     public VendorListAdapter(Context context) {
         mContext = context;
         mList = new ArrayList<>();
     }
 
-
+    public VendorListAdapter(Context context, ParseGeoPoint point, List<ParseObject> list) {
+        mContext = context;
+        mList = new ArrayList<>();
+        mList.addAll(list);
+        mPoint = point;
+    }
 
     public VendorListAdapter(Context context, List<ParseObject> list) {
         mContext = context;
@@ -88,8 +95,6 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
     }
 
 
-
-
     @Override
     public VendorViewHolder onCreateViewHolder(ViewGroup parent, int position) {
         View row = LayoutInflater.from(mContext).inflate(R.layout.list_item_vendor, parent, false);
@@ -98,11 +103,19 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
 
     @Override
     public void onBindViewHolder(VendorViewHolder holder, int position) {
-
+        DecimalFormat df = new DecimalFormat("#.0");
         Object object = mList.get(position);
+
         if (object instanceof Business) {
+            holder.icon.setVisibility(View.GONE);
             holder.hour.setVisibility(View.GONE);
             Business business = (Business) object;
+
+            Coordinate coordinate = business.getLocation().getCoordinate();
+            ParseGeoPoint point = new ParseGeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
+            double distance = mPoint.distanceInMilesTo(point);
+            holder.distance.setText(df.format(distance) + " miles away");
+
             String businessImgUrl = (business.getImageUrl());
             Picasso.with(mContext).load(businessImgUrl).centerCrop().resize(250, 250).into(holder.thumbnail);
 
@@ -111,7 +124,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             Picasso.with(mContext).load(ratingImgUrl).into(holder.ratingImage);
 
             List<String> address = DetailsFragment.addressGenerator(business);
-            holder.name.setText(Integer.toString(position + 1) + ". " + business.getName());
+            holder.name.setText(business.getName());
             holder.address.setText(address.get(0) + ", " + address.get(1));
             holder.yelpLogo.setVisibility(View.VISIBLE);
         } else {
@@ -120,6 +133,16 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.yelpLogo.setVisibility(View.GONE);
             holder.ratingImage.setVisibility(View.GONE);
             holder.hour.setVisibility(View.VISIBLE);
+
+            ParseGeoPoint point = vendor.getParseGeoPoint("location");
+            double distance = mPoint.distanceInMilesTo(point);
+            holder.distance.setText(df.format(distance) + " miles away");
+
+            Number rate = vendor.getNumber("rating");
+            double r = rate.doubleValue();
+            String result = df.format(r);
+            holder.rating.setText(result);
+            holder.address.setText(vendor.getString("address"));
 
             if (vendor.get("profile_url") != null) {
                 Picasso.with(mContext).load(vendor.getString("profile_url")).centerCrop().resize(250, 250).into(holder.thumbnail);
@@ -132,10 +155,9 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             String today = "day" + Integer.toString(day);
             String json = vendor.getString(today);
 
-            if (json == null || json.equals("closed")) {
+            if (!json.equals("closed")) {
                 try {
                     JSONObject info = new JSONObject(json);
-                    holder.address.setText(info.getString("address"));
 
                     String opening = info.getString("openAt");
                     String closing = info.getString("closeAt");
@@ -148,11 +170,22 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
                     open.setMinutes(Integer.valueOf(opening.substring(2)));
                     close.setHours(Integer.valueOf(closing.substring(0,2)));
                     close.setMinutes(Integer.valueOf(closing.substring(2)));
-
+                    String minutes = close.getMinutes() + "";
                     if (now.after(open) && now.before(close)) {
-                        holder.hour.setText("Open until " + close.getHours() + ":" + close.getMinutes());
+                        if (close.getMinutes() == 0) {
+                            minutes = "00";
+                        }
+                        if (close.getHours() > 12) {
+                            holder.hour.setText("Open until " + (close.getHours() - 12) + ":" + minutes + " PM");
+                            holder.icon.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.hour.setText("Open until " + close.getHours() + ":" + minutes + " AM");
+                            holder.icon.setVisibility(View.VISIBLE);
+                        }
+
                     } else {
                         holder.hour.setText("Closed now");
+                        holder.icon.setVisibility(View.VISIBLE);
                     }
 
                 } catch (JSONException e1) {
@@ -160,6 +193,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
                 }
             } else {
                 holder.hour.setText("Closed today");
+                holder.icon.setVisibility(View.VISIBLE);
             }
 
 
@@ -176,6 +210,9 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         protected TextView address;
         protected ImageView yelpLogo;
         protected TextView hour;
+        protected TextView rating;
+        protected ImageView icon;
+        protected TextView distance;
 
         public VendorViewHolder(View itemView) {
             super(itemView);
@@ -185,6 +222,9 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             address = (TextView) itemView.findViewById(R.id.textView_address);
             yelpLogo = (ImageView) itemView.findViewById(R.id.yelp_logo);
             hour = (TextView) itemView.findViewById(R.id.textView_hour);
+            rating = (TextView) itemView.findViewById(R.id.maps_vendor_rating);
+            icon = (ImageView) itemView.findViewById(R.id.schedule_icon);
+            distance = (TextView) itemView.findViewById(R.id.maps_distance);
         }
 
 
