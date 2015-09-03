@@ -136,7 +136,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager lm = new LinearLayoutManager(this);
         lm.setOrientation(LinearLayoutManager.HORIZONTAL);
-        lm.computeHorizontalScrollExtent()
+
         mRecyclerView.setLayoutManager(lm);
     }
 
