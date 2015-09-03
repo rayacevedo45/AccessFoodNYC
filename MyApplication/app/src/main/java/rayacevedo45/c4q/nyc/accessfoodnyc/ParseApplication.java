@@ -29,7 +29,6 @@ public class ParseApplication extends Application {
 		/*
 		 * Add Parse initialization code here
 		 */
-
         Parse.initialize(this);
         ParseFacebookUtils.initialize(this);
         ParseInstallation.getCurrentInstallation().saveInBackground();
