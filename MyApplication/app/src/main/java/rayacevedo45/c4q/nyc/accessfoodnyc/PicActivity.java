@@ -22,6 +22,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.ProgressCallback;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -36,6 +37,7 @@ public class PicActivity extends AppCompatActivity {
     private ImageView imageView;
     private Bitmap bitmap;
     private String objectId;
+    private boolean isYelp;
     private ProgressBar progressBar;
 
 
@@ -50,6 +52,7 @@ public class PicActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         objectId = intent.getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
+        isYelp = intent.getBooleanExtra(Constants.EXTRA_KEY_IS_YELP, true);
 
 
         int flag = getIntent().getIntExtra(Constants.EXTRA_PICTIRE, -1);
@@ -158,7 +161,9 @@ public class PicActivity extends AppCompatActivity {
         byte[] byteArray = stream.toByteArray();
 
         final ParseFile file = new ParseFile("picture.jpg", byteArray);
+        progressBar.setVisibility(View.VISIBLE);
         file.saveInBackground(new SaveCallback() {
+
             @Override
             public void done(ParseException e) {
                 final ParseObject picture = new ParseObject("Picture");
@@ -166,23 +171,45 @@ public class PicActivity extends AppCompatActivity {
                 picture.put("uploader", ParseUser.getCurrentUser());
                 picture.saveInBackground();
                 Toast.makeText(getApplicationContext(), "uploaded", Toast.LENGTH_SHORT).show();
-                
-                
 
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-                query.getInBackground(objectId, new GetCallback<ParseObject>() {
-                    @Override
-                    public void done(ParseObject vendor, ParseException e) {
-                        picture.put("vendor", vendor);
-                        picture.saveInBackground();
-                        Toast.makeText(getApplicationContext(), "uploaded2", Toast.LENGTH_SHORT).show();
+                if (isYelp){
+                    final ParseObject newYelpVendor = new ParseObject("Vendor");
+                    newYelpVendor.put("yelpId", objectId);
+                    newYelpVendor.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            picture.put("vendor", newYelpVendor);
+                            picture.saveInBackground();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "uploaded1", Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
-                    }
 
-                    //public void done(Integer integer) {
-                      //  ProgressBar.s
-                    //}
-                });
+                }
+                else {
+
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+                    query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject vendor, ParseException e) {
+                            picture.put("vendor", vendor);
+                            picture.saveInBackground();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "uploaded2", Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    });
+
+                }
+            }
+        }, new ProgressCallback() {
+            @Override
+            public void done(Integer integer) {
+               // progressBar.getProgress(integer);
+
             }
         });
     }

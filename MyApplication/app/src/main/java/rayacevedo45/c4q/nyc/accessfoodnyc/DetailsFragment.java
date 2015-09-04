@@ -78,6 +78,8 @@ public class DetailsFragment extends Fragment {
 
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                bundle.putBoolean(Constants.EXTRA_KEY_IS_YELP, isYelp);
+
                 picDialog.setArguments(bundle);
 
 
