@@ -13,10 +13,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -30,12 +34,23 @@ import java.util.Locale;
 public class PicActivity extends AppCompatActivity {
     private Uri imageUri;
     private ImageView imageView;
-    Bitmap bitmap;
+    private Bitmap bitmap;
+    private String objectId;
+    private ProgressBar progressBar;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        progressBar = (ProgressBar) findViewById(R.id.pgid);
+
+
+        Intent intent = getIntent();
+        objectId = intent.getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
+
 
         int flag = getIntent().getIntExtra(Constants.EXTRA_PICTIRE, -1);
 
@@ -142,17 +157,35 @@ public class PicActivity extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
         byte[] byteArray = stream.toByteArray();
 
-
-
         final ParseFile file = new ParseFile("picture.jpg", byteArray);
         file.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                ParseUser user = ParseUser.getCurrentUser();
-                user.put("food_pic", file);
-                user.saveInBackground();
+                final ParseObject picture = new ParseObject("Picture");
+                picture.put("data", file);
+                picture.put("uploader", ParseUser.getCurrentUser());
+                picture.saveInBackground();
                 Toast.makeText(getApplicationContext(), "uploaded", Toast.LENGTH_SHORT).show();
+                
+                
+
+                ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+                query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(ParseObject vendor, ParseException e) {
+                        picture.put("vendor", vendor);
+                        picture.saveInBackground();
+                        Toast.makeText(getApplicationContext(), "uploaded2", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    //public void done(Integer integer) {
+                      //  ProgressBar.s
+                    //}
+                });
             }
         });
     }
 }
+
+

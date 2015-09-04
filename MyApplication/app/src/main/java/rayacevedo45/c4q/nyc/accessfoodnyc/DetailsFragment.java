@@ -68,10 +68,19 @@ public class DetailsFragment extends Fragment {
         add = (Button) rootView.findViewById(R.id.button_add);
         cb = (ImageButton) rootView.findViewById(R.id.cbid);
 
+        objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
+        isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
+
         cb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 PicDialog picDialog = new PicDialog();
+
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                picDialog.setArguments(bundle);
+
+
                 picDialog.show(getActivity().getSupportFragmentManager(), "picD");
             }
         });
@@ -82,8 +91,7 @@ public class DetailsFragment extends Fragment {
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerViewReview.setLayoutManager(lm);
 
-        objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
-        isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
+
 
         ParseUser user = ParseUser.getCurrentUser();
         final ParseRelation<ParseUser> relation = user.getRelation("friends");
