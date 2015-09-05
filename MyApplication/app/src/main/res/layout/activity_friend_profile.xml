@@ -42,7 +42,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:textColor="@color/textColorSecondary"
+            android:textColor="@color/toolbarTextColorSecondary"
             android:textSize="30sp"
             android:text="Favorites"
             android:layout_width="match_parent"

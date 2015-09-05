@@ -6,14 +6,16 @@
     <color name="black">#000000</color>
     <color name="amber">#FFC107</color>
 
-
     <color name="primaryColor">#ff9800</color>
     <color name="primaryColorDark">#f57c00</color>
     <color name="primaryColorLight">#FFE0B2</color>
     <color name="accentColor">#03A9F4</color>
-    <color name="toolbarTextColor">#FFFFFF</color>
-    <color name="textColorSecondary">#727272</color>
+
+    <color name="toolbarTextColorPrimary">#FFFFFF</color>
+    <color name="toolbarTextColorSecondary">#727272</color>
     <color name="primaryText">#212121</color>
     <color name="dividerColor">#B6B6B6</color>
+
+    <color name="transparent">#00000000</color>
 
 </resources>

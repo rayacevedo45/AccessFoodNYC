@@ -1,31 +1,18 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.parse.CountCallback;
 import com.parse.FindCallback;
@@ -46,13 +33,6 @@ import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
-import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
-import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpBusinessSearchService;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-
-import static rayacevedo45.c4q.nyc.accessfoodnyc.MapsActivity.businessId;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -126,7 +106,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         mImageViewProfile = (ImageView) findViewById(R.id.imageView_profile);
-        first = (TextView) findViewById(R.id.profile_name);
+        //first = (TextView) findViewById(R.id.profile_name);
         //mButtonFindFriends = (Button) findViewById(R.id.find_friends);
         mButtonFriends = (Button) findViewById(R.id.button_friends_list);
         //mButtonLogOut = (Button) findViewById(R.id.log_out);
@@ -145,7 +125,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         favoriteRelation.getQuery().countInBackground(new CountCallback() {
             @Override
             public void done(int i, ParseException e) {
-                mButtonFavorite.setText(i + "\nfavs");
+                mButtonFavorite.setText(i + "\nfavorites");
             }
         });
 
@@ -160,8 +140,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 
 
-        first.setText(name);
-        Picasso.with(getApplicationContext()).load(me.getString("profile_url")).centerCrop().resize(400, 400).into(mImageViewProfile);
+        //first.setText(name);
+        Picasso.with(getApplicationContext()).load(me.getString("profile_url")).into(mImageViewProfile);
     }
 
     @Override

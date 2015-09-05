@@ -1,37 +1,27 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="AppTheme.Base">
-        <!-- Customize your theme here. -->
-    </style>
+    <style name="AppTheme" parent="AppTheme.Base"></style>
 
     <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryColorDark</item>
-        <item name="android:textColor">@color/primaryColorDark</item>
-        <item name="color">@color/primaryColorDark</item>
         <item name="android:textColorHint">@color/accentColor</item>
         <item name="android:windowBackground">@color/white</item>
+        <item name="colorAccent">@color/accentColor</item>
         <item name="android:dialogTheme">@style/Theme.AppCompat.Light.Dialog</item>
     </style>
 
-    <style name="MapsTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="MapsTheme" parent="AppTheme.Base"></style>
 
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryDark">@color/primaryColorDark</item>
-        <item name="android:windowBackground">@color/white</item>
-
+    <style name="ToolBarStyle" parent="AppTheme.Base">
+        <item name="android:textColorPrimary">@color/toolbarTextColorPrimary</item>
+        <item name="android:textColorSecondary">@color/toolbarTextColorSecondary</item>
     </style>
 
-
     <style name="LoginTheme" parent="AppTheme.Base">
-        <item name="colorPrimary">@color/primaryColor</item>
-        <item name="colorPrimaryDark">@color/primaryColorDark</item>
-        <item name="android:windowBackground">@color/white</item>
         <item name="android:editTextColor">@color/accentColor</item>
         <item name="android:textColorSecondary">@color/accentColor</item>
-        <item name="android:textColorHint">@color/accentColor</item>
-        <item name="color">@color/accentColor</item>
     </style>
 
 </resources>

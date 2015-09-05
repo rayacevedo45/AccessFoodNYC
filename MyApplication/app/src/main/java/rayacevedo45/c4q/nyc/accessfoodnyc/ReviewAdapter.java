@@ -8,12 +8,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.parse.GetCallback;
-import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -36,14 +35,24 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHold
     @Override
     public void onBindViewHolder(ReviewHolder holder, int position) {
         ParseObject review = mList.get(position);
-        ParseUser user = review.getParseUser("writer");
-        int rating = review.getInt("rating");
 
-        Picasso.with(mContext).load(user.getString("profile_url")).resize(200, 200).centerCrop().into(holder.picture);
+        ParseUser user = review.getParseUser("writer");
+        try {
+            Picasso.with(mContext).load(user.getString("profile_url")).resize(200, 200).centerCrop().into(holder.picture);
+        } catch (Exception e) {
+            Picasso.with(mContext).load(R.drawable.default_profile).resize(200, 200).centerCrop().into(holder.picture);
+        }
+
+
         holder.name.setText(user.getString("first_name") + " " + user.getString("last_name"));
-        holder.date.setText(review.getCreatedAt().toString());
+
+        Date uploadDate = review.getCreatedAt();
+        holder.date.setText(uploadDate.getMonth() + "/" + uploadDate.getDay() + "/" + uploadDate.getYear());
+
         holder.title.setText(review.getString("title"));
         holder.description.setText(review.getString("description"));
+
+        int rating = review.getInt("rating");
         switch (rating) {
             case 1:
                 holder.grade2.setVisibility(View.GONE);

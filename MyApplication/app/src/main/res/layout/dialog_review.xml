@@ -1,56 +1,88 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:id="@+id/background_view"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/dialog_review_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:stepSize="1"
-        android:id="@+id/ratingBar"
-        android:layout_gravity="center_horizontal"
-        android:backgroundTint="@color/accentColor"/>
-
-    <TextView
-        android:id="@+id/dialog_review_rating"
+    <LinearLayout
+        android:id="@+id/linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:gravity="center_horizontal" />
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="70dp"
+        android:orientation="vertical">
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/accentColor">
-
-        <EditText
-            android:hint="Title"
-            android:id="@+id/editText_dialog_title"
+        <ImageView
+            android:id="@+id/review_background_pic"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="-55dp"
+            android:scaleType="fitStart"
+            android:src="@drawable/reviewpic" />
+
+        <TextView
+            android:id="@+id/dialog_review_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-    </android.support.design.widget.TextInputLayout>
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:clickable="true"
+            android:paddingTop="3dp"
+            android:stepSize="1" />
+
+        <TextView
+            android:id="@+id/dialog_review_rating"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textStyle="bold" />
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/accentColor">
+
+            <EditText
+                android:id="@+id/editText_dialog_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Title" />
+
+        </android.support.design.widget.TextInputLayout>
 
 
-    <android.support.design.widget.TextInputLayout
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/accentColor">
+
+            <EditText
+                android:id="@+id/editText_dialog_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Description" />
+
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/accentColor">
+        android:background="#00ff0000">
 
-        <EditText
-            android:hint="Description"
-            android:id="@+id/editText_dialog_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/review_dialog_round_pic"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"/>
 
-    </android.support.design.widget.TextInputLayout>
 
+    </RelativeLayout>
 
     <TextView
         android:text="140"
@@ -60,4 +92,4 @@
 
 
 
-</LinearLayout>
+</RelativeLayout>

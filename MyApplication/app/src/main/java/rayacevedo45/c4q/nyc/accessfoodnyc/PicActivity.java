@@ -11,8 +11,21 @@ import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
+import com.parse.ProgressCallback;
+import com.parse.SaveCallback;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -22,12 +35,25 @@ import java.util.Locale;
 public class PicActivity extends AppCompatActivity {
     private Uri imageUri;
     private ImageView imageView;
-    Bitmap bitmap;
+    private Bitmap bitmap;
+    private String objectId;
+    private boolean isYelp;
+    private ProgressBar progressBar;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        progressBar = (ProgressBar) findViewById(R.id.pgid);
+
+
+        Intent intent = getIntent();
+        objectId = intent.getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
+        isYelp = intent.getBooleanExtra(Constants.EXTRA_KEY_IS_YELP, true);
+
 
         int flag = getIntent().getIntExtra(Constants.EXTRA_PICTIRE, -1);
 
@@ -101,7 +127,7 @@ public class PicActivity extends AppCompatActivity {
 
         if (requestCode == Constants.FLAG_CAMERA && resultCode == RESULT_OK) {
 
-            Bitmap bitmap = null;
+            //Bitmap bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(
                         getContentResolver(), imageUri);
@@ -109,6 +135,8 @@ public class PicActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             imageView.setImageBitmap(bitmap);
+
+
         }
         else if(requestCode == Constants.FLAG_GALLERY && resultCode == RESULT_OK) {
 
@@ -124,11 +152,67 @@ public class PicActivity extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
             imageView.setImageBitmap(bitmap);
 
-            // Do something with the bitmap
-
-
-            // At the end remember to close the cursor or you will end with the RuntimeException!
             cursor.close();
         }
     }
+    public void save (View v){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        byte[] byteArray = stream.toByteArray();
+
+        final ParseFile file = new ParseFile("picture.jpg", byteArray);
+        progressBar.setVisibility(View.VISIBLE);
+        file.saveInBackground(new SaveCallback() {
+
+            @Override
+            public void done(ParseException e) {
+                final ParseObject picture = new ParseObject("Picture");
+                picture.put("data", file);
+                picture.put("uploader", ParseUser.getCurrentUser());
+                picture.saveInBackground();
+                Toast.makeText(getApplicationContext(), "uploaded", Toast.LENGTH_SHORT).show();
+
+                if (isYelp){
+                    final ParseObject newYelpVendor = new ParseObject("Vendor");
+                    newYelpVendor.put("yelpId", objectId);
+                    newYelpVendor.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            picture.put("vendor", newYelpVendor);
+                            picture.saveInBackground();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "uploaded1", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
+                }
+                else {
+
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+                    query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject vendor, ParseException e) {
+                            picture.put("vendor", vendor);
+                            picture.saveInBackground();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "uploaded2", Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    });
+
+                }
+            }
+        }, new ProgressCallback() {
+            @Override
+            public void done(Integer integer) {
+               // progressBar.getProgress(integer);
+
+            }
+        });
+    }
 }
+
+
