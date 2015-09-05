@@ -142,17 +142,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
+            <ImageButton
                 android:id="@+id/cbid"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@color/accentColor"
+                android:layout_marginRight="1dp"
+                android:layout_marginLeft="1dp"
+                android:src="@drawable/ic_photo_camera_white_twofourdp"/>
 
-            <Button
+            <ImageButton
                 android:layout_weight="1"
                 android:id="@+id/button_add"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@color/accentColor"
+                android:layout_marginRight="1dp"
+                android:layout_marginLeft="1dp"
+                android:src="@drawable/ic_favorite_border_white_twofourdp"/>
 
         </LinearLayout>
 

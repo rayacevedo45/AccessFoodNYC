@@ -43,7 +43,7 @@ public class DetailsFragment extends Fragment {
     private TextView mVendorNameText;
     private ImageView mVendorPicImage;
     private ImageView mVendorRatingImage;
-    private Button add;
+    private ImageButton add;
     private ParseObject selectedVendor;
 
     private ImageView yelpLogo;
@@ -66,13 +66,13 @@ public class DetailsFragment extends Fragment {
     private boolean isYelp;
     private String objectId;
 
-    private Button cb;
+    private ImageButton cb;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-        add = (Button) rootView.findViewById(R.id.button_add);
-        cb = (Button) rootView.findViewById(R.id.cbid);
+        add = (ImageButton) rootView.findViewById(R.id.button_add);
+        cb = (ImageButton) rootView.findViewById(R.id.cbid);
         yelpLogo = (ImageView) rootView.findViewById(R.id.yelp_logo);
         mRecyclerViewPictures = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_pictures);
 

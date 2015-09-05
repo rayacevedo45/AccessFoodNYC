@@ -97,7 +97,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
 
     @Override
     public VendorViewHolder onCreateViewHolder(ViewGroup parent, int position) {
-        View row = LayoutInflater.from(mContext).inflate(R.layout.list_item_vendor, parent, true);
+        View row = LayoutInflater.from(mContext).inflate(R.layout.list_item_vendor, parent, false);
         return new VendorViewHolder(row);
     }
 
