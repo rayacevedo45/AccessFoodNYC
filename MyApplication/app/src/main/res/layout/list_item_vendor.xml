@@ -98,7 +98,7 @@
                         android:id="@+id/textView_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/textColorSecondary"/>
+                        android:textColor="@color/toolbarTextColorSecondary"/>
 
 
                     <TextView
@@ -106,7 +106,7 @@
                         android:id="@+id/maps_distance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/textColorSecondary"/>
+                        android:textColor="@color/toolbarTextColorSecondary"/>
 
                     <!--<View-->
                     <!--android:layout_marginTop="12dp"-->
@@ -154,7 +154,7 @@
                     android:visibility="gone"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/textColorSecondary"
+                    android:textColor="@color/toolbarTextColorSecondary"
                     android:layout_gravity="center_vertical" />
 
 
