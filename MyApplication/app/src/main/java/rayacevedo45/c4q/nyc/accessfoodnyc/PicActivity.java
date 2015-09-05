@@ -161,7 +161,7 @@ public class PicActivity extends AppCompatActivity {
         byte[] byteArray = stream.toByteArray();
 
         final ParseFile file = new ParseFile("picture.jpg", byteArray);
-        progressBar.setVisibility(View.VISIBLE);
+        //progressBar.setVisibility(View.VISIBLE);
         file.saveInBackground(new SaveCallback() {
 
             @Override
@@ -180,7 +180,7 @@ public class PicActivity extends AppCompatActivity {
                         public void done(ParseException e) {
                             picture.put("vendor", newYelpVendor);
                             picture.saveInBackground();
-                            progressBar.setVisibility(View.GONE);
+                           // progressBar.setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(), "uploaded1", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -195,7 +195,7 @@ public class PicActivity extends AppCompatActivity {
                         public void done(ParseObject vendor, ParseException e) {
                             picture.put("vendor", vendor);
                             picture.saveInBackground();
-                            progressBar.setVisibility(View.GONE);
+                            //progressBar.setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(), "uploaded2", Toast.LENGTH_SHORT).show();
 
                         }

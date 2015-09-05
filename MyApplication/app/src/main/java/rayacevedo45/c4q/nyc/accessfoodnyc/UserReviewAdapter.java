@@ -148,7 +148,6 @@ public class UserReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         }
 
 
-
         holder.title.setText(review.getString("title"));
         holder.description.setText(review.getString("description"));
 
@@ -157,9 +156,9 @@ public class UserReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
         ParseUser user = review.getParseUser("writer");
         try {
-            Picasso.with(mContext).load(user.getString("profile_url")).resize(200, 200).centerCrop().into(holder.writerPicture);
+            Picasso.with(mContext).load(user.getString("profile_url")).resize(100, 100).centerCrop().into(holder.writerPicture);
         } catch (Exception e) {
-            Picasso.with(mContext).load(R.drawable.default_profile).resize(200, 200).centerCrop().into(holder.writerPicture);
+            Picasso.with(mContext).load(R.drawable.default_profile).resize(100, 100).centerCrop().into(holder.writerPicture);
         }
 
         int rating = review.getInt("rating");

@@ -115,6 +115,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean isListed = false;
     private boolean isFetched;
     public HashMap<Marker, String> markerHashMap;
+    private int totalX;
 
 
     @Override
@@ -151,7 +152,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         mGoogleApiClient.connect();
-
     }
 
     private void initializeViews() {
@@ -166,14 +166,28 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mRecyclerView.setLayoutManager(gm);
         mRecyclerViewList.setLayoutManager(lm);
 
-    }
+        totalX = 0;
+        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
 
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+//                totalX += dx;
+//                mRecyclerView.getChildPosition(recyclerView.)
+            }
+        });
+
+    }
     private void setUpClusterer() {
 
         // Initialize the manager with the context and the map.
         // (Activity extends context, so we can pass 'this' in the constructor.)
         mClusterManager = new ClusterManager<MarkerCluster>(getApplicationContext(), mMap);
-
         // Point the map's listeners at the listeners implemented by the cluster
         // manager.
         mMap.setOnCameraChangeListener(mClusterManager);
@@ -373,7 +387,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MenuItem searchViewItem = menu.findItem(R.id.action_search);
         SearchView searchView = (SearchView) searchViewItem.getActionView();
         searchView.setIconifiedByDefault(false);
-
         return true;
     }
 
@@ -405,7 +418,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 

@@ -11,24 +11,21 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/imageView_friend"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_width="64dp"
+            android:layout_height="64dp"/>
 
         <TextView
             android:textSize="20sp"
             android:textColor="@color/black"
             android:id="@+id/name_friend"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:singleLine="true"/>
 
         <Button
             android:id="@+id/button_request"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:background="@color/accentColor"/>
 
 </LinearLayout>
