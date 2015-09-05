@@ -56,7 +56,7 @@
                 android:id="@+id/user_review_vendor_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColorSecondary"/>
+                android:textColor="@color/toolbarTextColorSecondary"/>
 
             <TextView
                 android:textSize="16sp"
@@ -64,7 +64,7 @@
                 android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/textColorSecondary"/>
+                android:textColor="@color/toolbarTextColorSecondary"/>
 
 
         </LinearLayout>

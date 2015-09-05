@@ -1,44 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="AppTheme" parent="AppTheme.Base">
-        <item name="android:colorPrimary">@color/primaryColor</item>
-        <item name="android:colorPrimaryDark">@color/primaryColorDark</item>
-        <item name="android:colorAccent">@color/accentColor</item>
+    <style name="AppTheme.Base" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryColorDark</item>
+        <item name="android:textColorHint">@color/accentColor</item>
         <item name="android:windowBackground">@color/white</item>
-        <item name="android:textColorPrimary">@color/primaryText</item>
-        <item name="android:textColorSecondary">@color/textColorSecondary</item>
-        <item name="android:popupMenuStyle">@style/Theme.AppCompat.Light.Dialog</item>
-        <item name="android:navigationBarColor">@color/primaryColor</item>
-
+        <item name="colorAccent">@color/accentColor</item>
+        <item name="android:dialogTheme">@style/Theme.AppCompat.Light.Dialog</item>
     </style>
 
-    <style name="MapsTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="MapsTheme" parent="AppTheme.Base"></style>
 
-        <item name="android:colorPrimary">@color/primaryColor</item>
-        <item name="android:colorPrimaryDark">@color/primaryColorDark</item>
-        <item name="android:colorAccent">@color/accentColor</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:navigationBarColor">@color/primaryColor</item>
-        <item name="android:editTextColor">@color/accentColor</item>
-        <!--<item name="android:textColorPrimary">@color/primaryText</item>-->
-        <!--<item name="android:textColorSecondary">@color/textColorSecondary</item>-->
-        <item name="android:dialogTheme">@style/Theme.AppCompat.Light.Dialog</item>
-
+    <style name="ToolBarStyle" parent="AppTheme.Base">
+        <item name="android:textColorPrimary">@color/toolbarTextColorPrimary</item>
+        <item name="android:textColorSecondary">@color/toolbarTextColorSecondary</item>
     </style>
 
     <style name="LoginTheme" parent="AppTheme.Base">
-        <item name="android:colorPrimary">@color/primaryColor</item>
-        <item name="android:colorPrimaryDark">@color/primaryColorDark</item>
-        <item name="android:colorAccent">@color/accentColor</item>
-        <item name="android:windowBackground">@color/white</item>
-        <item name="android:navigationBarColor">@color/primaryColor</item>
         <item name="android:editTextColor">@color/accentColor</item>
         <item name="android:textColorSecondary">@color/accentColor</item>
-        <item name="android:textColorHint">@color/accentColor</item>
-        <item name="color">@color/accentColor</item>
     </style>
-
 
 
 </resources>
