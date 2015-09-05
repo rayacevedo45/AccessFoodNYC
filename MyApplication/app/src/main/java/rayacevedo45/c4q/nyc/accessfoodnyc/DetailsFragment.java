@@ -315,6 +315,7 @@ public class DetailsFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                add.setImageResource(R.drawable.favorite_white_oneeightdp);
                 final ParseUser user = ParseUser.getCurrentUser();
                 final ParseRelation<ParseObject> relation = user.getRelation("favorite");
 

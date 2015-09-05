@@ -150,7 +150,7 @@
                 android:background="@color/accentColor"
                 android:layout_marginRight="1dp"
                 android:layout_marginLeft="1dp"
-                android:src="@drawable/ic_photo_camera_white_twofourdp"/>
+                android:src="@drawable/photo_camera_white_oneeightdp"/>
 
             <ImageButton
                 android:layout_weight="1"
@@ -160,7 +160,7 @@
                 android:background="@color/accentColor"
                 android:layout_marginRight="1dp"
                 android:layout_marginLeft="1dp"
-                android:src="@drawable/ic_favorite_border_white_twofourdp"/>
+                android:src="@drawable/favorite_border_white_oneeightdp"/>
 
         </LinearLayout>
 
