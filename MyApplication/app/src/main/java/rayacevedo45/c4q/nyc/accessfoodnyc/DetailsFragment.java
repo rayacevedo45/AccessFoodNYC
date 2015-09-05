@@ -18,7 +18,9 @@ import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
@@ -44,6 +46,8 @@ public class DetailsFragment extends Fragment {
     private Button add;
     private ParseObject selectedVendor;
 
+    private ImageView yelpLogo;
+
     private static List <String> addList;
 
     private TextView mCategoriesText;
@@ -54,19 +58,23 @@ public class DetailsFragment extends Fragment {
 
     private static String mId;
 
+    private RecyclerView mRecyclerViewPictures;
     private RecyclerView mRecyclerViewReview;
     private ReviewAdapter mAdapter;
+    private PicturesAdapter mPicturesAdapter;
 
     private boolean isYelp;
     private String objectId;
 
-    private ImageButton cb;
+    private Button cb;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
         add = (Button) rootView.findViewById(R.id.button_add);
-        cb = (ImageButton) rootView.findViewById(R.id.cbid);
+        cb = (Button) rootView.findViewById(R.id.cbid);
+        yelpLogo = (ImageView) rootView.findViewById(R.id.yelp_logo);
+        mRecyclerViewPictures = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_pictures);
 
         objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
         isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
@@ -93,11 +101,24 @@ public class DetailsFragment extends Fragment {
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerViewReview.setLayoutManager(lm);
 
+//        RecyclerView.LayoutParams params = new    RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
+//        params.setMargins(0,0,0,0);
 
+
+        LinearLayoutManager lm2 = new LinearLayoutManager(getActivity());
+        lm2.setOrientation(LinearLayoutManager.HORIZONTAL);
+        //mRecyclerViewPictures.setLayoutParams(params);
+        mRecyclerViewPictures.setLayoutManager(lm2);
+       // mRecyclerViewPictures.setPadding(0,0,0,0);
+      //  mRecyclerViewPictures.fling(10,0);
+        mPicturesAdapter = new PicturesAdapter(getActivity());
+        mRecyclerViewPictures.setAdapter(mPicturesAdapter);
 
         ParseUser user = ParseUser.getCurrentUser();
         final ParseRelation<ParseUser> relation = user.getRelation("friends");
         if (isYelp) {
+
+            yelpLogo.setVisibility(View.VISIBLE);
             ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
             findVendor.whereEqualTo("yelpId", objectId).findInBackground(new FindCallback<ParseObject>() {
                 @Override
@@ -127,6 +148,52 @@ public class DetailsFragment extends Fragment {
                 }
             });
         } else {
+
+
+            mVendorPicImage = (ImageView) rootView.findViewById(R.id.vendor_pic);
+            mVendorNameText = (TextView) rootView.findViewById(R.id.vendor_name);
+            mSnippetText = (TextView) rootView.findViewById(R.id.snippet_text);
+
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+            query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                @Override
+                public void done(final ParseObject vendor, ParseException e) {
+
+                    ParseRelation<ParseObject> pictures = vendor.getRelation("pictures");
+                    pictures.getQuery().findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> list, ParseException e) {
+
+                            if (list.size() != 0) {
+                                mPicturesAdapter = new PicturesAdapter(getActivity(), list);
+                                mRecyclerViewPictures.setAdapter(mPicturesAdapter);
+                                mVendorPicImage.setVisibility(View.GONE);
+                                mRecyclerViewPictures.setVisibility(View.VISIBLE);
+//                                for (ParseObject item : list) {
+//                                    ParseFile file = item.getParseFile("data");
+//
+//                                    file.getDataInBackground(new GetDataCallback() {
+//                                        @Override
+//                                        public void done(byte[] bytes, ParseException e) {
+//                                            mPicturesAdapter.addPicture(bytes);
+//                                        }
+//                                    });
+//                                }
+                            } else {
+                                Picasso.with(getActivity()).load(vendor.getString("profile_url")).centerCrop().resize(350, 350).noFade().into(mVendorPicImage);
+                            }
+
+
+                        }
+                    });
+
+                    mSnippetText.setText(vendor.getString("description"));
+
+
+
+                }
+            });
+
             relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
                 @Override
                 public void done(List<ParseUser> list, ParseException e) {
@@ -162,20 +229,11 @@ public class DetailsFragment extends Fragment {
         }
 
         if (!isYelp) {
-            mVendorPicImage = (ImageView) rootView.findViewById(R.id.vendor_pic);
-            mVendorNameText = (TextView) rootView.findViewById(R.id.vendor_name);
-            mSnippetText = (TextView) rootView.findViewById(R.id.snippet_text);
 
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-            query.getInBackground(objectId, new GetCallback<ParseObject>() {
-                @Override
-                public void done(ParseObject vendor, ParseException e) {
-                    mVendorNameText.setText(vendor.getString("name"));
-                    mSnippetText.setText(vendor.getString("description"));
-                    Picasso.with(getActivity()).load(vendor.getString("profile_url")).centerCrop().resize(350, 350).noFade().into(mVendorPicImage);
-                }
-            });
         }
+
+
+
 
 
 
