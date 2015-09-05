@@ -181,7 +181,5 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
             dialog.show(manager, "Review");
         }
     }
-
-
-
+    
 }
