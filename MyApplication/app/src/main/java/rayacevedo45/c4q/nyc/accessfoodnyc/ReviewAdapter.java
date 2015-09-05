@@ -24,6 +24,8 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHold
     public ReviewAdapter(Context context, List<ParseObject> list) {
         mContext = context;
         mList = list;
+
+
     }
 
     @Override
@@ -64,12 +66,16 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHold
                 holder.grade5.setVisibility(View.GONE);
         }
 
+
     }
 
     @Override
     public int getItemCount() {
         return mList.size();
     }
+
+
+
 
     public static class ReviewHolder extends RecyclerView.ViewHolder {
 
@@ -78,6 +84,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHold
         protected TextView date;
         protected TextView title;
         protected TextView description;
+
 
         protected ImageView grade1;
         protected ImageView grade2;
@@ -97,6 +104,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHold
             date = (TextView) itemView.findViewById(R.id.textView_review_date);
             title = (TextView) itemView.findViewById(R.id.textView_review_title);
             description = (TextView) itemView.findViewById(R.id.textView_review_description);
+
         }
     }
 }

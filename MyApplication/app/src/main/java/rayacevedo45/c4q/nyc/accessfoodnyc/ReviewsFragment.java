@@ -18,9 +18,9 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,6 +35,8 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
     private ImageView mImageViewUserFace;
     private TextView mTextViewName;
     private TextView mTextViewNoReview;
+
+    private ArrayList<Integer> ratingNums;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,12 +104,18 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                             } else {
                                 mAdapter = new ReviewAdapter(getActivity(), list);
                                 mRecyclerView.setAdapter(mAdapter);
+//                                int ratingsum = 0;
+//                                for (final ParseObject review : list) {
+//                                    ratingsum += (Integer) review.get("rating");
+//                                }
+//                                Toast.makeText(getActivity(),String.valueOf(ratingsum),Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                 }
             });
         }
+
 
 
         return rootView;
@@ -173,4 +181,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
             dialog.show(manager, "Review");
         }
     }
+
+
+
 }
