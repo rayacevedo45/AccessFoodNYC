@@ -58,8 +58,9 @@ public class FriendProfileActivity extends AppCompatActivity {
         LinearLayoutManager lm = new LinearLayoutManager(this);
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(lm);
-        mAdapter = new VendorListAdapter(getApplicationContext());
-        mRecyclerView.setAdapter(mAdapter);
+
+//        mAdapter = new VendorListAdapter(getApplicationContext());
+//        mRecyclerView.setAdapter(mAdapter);
 
         ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
         query.getInBackground(objectId, new GetCallback<ParseUser>() {
@@ -83,7 +84,7 @@ public class FriendProfileActivity extends AppCompatActivity {
                                 yelpBizService.searchBusiness(yelpId, new Callback<Business>() {
                                     @Override
                                     public void success(Business business, Response response) {
-                                        mAdapter.addYelpItem(business);
+                                        //mAdapter.addYelpItem(business);
                                     }
 
                                     @Override

@@ -42,8 +42,9 @@ public class UserFavoriteActivity extends AppCompatActivity {
         LinearLayoutManager lm = new LinearLayoutManager(this);
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(lm);
-        mAdapter = new VendorListAdapter(getApplicationContext());
-        mRecyclerView.setAdapter(mAdapter);
+
+//        mAdapter = new VendorListAdapter(getApplicationContext());
+//        mRecyclerView.setAdapter(mAdapter);
 
         ParseUser user = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> relation = user.getRelation("favorite");
@@ -60,7 +61,7 @@ public class UserFavoriteActivity extends AppCompatActivity {
                         yelpBizService.searchBusiness(yelpId, new Callback<Business>() {
                             @Override
                             public void success(Business business, Response response) {
-                                mAdapter.addYelpItem(business);
+                                //mAdapter.addYelpItem(business);
                             }
 
                             @Override

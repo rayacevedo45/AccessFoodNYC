@@ -54,4 +54,5 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:1.3.0'
     compile 'org.twitter4j:twitter4j-core:4.0.2'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.+'
+    compile 'com.lsjwzh:recyclerviewpager:1.0.8'
 }
