@@ -9,7 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -17,10 +20,21 @@ import rayacevedo45.c4q.nyc.accessfoodnyc.R;
 
 public class TweetAdapter extends BaseAdapter {
     ArrayList<String> tweetList;
+
+    public ArrayList<String> getTweetPics() {
+        return tweetPics;
+    }
+
+    public void setTweetPics(ArrayList<String> tweetPics) {
+        this.tweetPics = tweetPics;
+    }
+
+    ArrayList<String> tweetPics;
     Context context;
 
-    public TweetAdapter(Context context, ArrayList<String> tweetList) {
+    public TweetAdapter(Context context, ArrayList<String> tweetList, ArrayList<String> tweetPics) {
         this.tweetList = tweetList;
+        this.tweetPics = tweetPics;
         this.context = context;
     }
 
@@ -47,11 +61,13 @@ public class TweetAdapter extends BaseAdapter {
         }
 
         String tweet = tweetList.get(position);
+        String tweetpicurl = tweetPics.get(position);
         TextView txtTweet = (TextView) convertView.findViewById(R.id.txtTweet);
-//        TextView txtTweetBy = (TextView) convertView.findViewById(R.id.txtTweetBy);
+        ImageView picTweet = (ImageView)convertView.findViewById(R.id.picTweet);
 
         txtTweet.setText(tweet);
 //        txtTweetBy.setText(tweet);
+        Picasso.with(context).load(tweetpicurl).fit().centerCrop().centerCrop().noFade().into(picTweet);
 
         return convertView;
     }
