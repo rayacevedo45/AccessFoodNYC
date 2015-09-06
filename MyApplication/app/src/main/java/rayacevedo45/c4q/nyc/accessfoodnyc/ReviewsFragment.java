@@ -209,7 +209,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                             }
                         });
 
-                    } 
+                    }
                 }
             });
         }
