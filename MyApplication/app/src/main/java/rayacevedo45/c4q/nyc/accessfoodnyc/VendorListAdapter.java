@@ -120,6 +120,14 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         return mPointList.get(position);
     }
 
+    public int getPosition(Marker marker) {
+        return mPointList.indexOf(marker);
+    }
+
+    public Object getObject(Marker marker) {
+        return getItem(mPointList.indexOf(marker));
+    }
+
     public Object getItem(int position) {
         return mList.get(position);
     }

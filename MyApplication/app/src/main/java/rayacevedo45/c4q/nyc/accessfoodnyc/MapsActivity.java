@@ -107,6 +107,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean isFetched;
     public HashMap<Marker, Integer> markerHashMap;
     private Integer previous;
+    private boolean isMarkerClicked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,6 +122,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         markerHashMap = new HashMap<>();
 
+        isMarkerClicked = false;
 
         buildGoogleApiClient();
         createLocationRequest();
@@ -171,15 +173,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 int childCount = mRecyclerView.getCurrentPosition();
                 int position = mRecyclerView.getCurrentPosition();
                 switch (scrollState) {
-                    case RecyclerView.SCROLL_STATE_SETTLING:
+                    case RecyclerView.SCROLL_STATE_IDLE:
 
-                        if (previous != null) {
-                            mAdapter.getMarker(previous).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
+                        if (!isMarkerClicked) {
+                            mMap.animateCamera(CameraUpdateFactory.newLatLng(mAdapter.getMarker(position).getPosition()));
+                            if (previous != null) {
+                                mAdapter.getMarker(previous).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
+                            }
+                            mAdapter.getMarker(position).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_blue));
+                            previous = position;
                         }
-                        mAdapter.getMarker(position).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_blue));
-                        previous = position;
 
-                        Toast.makeText(MapsActivity.this, "settling child" + childCount + " position" + position, Toast.LENGTH_SHORT).show();
+
+
+                        //mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
+
                         break;
 
                 }
@@ -367,15 +375,47 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //            }
 //            generateClusterManager(mClusterManager);
 //            mClusterManager.cluster();
+            mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                @Override
+                public boolean onMarkerClick(Marker marker) {
+
+                    isMarkerClicked = true;
+                    int position = mAdapter.getPosition(marker);
+                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_blue));
+                    marker.showInfoWindow();
+                    if (previous != null) {
+                        mAdapter.getMarker(previous).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
+                    }
+                    previous = position;
+                    mRecyclerView.smoothScrollToPosition(position);
+                    isMarkerClicked = false;
+                    //marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_blue));
+
+                    //previous = position;
+
+                    //mMap.animateCamera(CameraUpdateFactory.newLatLng(marker.getPosition()));
+                    return true;
+                }
+            });
 
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
-//                    String businessId = markerHashMap.get(marker);
-//
-//                    Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
-//                    intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, businessId);
-//                    startActivity(intent);
+                    Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
+                    String objectId;
+                    Object item = mAdapter.getObject(marker);
+                    if (item instanceof Business) {
+                        Business business = (Business) item;
+                        objectId = business.getId();
+                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
+                    } else {
+                        ParseObject vendor = (ParseObject) item;
+                        objectId = vendor.getObjectId();
+                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
+
+                    }
+                    intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                    startActivity(intent);
                 }
             });
 
@@ -532,6 +572,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onConnected(Bundle bundle) {
         Log.i("MapsActivity", "Connected to Map!!!!!!!!");
         LatLng defaultLatLng = new LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE);
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLatLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
