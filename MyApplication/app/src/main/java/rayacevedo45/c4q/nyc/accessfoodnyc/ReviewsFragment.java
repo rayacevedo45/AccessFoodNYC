@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.CountCallback;
 import com.parse.FindCallback;
@@ -104,16 +105,17 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                             } else {
                                 mAdapter = new ReviewAdapter(getActivity(), list);
                                 mRecyclerView.setAdapter(mAdapter);
-//                                double ratingsum = 0;
-//                                for (final ParseObject review : list) {
-//                                    ratingsum += (Integer) review.get("rating");
-//                                }
-////                                Toast.makeText(getActivity(), String.valueOf(ratingsum), Toast.LENGTH_SHORT).show();
-//                                double averageRating = Math.round((ratingsum / (list.size())) * 10.0) / 10.0;
-//
-//                                Toast.makeText(getActivity(), String.valueOf(averageRating), Toast.LENGTH_SHORT).show();
-//                                parseObject.put("rating", averageRating);
-//                                parseObject.saveInBackground();
+                                double ratingsum = 0;
+                                for (final ParseObject review : list) {
+                                    ratingsum += (Integer) review.get("rating");
+                                }
+//                                Toast.makeText(getActivity(), String.valueOf(ratingsum), Toast.LENGTH_SHORT).show();
+                                double averageRating = Math.round((ratingsum / (list.size())) * 10.0) / 10.0;
+
+                                Toast.makeText(getActivity(), String.valueOf(averageRating), Toast.LENGTH_SHORT).show();
+                                parseObject.put("rating", averageRating);
+                                parseObject.put("ratingCount", list.size());
+                                parseObject.saveInBackground();
                             }
                         }
                     });
@@ -207,9 +209,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                             }
                         });
 
-                    } else {
-                        // The request failed
-                    }
+                    } 
                 }
             });
         }

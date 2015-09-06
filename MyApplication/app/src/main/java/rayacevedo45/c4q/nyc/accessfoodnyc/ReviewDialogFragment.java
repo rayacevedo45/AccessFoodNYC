@@ -157,8 +157,10 @@ public class ReviewDialogFragment extends DialogFragment {
 
                                     existingRating = parseObject.getDouble("rating");
                                     reviewCount = parseObject.getInt("ratingCount");
-                                    newRating = (existingRating + rating) / reviewCount;
-                                    parseObject.put("rating", newRating);
+                                    newRating = ((existingRating * reviewCount) + rating) / reviewCount+1;
+                                    double averageRating = Math.round(newRating * 10.0) / 10.0;
+                                    parseObject.put("rating", averageRating);
+                                    parseObject.put("ratingCount", reviewCount+1);
                                     parseObject.saveInBackground();
 
 
