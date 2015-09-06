@@ -331,6 +331,11 @@ public class DetailsFragment extends Fragment {
                                 selectedVendor = object;
                                 relation.add(selectedVendor);
 
+                                ParseRelation<ParseUser> vendorFollowers = object.getRelation("followers");
+                                vendorFollowers.add(user);
+                                object.saveInBackground();
+
+
                                 user.saveInBackground(new SaveCallback() {
                                     @Override
                                     public void done(ParseException e) {
@@ -355,6 +360,10 @@ public class DetailsFragment extends Fragment {
                                         @Override
                                         public void done(ParseException e) {
                                             relation.add(selectedVendor);
+
+                                            ParseRelation<ParseUser> vendorFollowers = selectedVendor.getRelation("followers");
+                                            vendorFollowers.add(user);
+                                            selectedVendor.saveInBackground();
 
                                             user.saveInBackground(new SaveCallback() {
                                                 @Override
@@ -382,6 +391,12 @@ public class DetailsFragment extends Fragment {
                         @Override
                         public void done(ParseObject vendor, ParseException e) {
                             relation.add(vendor);
+
+                            ParseRelation<ParseUser> vendorFollowers = vendor.getRelation("followers");
+                            vendorFollowers.add(user);
+                            vendor.saveInBackground();
+
+
                             user.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {

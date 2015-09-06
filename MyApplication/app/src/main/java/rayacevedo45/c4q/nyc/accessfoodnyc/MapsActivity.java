@@ -354,7 +354,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
                     })
             );
-
         } else {
 
         }
@@ -376,8 +375,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.i("MapsActivity", "it stops!!!!!!!");
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -386,7 +383,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //        MenuItem searchViewItem = menu.findItem(R.id.action_search);
 //        SearchView searchView = (SearchView) searchViewItem.getActionView();
 //        searchView.setIconifiedByDefault(false);
-
         return true;
     }
 
@@ -395,7 +391,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-
         switch (item.getItemId()) {
             case R.id.action_profile:
                 Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
@@ -418,13 +413,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 break;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         googleMap.setMyLocationEnabled(true);
         googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
         googleMap.setOnCameraChangeListener(this);
@@ -448,7 +441,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         final ParseGeoPoint point = new ParseGeoPoint(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-        query.whereNear("location", point).setLimit(50).findInBackground(new FindCallback<ParseObject>() {
+        query.whereNear("location", point).setLimit(50).include("followers").findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 mAdapter = new VendorListAdapter(getApplicationContext(), point, list);
@@ -462,29 +455,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
                     markerHashMap.put(marker, vendor.getObjectId());
                 }
-
             }
         });
-
-
 //        setUpClusterer();
 
         Geocoder geocoder;
         List<Address> addresses = null;
         geocoder = new Geocoder(this, Locale.getDefault());
-
         try {
             addresses = geocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
             String city = addresses.get(0).getLocality();
             String state = addresses.get(0).getAdminArea();
             String postalCode = addresses.get(0).getPostalCode();
-
             YelpSearchService yelpService = ServiceGenerator.createYelpSearchService();
 //        yelpService.searchFoodCarts(String.valueOf(lastLatLng), new YelpSearchCallback());
             yelpService.searchFoodCarts(address + " " + postalCode, new YelpSearchCallback());
 //        yelpService.searchFoodCarts("3100 47th Ave 11101", new YelpSearchCallback());
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -511,7 +498,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -521,7 +507,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .addApi(LocationServices.API)
                 .build();
     }
-
 
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
@@ -540,7 +525,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
-
     }
 
     private void getQuery() {
@@ -567,6 +551,5 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
-
 
 }
