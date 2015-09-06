@@ -7,10 +7,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v17.leanback.widget.HorizontalGridView;
-import android.support.v17.leanback.widget.OnChildSelectedListener;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.internal.view.menu.MenuBuilder;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,14 +15,10 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.android.recyclerplayground.layout.FixedGridLayoutManager;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.common.ConnectionResult;
@@ -51,13 +44,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
 import java.text.DateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -442,12 +430,35 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mRecyclerView.setAdapter(mAdapter);
                 mRecyclerViewList.setAdapter(mAdapter);
 
-                for (ParseObject vendor : list) {
+                for (final ParseObject vendor : list) {
+
                     ParseGeoPoint vendorLocation = vendor.getParseGeoPoint("location");
                     LatLng position = new LatLng(vendorLocation.getLatitude(), vendorLocation.getLongitude());
                     Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(vendor.getString("name")));
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
                     markerHashMap.put(marker, vendor.getObjectId());
+                    ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
+                    reviewQuery.whereEqualTo("vendor", vendor).findInBackground(new FindCallback<ParseObject>() {
+                        @Override
+                        public void done(List<ParseObject> list, ParseException e) {
+                            if (list.size() == 0) {
+
+                            } else {
+
+                                double ratingsum = 0;
+                                for (final ParseObject review : list) {
+                                    ratingsum += (Integer) review.get("rating");
+                                }
+//                                Toast.makeText(getActivity(), String.valueOf(ratingsum), Toast.LENGTH_SHORT).show();
+                                double averageRating = Math.round((ratingsum / (list.size())) * 10.0) / 10.0;
+
+                                Toast.makeText(getApplicationContext(), String.valueOf(averageRating), Toast.LENGTH_SHORT).show();
+                                vendor.put("rating", averageRating);
+                                vendor.saveInBackground();
+                            }
+                        }
+                    });
+
                 }
 
             }

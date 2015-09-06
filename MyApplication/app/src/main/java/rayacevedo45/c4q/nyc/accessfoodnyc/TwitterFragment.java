@@ -35,8 +35,8 @@ public class TwitterFragment extends Fragment {
     ImageView menuImage;
 //    String menuPicUrlStr;
 
-    private final String TWIT_CONS_KEY = "gJdL8HCQ5aOOo5Px229UUZW0z";
-    private final String TWIT_CONS_SEC_KEY = "ELSs2Bwujyud3D0MT1q8DLNTp2eGCrP1YfKbP6P1aVtZY3zmmU";
+    private final String TWIT_CONS_KEY = "TovzZmg4TOmqS0rAuN1bH8gSU";
+    private final String TWIT_CONS_SEC_KEY = "pwlybwQE58GMApEZsttz0T3bXOXR7Dvttp9MNugegUGryiDK4s";
     ListView list;
     Twitter twitter;
     private String twitterHandle;

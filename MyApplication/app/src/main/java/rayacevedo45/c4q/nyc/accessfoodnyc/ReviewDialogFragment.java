@@ -2,8 +2,6 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -37,6 +35,9 @@ public class ReviewDialogFragment extends DialogFragment {
     private TextView mTextViewCounter;
     private View mDialogView;
     private ImageView mImageViewRiviewDialogUserFace;
+    double existingRating;
+    double newRating;
+    int reviewCount;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,8 @@ public class ReviewDialogFragment extends DialogFragment {
                 mTextViewRating.setText(ratingText);
             }
         });
+
+
     }
 
     @NonNull
@@ -115,11 +118,12 @@ public class ReviewDialogFragment extends DialogFragment {
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        
+
 
                         final String title = mEditTextTitle.getText().toString();
                         final String description = mEditTextDescription.getText().toString();
                         final int rating = Math.round(mRatingBar.getRating());
+
 
                         if (isYelp) {
                             ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
@@ -136,10 +140,13 @@ public class ReviewDialogFragment extends DialogFragment {
                                 }
                             });
                         } else {
+
+
                             ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
                             query.getInBackground(objectId, new GetCallback<ParseObject>() {
                                 @Override
                                 public void done(ParseObject parseObject, ParseException e) {
+
                                     ParseObject review = new ParseObject("Review");
                                     review.put("title", title);
                                     review.put("description", description);
@@ -147,8 +154,17 @@ public class ReviewDialogFragment extends DialogFragment {
                                     review.put("writer", ParseUser.getCurrentUser());
                                     review.put("vendor", parseObject);
                                     review.saveInBackground();
+
+                                    existingRating = parseObject.getDouble("rating");
+                                    reviewCount = parseObject.getInt("ratingCount");
+                                    newRating = (existingRating + rating) / reviewCount;
+                                    parseObject.put("rating", newRating);
+                                    parseObject.saveInBackground();
+
+
                                 }
                             });
+
                         }
                     }
                 });
