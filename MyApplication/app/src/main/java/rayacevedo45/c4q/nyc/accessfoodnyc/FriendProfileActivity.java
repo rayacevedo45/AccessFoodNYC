@@ -58,8 +58,9 @@ public class FriendProfileActivity extends AppCompatActivity {
         LinearLayoutManager lm = new LinearLayoutManager(this);
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(lm);
-        mAdapter = new VendorListAdapter(getApplicationContext());
-        mRecyclerView.setAdapter(mAdapter);
+
+//        mAdapter = new VendorListAdapter(getApplicationContext());
+//        mRecyclerView.setAdapter(mAdapter);
 
         ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
         query.getInBackground(objectId, new GetCallback<ParseUser>() {

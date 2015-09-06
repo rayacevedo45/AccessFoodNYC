@@ -42,10 +42,12 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -167,6 +169,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+//        mAdapter = new VendorListAdapter(getApplicationContext());
+//        mRecyclerView.setAdapter(mAdapter);
+//        mRecyclerViewList.setAdapter(mAdapter);
+
     }
 
     private void setUpClusterer() {
@@ -207,14 +213,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             sApplication.sYelpResponse = data;
             List<Business> yelpRawList = sApplication.sYelpResponse.getBusinesses();
 
+            final ParseUser user = ParseUser.getCurrentUser();
             for (final Business business : yelpRawList) {
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
                 query.whereEqualTo("yelpId", business.getId());
                 query.getFirstInBackground(new GetCallback<ParseObject>() {
                     @Override
-                    public void done(ParseObject parseObject, ParseException e) {
-                        if (parseObject == null) {
-                            mAdapter.addYelpItem(business);
+                    public void done(final ParseObject vendor, ParseException e) {
+                        if (vendor == null || vendor.getString("name") == null) {
+
                             rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Location location = business.getLocation();
                             Coordinate coordinate = location.getCoordinate();
                             double latitude = coordinate.getLatitude();
@@ -228,6 +235,42 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             // Changing marker icon
                             marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
                             markerHashMap.put(marker, business.getId());
+
+                            if (vendor == null) {
+                                mAdapter.addYelpItem(business);
+                            } else {
+                                ParseRelation<ParseUser> friends = user.getRelation("friends");
+                                friends.getQuery().findInBackground(new FindCallback<ParseUser>() {
+                                    @Override
+                                    public void done(List<ParseUser> list, ParseException e) {
+
+                                        ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
+                                        favorites.include("follower");
+                                        favorites.whereEqualTo("vendor", vendor).whereContainedIn("follower", list);
+                                        favorites.findInBackground(new FindCallback<ParseObject>() {
+                                            @Override
+                                            public void done(List<ParseObject> list, ParseException e) {
+                                                mAdapter.addYelpItem(business, list);
+                                            }
+                                        });
+
+
+//                                        final List<ParseUser> friendWhoFavorited = new ArrayList<ParseUser>();
+//                                        for (final ParseUser friend : list) {
+//                                            ParseRelation<ParseObject> favorites = friend.getRelation("favorites");
+//                                            favorites.getQuery().findInBackground(new FindCallback<ParseObject>() {
+//                                                @Override
+//                                                public void done(List<ParseObject> list, ParseException e) {
+//                                                    if (list.contains(vendor)) {
+//                                                        friendWhoFavorited.add(friend);
+//                                                    }
+//                                                }
+//                                            });
+//                                        }
+//                                        mAdapter.addYelpItem(business, friendWhoFavorited);
+                                    }
+                                });
+                            }
                         }
                     }
                 });
@@ -434,22 +477,66 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         lastLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
         final ParseGeoPoint point = new ParseGeoPoint(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+        final ParseUser user = ParseUser.getCurrentUser();
+
+        mAdapter = new VendorListAdapter(getApplicationContext(), point);
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerViewList.setAdapter(mAdapter);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
         query.whereNear("location", point).setLimit(50).findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                mAdapter = new VendorListAdapter(getApplicationContext(), point, list);
-                mRecyclerView.setAdapter(mAdapter);
-                mRecyclerViewList.setAdapter(mAdapter);
-
+//                mAdapter = new VendorListAdapter(getApplicationContext(), point, list);
+//                mRecyclerView.setAdapter(mAdapter);
+//                mRecyclerViewList.setAdapter(mAdapter);
                 for (final ParseObject vendor : list) {
+                    if (vendor.getString("name") != null) {
+                        ParseRelation<ParseUser> friends = user.getRelation("friends");
+                        friends.getQuery().findInBackground(new FindCallback<ParseUser>() {
+                            @Override
+                            public void done(List<ParseUser> friends, ParseException e) {
 
-                    ParseGeoPoint vendorLocation = vendor.getParseGeoPoint("location");
-                    LatLng position = new LatLng(vendorLocation.getLatitude(), vendorLocation.getLongitude());
-                    Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(vendor.getString("name")));
-                    marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
-                    markerHashMap.put(marker, vendor.getObjectId());
+                                ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
+                                favorites.include("follower");
+                                favorites.whereEqualTo("vendor", vendor).whereContainedIn("follower", friends);
+                                favorites.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> list, ParseException e) {
+                                        mAdapter.addVendorItem(vendor, list);
+                                    }
+                                });
+
+//
+//
+//                            final List<ParseUser> friendWhoFavorited = new ArrayList<ParseUser>();
+//                            for (final ParseUser friend : friends) {
+//                                ParseRelation<ParseObject> favorites = friend.getRelation("favorites");
+//                                favorites.getQuery().findInBackground(new FindCallback<ParseObject>() {
+//                                    @Override
+//                                    public void done(List<ParseObject> list, ParseException e) {
+//                                        if (list.contains(vendor)) {
+//                                            friendWhoFavorited.add(friend);
+//                                        }
+//                                    }
+//                                });
+//                            }
+//                            mAdapter.addVendorItem(vendor, friendWhoFavorited);
+                            }
+                        });
+
+                        ParseGeoPoint vendorLocation = vendor.getParseGeoPoint("location");
+                        LatLng position = new LatLng(vendorLocation.getLatitude(), vendorLocation.getLongitude());
+                        Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(vendor.getString("name")));
+                        marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
+                        markerHashMap.put(marker, vendor.getObjectId());
+                    }
+
+
+
+
+
+
                     ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
                     reviewQuery.whereEqualTo("vendor", vendor).findInBackground(new FindCallback<ParseObject>() {
                         @Override
