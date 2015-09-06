@@ -18,6 +18,8 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
@@ -28,6 +30,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -39,11 +42,16 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
 
     private Context mContext;
     private List<Object> mList;
+    private List<List<ParseObject>> mFriendsList;
+    private List<Marker> mPointList;
     private ParseGeoPoint mPoint;
 
-    public VendorListAdapter(Context context) {
+    public VendorListAdapter(Context context, ParseGeoPoint point) {
         mContext = context;
         mList = new ArrayList<>();
+        mFriendsList = new ArrayList<>();
+        mPointList = new ArrayList<>();
+        mPoint = point;
     }
 
     public VendorListAdapter(Context context, ParseGeoPoint point, List<ParseObject> list) {
@@ -84,10 +92,32 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         notifyItemRangeChanged(mList.size()-1, list.size());
     }
 
-    public void addYelpItem(Business business) {
+    public void addYelpItem(Business business, Marker marker) {
         mList.add(business);
-        notifyItemInserted(mList.size()-1);
-        notifyItemChanged(mList.size()-1);
+        mFriendsList.add(new ArrayList<ParseObject>());
+        notifyItemInserted(mList.size() - 1);
+        notifyItemChanged(mList.size() - 1);
+        mPointList.add(marker);
+    }
+
+    public void addYelpItem(Business business, List<ParseObject> friends, Marker marker) {
+        mList.add(business);
+        mFriendsList.add(friends);
+        notifyItemInserted(mList.size() - 1);
+        notifyItemChanged(mList.size() - 1);
+        mPointList.add(marker);
+    }
+
+    public void addVendorItem(ParseObject vendor, List<ParseObject> friends, Marker marker) {
+        mList.add(vendor);
+        mFriendsList.add(friends);
+        notifyItemInserted(mList.size() - 1);
+        notifyItemChanged(mList.size() - 1);
+        mPointList.add(marker);
+    }
+
+    public Marker getMarker(int position) {
+        return mPointList.get(position);
     }
 
     public Object getItem(int position) {
@@ -105,11 +135,50 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
     public void onBindViewHolder(VendorViewHolder holder, int position) {
         DecimalFormat df = new DecimalFormat("#.0");
         Object object = mList.get(position);
+        List<ParseObject> friends = mFriendsList.get(position);
+
+        switch (friends.size()) {
+            case 5:
+                holder.friend5.setVisibility(View.VISIBLE);
+                Picasso.with(mContext).load(friends.get(4).getParseUser("follower").getString("profile_url")).into(holder.friend5);
+                holder.favorited.setVisibility(View.VISIBLE);
+                holder.favorited.setText(" favorited this place!");
+            case 4:
+                holder.friend4.setVisibility(View.VISIBLE);
+                Picasso.with(mContext).load(friends.get(3).getParseUser("follower").getString("profile_url")).into(holder.friend4);
+            case 3:
+                holder.friend3.setVisibility(View.VISIBLE);
+                Picasso.with(mContext).load(friends.get(2).getParseUser("follower").getString("profile_url")).into(holder.friend3);
+            case 2:
+                holder.friend2.setVisibility(View.VISIBLE);
+                Picasso.with(mContext).load(friends.get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
+            case 1:
+                holder.friend1.setVisibility(View.VISIBLE);
+                Picasso.with(mContext).load(friends.get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
+                break;
+            case 0:
+                break;
+            default:
+                holder.friend5.setVisibility(View.VISIBLE);
+                holder.friend4.setVisibility(View.VISIBLE);
+                holder.friend3.setVisibility(View.VISIBLE);
+                holder.friend2.setVisibility(View.VISIBLE);
+                holder.friend1.setVisibility(View.VISIBLE);
+                Picasso.with(mContext).load(friends.get(4).getParseUser("follower").getString("profile_url")).into(holder.friend5);
+                Picasso.with(mContext).load(friends.get(3).getParseUser("follower").getString("profile_url")).into(holder.friend4);
+                Picasso.with(mContext).load(friends.get(2).getParseUser("follower").getString("profile_url")).into(holder.friend3);
+                Picasso.with(mContext).load(friends.get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
+                Picasso.with(mContext).load(friends.get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
+                holder.more.setVisibility(View.VISIBLE);
+        }
 
         if (object instanceof Business) {
             holder.icon.setVisibility(View.GONE);
             holder.hour.setVisibility(View.GONE);
             Business business = (Business) object;
+
+            //holder.category.setText(business.getCategories().get(0).get(0));
+            holder.rating.setText(business.getRating() + "");
 
             Coordinate coordinate = business.getLocation().getCoordinate();
             ParseGeoPoint point = new ParseGeoPoint(coordinate.getLatitude(), coordinate.getLongitude());
@@ -128,11 +197,14 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.address.setText(address.get(0) + ", " + address.get(1));
             holder.yelpLogo.setVisibility(View.VISIBLE);
         } else {
-            ParseObject vendor = (ParseObject) object;
 
+
+            ParseObject vendor = (ParseObject) object;
             holder.yelpLogo.setVisibility(View.GONE);
             holder.ratingImage.setVisibility(View.GONE);
             holder.hour.setVisibility(View.VISIBLE);
+
+            holder.category.setText(vendor.getString("category"));
 
             ParseGeoPoint point = vendor.getParseGeoPoint("location");
             double distance = mPoint.distanceInMilesTo(point);
@@ -221,6 +293,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         protected ImageView friend4;
         protected ImageView friend5;
         protected ImageView more;
+        protected TextView favorited;
 
         public VendorViewHolder(View itemView) {
             super(itemView);
@@ -241,6 +314,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             friend4 = (ImageView) itemView.findViewById(R.id.friend4);
             friend5 = (ImageView) itemView.findViewById(R.id.friend5);
             more = (ImageView) itemView.findViewById(R.id.friend_more);
+            favorited = (TextView) itemView.findViewById(R.id.friend_favorited);
         }
 
 

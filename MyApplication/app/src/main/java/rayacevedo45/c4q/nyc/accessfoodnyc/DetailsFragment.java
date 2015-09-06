@@ -120,6 +120,7 @@ public class DetailsFragment extends Fragment {
 
         ParseUser user = ParseUser.getCurrentUser();
         final ParseRelation<ParseUser> relation = user.getRelation("friends");
+
         if (isYelp) {
 
             yelpLogo.setVisibility(View.VISIBLE);
@@ -207,47 +208,32 @@ public class DetailsFragment extends Fragment {
 
             relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
                 @Override
-                public void done(List<ParseUser> list, ParseException e) {
+                public void done(final List<ParseUser> list, ParseException e) {
 
                     ParseQuery<ParseObject> findVendorQuery = ParseQuery.getQuery("Vendor");
                     findVendorQuery.getInBackground(objectId, new GetCallback<ParseObject>() {
                         @Override
                         public void done(final ParseObject vendor, ParseException e) {
-                            relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
-                                @Override
-                                public void done(List<ParseUser> list, ParseException e) {
-                                    if (list.size() != 0) {
-                                        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Review");
-                                        query1.include("writer");
-                                        query1.whereEqualTo("vendor", vendor).whereContainedIn("writer", list);
-                                        query1.findInBackground(new FindCallback<ParseObject>() {
-                                            @Override
-                                            public void done(List<ParseObject> list, ParseException e) {
-                                                if (list.size() != 0) {
-                                                    mAdapter = new ReviewAdapter(getActivity(), list);
-                                                    mRecyclerViewReview.setAdapter(mAdapter);
-                                                }
-                                            }
-                                        });
+                            if (list.size() != 0) {
+                                ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Review");
+                                query1.include("writer");
+                                query1.whereEqualTo("vendor", vendor).whereContainedIn("writer", list);
+                                query1.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> list, ParseException e) {
+                                        if (list.size() != 0) {
+                                            mAdapter = new ReviewAdapter(getActivity(), list);
+                                            mRecyclerViewReview.setAdapter(mAdapter);
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
                         }
                     });
 
                 }
             });
         }
-
-        if (!isYelp) {
-
-        }
-
-
-
-
-
-
 
         return rootView;
     }
@@ -328,7 +314,7 @@ public class DetailsFragment extends Fragment {
             public void onClick(View v) {
                 add.setImageResource(R.drawable.favorite_white_oneeightdp);
                 final ParseUser user = ParseUser.getCurrentUser();
-                final ParseRelation<ParseObject> relation = user.getRelation("favorite");
+                final ParseRelation<ParseObject> favorites = user.getRelation("favorite");
 
                 //check if the yelpID is already in parse.com or not
                 if (isYelp) {
@@ -337,24 +323,25 @@ public class DetailsFragment extends Fragment {
                     query.whereStartsWith("yelpId", mId);
 
                     query.getFirstInBackground(new GetCallback<ParseObject>() {
-                        public void done(final ParseObject object, ParseException e) {
+                        public void done(final ParseObject vendor, ParseException e) {
                             if (e == null) {
                                 //object exists
-                                selectedVendor = object;
-                                relation.add(selectedVendor);
+                                addToFavorite(user, vendor);
 
-                                user.saveInBackground(new SaveCallback() {
-                                    @Override
-                                    public void done(ParseException e) {
-                                        if (e == null) {
-                                            ParsePush.subscribeInBackground(object.getObjectId());
-                                            Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
-
-                                        } else {
-                                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                        }
-                                    }
-                                });
+//                                selectedVendor = vendor;
+//                                favorites.add(selectedVendor);
+//                                user.saveInBackground(new SaveCallback() {
+//                                    @Override
+//                                    public void done(ParseException e) {
+//                                        if (e == null) {
+//                                            ParsePush.subscribeInBackground(vendor.getObjectId());
+//                                            Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
+//
+//                                        } else {
+//                                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+//                                        }
+//                                    }
+//                                });
 
                             } else {
                                 if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
@@ -366,20 +353,22 @@ public class DetailsFragment extends Fragment {
                                     selectedVendor.saveInBackground(new SaveCallback() {
                                         @Override
                                         public void done(ParseException e) {
-                                            relation.add(selectedVendor);
 
-                                            user.saveInBackground(new SaveCallback() {
-                                                @Override
-                                                public void done(ParseException e) {
-                                                    if (e == null) {
-                                                        ParsePush.subscribeInBackground(selectedVendor.getObjectId());
-                                                        Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
+                                            addToFavorite(user, selectedVendor);
 
-                                                    } else {
-                                                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-                                                    }
-                                                }
-                                            });
+//                                            favorites.add(selectedVendor);
+//                                            user.saveInBackground(new SaveCallback() {
+//                                                @Override
+//                                                public void done(ParseException e) {
+//                                                    if (e == null) {
+//                                                        ParsePush.subscribeInBackground(selectedVendor.getObjectId());
+//                                                        Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
+//
+//                                                    } else {
+//                                                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+//                                                    }
+//                                                }
+//                                            });
                                         }
                                     });
                                 } else {
@@ -393,18 +382,34 @@ public class DetailsFragment extends Fragment {
                     query.getInBackground(objectId, new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject vendor, ParseException e) {
-                            relation.add(vendor);
-                            user.saveInBackground(new SaveCallback() {
-                                @Override
-                                public void done(ParseException e) {
-                                    ParsePush.subscribeInBackground(objectId);
-                                    Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
+
+                            addToFavorite(user, vendor);
+
+//                            favorites.add(vendor);
+//                            user.saveInBackground(new SaveCallback() {
+//                                @Override
+//                                public void done(ParseException e) {
+//                                    ParsePush.subscribeInBackground(objectId);
+//                                    Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
                         }
                     });
                 }
 
+            }
+        });
+    }
+
+    private void addToFavorite(ParseUser user, ParseObject vendor) {
+        ParsePush.subscribeInBackground(vendor.getObjectId());
+        ParseObject favorite = new ParseObject("Favorite");
+        favorite.put("follower", user);
+        favorite.put("vendor", vendor);
+        favorite.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
             }
         });
     }
