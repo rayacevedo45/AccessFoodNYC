@@ -61,7 +61,7 @@ public class UserFavoriteActivity extends AppCompatActivity {
                         yelpBizService.searchBusiness(yelpId, new Callback<Business>() {
                             @Override
                             public void success(Business business, Response response) {
-                                mAdapter.addYelpItem(business);
+                                //mAdapter.addYelpItem(business);
                             }
 
                             @Override

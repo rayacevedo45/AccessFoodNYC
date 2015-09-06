@@ -43,12 +43,14 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
     private Context mContext;
     private List<Object> mList;
     private List<List<ParseObject>> mFriendsList;
+    private List<Marker> mPointList;
     private ParseGeoPoint mPoint;
 
     public VendorListAdapter(Context context, ParseGeoPoint point) {
         mContext = context;
         mList = new ArrayList<>();
         mFriendsList = new ArrayList<>();
+        mPointList = new ArrayList<>();
         mPoint = point;
     }
 
@@ -90,25 +92,32 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         notifyItemRangeChanged(mList.size()-1, list.size());
     }
 
-    public void addYelpItem(Business business) {
+    public void addYelpItem(Business business, Marker marker) {
         mList.add(business);
         mFriendsList.add(new ArrayList<ParseObject>());
         notifyItemInserted(mList.size() - 1);
         notifyItemChanged(mList.size() - 1);
+        mPointList.add(marker);
     }
 
-    public void addYelpItem(Business business, List<ParseObject> friends) {
+    public void addYelpItem(Business business, List<ParseObject> friends, Marker marker) {
         mList.add(business);
         mFriendsList.add(friends);
         notifyItemInserted(mList.size() - 1);
         notifyItemChanged(mList.size() - 1);
+        mPointList.add(marker);
     }
 
-    public void addVendorItem(ParseObject vendor, List<ParseObject> friends) {
+    public void addVendorItem(ParseObject vendor, List<ParseObject> friends, Marker marker) {
         mList.add(vendor);
         mFriendsList.add(friends);
         notifyItemInserted(mList.size() - 1);
         notifyItemChanged(mList.size() - 1);
+        mPointList.add(marker);
+    }
+
+    public Marker getMarker(int position) {
+        return mPointList.get(position);
     }
 
     public Object getItem(int position) {
