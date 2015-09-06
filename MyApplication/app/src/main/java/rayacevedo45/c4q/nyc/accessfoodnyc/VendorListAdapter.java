@@ -214,6 +214,14 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         protected ImageView icon;
         protected TextView distance;
 
+        protected TextView category;
+        protected ImageView friend1;
+        protected ImageView friend2;
+        protected ImageView friend3;
+        protected ImageView friend4;
+        protected ImageView friend5;
+        protected ImageView more;
+
         public VendorViewHolder(View itemView) {
             super(itemView);
             thumbnail = (ImageView) itemView.findViewById(R.id.imageView_vendor);
@@ -225,6 +233,14 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             rating = (TextView) itemView.findViewById(R.id.maps_vendor_rating);
             icon = (ImageView) itemView.findViewById(R.id.schedule_icon);
             distance = (TextView) itemView.findViewById(R.id.maps_distance);
+
+            category = (TextView) itemView.findViewById(R.id.vendor_category);
+            friend1 = (ImageView) itemView.findViewById(R.id.friend1);
+            friend2 = (ImageView) itemView.findViewById(R.id.friend2);
+            friend3 = (ImageView) itemView.findViewById(R.id.friend3);
+            friend4 = (ImageView) itemView.findViewById(R.id.friend4);
+            friend5 = (ImageView) itemView.findViewById(R.id.friend5);
+            more = (ImageView) itemView.findViewById(R.id.friend_more);
         }
 
 
