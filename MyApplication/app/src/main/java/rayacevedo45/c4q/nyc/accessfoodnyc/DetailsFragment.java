@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -55,6 +56,7 @@ public class DetailsFragment extends Fragment {
 
     private TextView mPhoneText;
     private TextView mSnippetText;
+    private TextView abouttv;
 
     private static String mId;
 
@@ -75,6 +77,7 @@ public class DetailsFragment extends Fragment {
         cb = (ImageButton) rootView.findViewById(R.id.cbid);
         yelpLogo = (ImageView) rootView.findViewById(R.id.yelp_logo);
         mRecyclerViewPictures = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_pictures);
+        abouttv = (TextView) rootView.findViewById(R.id.aboutId);
 
         objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
         isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
@@ -99,6 +102,7 @@ public class DetailsFragment extends Fragment {
         //mRecyclerViewReview.setHasFixedSize(true);
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
         lm.setOrientation(LinearLayoutManager.VERTICAL);
+
         mRecyclerViewReview.setLayoutManager(lm);
 
 //        RecyclerView.LayoutParams params = new    RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
@@ -169,6 +173,12 @@ public class DetailsFragment extends Fragment {
                                 mRecyclerViewPictures.setAdapter(mPicturesAdapter);
                                 mVendorPicImage.setVisibility(View.GONE);
                                 mRecyclerViewPictures.setVisibility(View.VISIBLE);
+
+                                RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
+                                        ViewGroup.LayoutParams.WRAP_CONTENT);
+                                p.addRule(RelativeLayout.BELOW, R.id.vendor_name);
+
+                                mSnippetText.setLayoutParams(p);
 //                                for (ParseObject item : list) {
 //                                    ParseFile file = item.getParseFile("data");
 //
@@ -180,6 +190,7 @@ public class DetailsFragment extends Fragment {
 //                                    });
 //                                }
                             } else {
+                                abouttv.setVisibility(View.GONE);
                                 Picasso.with(getActivity()).load(vendor.getString("profile_url")).centerCrop().resize(350, 350).noFade().into(mVendorPicImage);
                             }
 
@@ -315,6 +326,7 @@ public class DetailsFragment extends Fragment {
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                add.setImageResource(R.drawable.favorite_white_oneeightdp);
                 final ParseUser user = ParseUser.getCurrentUser();
                 final ParseRelation<ParseObject> relation = user.getRelation("favorite");
 
