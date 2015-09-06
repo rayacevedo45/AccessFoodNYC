@@ -35,8 +35,8 @@ public class TwitterFragment extends Fragment {
     ImageView menuImage;
 //    String menuPicUrlStr;
 
-    private final String TWIT_CONS_KEY = "gJdL8HCQ5aOOo5Px229UUZW0z";
-    private final String TWIT_CONS_SEC_KEY = "ELSs2Bwujyud3D0MT1q8DLNTp2eGCrP1YfKbP6P1aVtZY3zmmU";
+    private final String TWIT_CONS_KEY = "TovzZmg4TOmqS0rAuN1bH8gSU";
+    private final String TWIT_CONS_SEC_KEY = "pwlybwQE58GMApEZsttz0T3bXOXR7Dvttp9MNugegUGryiDK4s";
     ListView list;
     Twitter twitter;
     private String twitterHandle;
@@ -54,7 +54,7 @@ public class TwitterFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View rootView = inflater.inflate(R.layout.activity_twitter, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_twitter, container, false);
 
         list = (ListView) rootView.findViewById(R.id.list);
 
@@ -86,6 +86,7 @@ public class TwitterFragment extends Fragment {
         final int FAILURE = SUCCESS + 1;
         ProgressDialog dialog;
         ArrayList<String> tweetList;
+        ArrayList<String> tweetPics;
 
 
 
@@ -122,13 +123,15 @@ public class TwitterFragment extends Fragment {
                 }
 
                 tweetList = new ArrayList<String>();
+                tweetPics = new ArrayList<String>();
                 for(int i = 0; i < statuses2.size(); i++)
                 {
                     twitter4j.Status status = statuses2.get(i);
                     String tweettext =(status.getUser().getName()) + ":" + (status.getText())+ "\n (" + status.getCreatedAt().toLocaleString() + ")";
-
+                    String twitterPicUrl = status.getUser().getProfileImageURL();
 
                     tweetList.add(tweettext);
+                    tweetPics.add(twitterPicUrl);
                 }
 
                 return tweetList;
@@ -145,7 +148,7 @@ public class TwitterFragment extends Fragment {
 
             dialog.dismiss();
             if (tweetList !=null) {
-                list.setAdapter(new TweetAdapter(getActivity(), tweetList));
+                list.setAdapter(new TweetAdapter(getActivity(), tweetList, tweetPics));
             } else {
                 Toast.makeText(getActivity(), "Error while searching tweets", Toast.LENGTH_LONG).show();
             }

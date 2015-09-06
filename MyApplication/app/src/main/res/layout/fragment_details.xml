@@ -26,6 +26,17 @@
                 android:visibility="gone">
             </android.support.v7.widget.RecyclerView>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="About"
+            android:textSize="24dp"
+            android:textColor="@color/orange"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/aboutId"
+            android:visibility="gone"/>
+
 
 
 
@@ -69,7 +80,7 @@
                 android:layout_below="@+id/vendor_pic"
                 android:layout_centerHorizontal="true"
                 android:textColor="#303030"
-                android:visibility="gone"/>
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -150,7 +161,7 @@
                 android:background="@color/accentColor"
                 android:layout_marginRight="1dp"
                 android:layout_marginLeft="1dp"
-                android:src="@drawable/ic_photo_camera_white_twofourdp"/>
+                android:src="@drawable/photo_camera_white_oneeightdp"/>
 
             <ImageButton
                 android:layout_weight="1"
@@ -160,7 +171,7 @@
                 android:background="@color/accentColor"
                 android:layout_marginRight="1dp"
                 android:layout_marginLeft="1dp"
-                android:src="@drawable/ic_favorite_border_white_twofourdp"/>
+                android:src="@drawable/favorite_border_white_oneeightdp"/>
 
         </LinearLayout>
 
@@ -183,12 +194,19 @@
             android:layout_height="1dp"
             android:background="@color/dividerColor"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+
         <android.support.v7.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:id="@+id/recyclerView_friends_review">
+            android:layout_height="fill_parent"
+            android:id="@+id/recyclerView_friends_review"
+            >
 
         </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
 
     </LinearLayout>
 
