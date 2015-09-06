@@ -150,7 +150,6 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
                 holder.friend5.setVisibility(View.VISIBLE);
                 Picasso.with(mContext).load(friends.get(4).getParseUser("follower").getString("profile_url")).into(holder.friend5);
                 holder.favorited.setVisibility(View.VISIBLE);
-                holder.favorited.setText(" favorited this place!");
             case 4:
                 holder.friend4.setVisibility(View.VISIBLE);
                 Picasso.with(mContext).load(friends.get(3).getParseUser("follower").getString("profile_url")).into(holder.friend4);
@@ -163,8 +162,15 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             case 1:
                 holder.friend1.setVisibility(View.VISIBLE);
                 Picasso.with(mContext).load(friends.get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
+                holder.favorited.setText(" favorited this place!");
                 break;
             case 0:
+                holder.friend5.setVisibility(View.GONE);
+                holder.friend4.setVisibility(View.GONE);
+                holder.friend3.setVisibility(View.GONE);
+                holder.friend2.setVisibility(View.GONE);
+                holder.friend1.setVisibility(View.GONE);
+                holder.more.setVisibility(View.GONE);
                 break;
             default:
                 holder.friend5.setVisibility(View.VISIBLE);
@@ -196,10 +202,6 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             String businessImgUrl = (business.getImageUrl());
             Picasso.with(mContext).load(businessImgUrl).centerCrop().resize(250, 250).into(holder.thumbnail);
 
-            holder.ratingImage.setVisibility(View.VISIBLE);
-            String ratingImgUrl = (business.getRatingImgUrl());
-            Picasso.with(mContext).load(ratingImgUrl).into(holder.ratingImage);
-
             List<String> address = DetailsFragment.addressGenerator(business);
             holder.name.setText(business.getName());
             holder.address.setText(address.get(0) + ", " + address.get(1));
@@ -209,7 +211,6 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
 
             ParseObject vendor = (ParseObject) object;
             holder.yelpLogo.setVisibility(View.GONE);
-            holder.ratingImage.setVisibility(View.GONE);
             holder.hour.setVisibility(View.VISIBLE);
 
             holder.category.setText(vendor.getString("category"));
@@ -286,7 +287,6 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
 
         protected ImageView thumbnail;
         protected TextView name;
-        protected ImageView ratingImage;
         protected TextView address;
         protected ImageView yelpLogo;
         protected TextView hour;
@@ -307,7 +307,6 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             super(itemView);
             thumbnail = (ImageView) itemView.findViewById(R.id.imageView_vendor);
             name = (TextView) itemView.findViewById(R.id.vendor_name);
-            ratingImage = (ImageView) itemView.findViewById(R.id.vendor_rating_img);
             address = (TextView) itemView.findViewById(R.id.textView_address);
             yelpLogo = (ImageView) itemView.findViewById(R.id.yelp_logo);
             hour = (TextView) itemView.findViewById(R.id.textView_hour);

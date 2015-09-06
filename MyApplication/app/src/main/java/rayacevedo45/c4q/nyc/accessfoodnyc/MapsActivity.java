@@ -554,6 +554,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     isListed = true;
                 }
                 break;
+            case R.id.action_filter:
+                filter();
+                break;
         }
 
         return super.onOptionsItemSelected(item);
@@ -638,13 +641,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                            mAdapter.addVendorItem(vendor, friendWhoFavorited);
                             }
                         });
-
-
                     }
-
-
-
-
 
 
                     ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
@@ -774,6 +771,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    private void filter() {
+
     }
 
 
