@@ -25,7 +25,9 @@
         <TextView
             android:id="@+id/textView_review_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000000" />
+
 
         <LinearLayout
             android:orientation="horizontal"
@@ -67,6 +69,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+
+
         </LinearLayout>
 
 
@@ -74,13 +78,14 @@
         <TextView
             android:id="@+id/textView_review_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000000" />
 
         <TextView
             android:id="@+id/textView_review_description"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:textColor="#000000" />
 
     </LinearLayout>
 
