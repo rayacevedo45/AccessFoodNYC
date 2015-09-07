@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:theme="@style/AppTheme">
 
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_friends"
             android:layout_width="match_parent"
@@ -20,15 +19,11 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ThemeOverlay.AppCompat.Dark"/>
 
-
-
-
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -52,14 +47,12 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:id="@+id/pending_container"
-                android:padding="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
 
 
             </LinearLayout>
-
 
 
 
