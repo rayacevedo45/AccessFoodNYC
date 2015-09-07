@@ -70,7 +70,6 @@
                     <TextView
                         android:text="Likes"
                         android:layout_weight="1"
-                        android:fontFamily="sans-serif-thin"
                         android:gravity="center_horizontal|"
                         android:layout_width="match_parent"
                         android:layout_height="36dp" />
@@ -98,7 +97,6 @@
                     <TextView
                         android:text="Reviews"
                         android:layout_weight="1"
-                        android:fontFamily="sans-serif-thin"
                         android:gravity="center_horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="36dp" />
@@ -126,7 +124,6 @@
                     <TextView
                         android:text="Friends"
                         android:layout_weight="1"
-                        android:fontFamily="sans-serif-thin"
                         android:gravity="center_horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="36dp" />
