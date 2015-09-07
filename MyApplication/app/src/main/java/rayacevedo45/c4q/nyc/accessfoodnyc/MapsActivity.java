@@ -67,7 +67,7 @@ import retrofit.client.Response;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,
-        GoogleMap.OnCameraChangeListener, SortDialogListener, TouchableWrapper.UpdateMapAfterUserInterection {
+        GoogleMap.OnCameraChangeListener, DialogCallback, TouchableWrapper.UpdateMapAfterUserInterection {
 
     private static final String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
     private static final String LOCATION_KEY = "location-key";
@@ -118,7 +118,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         isFetched = false;
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+        mToolbar.setNavigationIcon(R.drawable.test);
+        getSupportActionBar().setTitle("Access Food");
 
         markerHashMap = new HashMap<>();
 
@@ -608,14 +611,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                                 if (parseObject == null) {
                                                     truck = new Vendor.Builder(vendor.getObjectId())
                                                             .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
-                                                            .isYelp(false).setCategory(vendor.getString("category"))
+                                                            .isYelp(false)
                                                             .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
                                                             .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
                                                             .isLiked(false).build();
                                                 } else {
                                                     truck = new Vendor.Builder(vendor.getObjectId())
                                                             .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
-                                                            .isYelp(false).setCategory(vendor.getString("category"))
+                                                            .isYelp(false)
                                                             .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
                                                             .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
                                                             .isLiked(true).build();
@@ -747,7 +750,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void sortOptionSelected(int which) {
+    public void dialogClicked(int which) {
         switch (which) {
             case 0:
                 mAdapter.sortByDistance();

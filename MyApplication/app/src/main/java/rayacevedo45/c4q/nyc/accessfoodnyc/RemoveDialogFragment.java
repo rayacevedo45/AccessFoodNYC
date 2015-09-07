@@ -1,5 +1,6 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import java.util.List;
 public class RemoveDialogFragment extends DialogFragment {
 
     private String objectId;
+    private DialogCallback mCallback;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,8 +80,21 @@ public class RemoveDialogFragment extends DialogFragment {
                             }
                         });
 
+                        mCallback.dialogClicked(0);
+
                     }
                 })
-                .setNegativeButton("Cancel", null).create();
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                }).create();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mCallback = (DialogCallback) activity;
     }
 }
