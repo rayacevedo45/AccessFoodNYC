@@ -2,16 +2,21 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.VideoView;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
 import com.parse.ParseUser;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
@@ -26,20 +31,50 @@ public class SplashActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        setContentView(new GifView(this));
+
         setContentView(R.layout.activity_splash);
 
 //        accessIM = (ImageView) findViewById(R.id.accessID);
 //        foodIM = (ImageView) findViewById(R.id.foodID);
 //        NYCim = (ImageView) findViewById(R.id.NYCID);
 
+        try{
+//            VideoView videoHolder = new VideoView(this);
+//            setContentView(videoHolder);
+//            Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
+//                    + R.raw.accessfood2);
+//            videoHolder.setVideoURI(video);
+
+            VideoView videoHolder = (VideoView) findViewById(R.id.truckvideo);
+//            MediaController mediaController = new MediaController(this);
+//            mediaController.setAnchorView(videoHolder);
+            Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
+                    + R.raw.accessfood3);
+//            videoHolder.setMediaController(mediaController);
+//            videoHolder.setMediaController(new MediaController(this));
+            videoHolder.setVideoURI(video);
+            videoHolder.requestFocus();
+            videoHolder.start();
+
+            videoHolder.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+                public void onCompletion(MediaPlayer mp) {
+                    jump();
+                }
+
+            });
+            videoHolder.start();
+        } catch(Exception ex) {
+            jump();
+        }
 
 
+//         gifView = (GifView) findViewById(R.id.gif_view);
 
-        gifView = (GifView) findViewById(R.id.gif_view);
 
-//        accessIM.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.lr));
-//        foodIM.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.rl));
-//        NYCim.startAnimation(AnimationUtils.loadAnimation(SplashActivity.this, R.anim.lr));
 
 
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -66,7 +101,7 @@ public class SplashActivity extends Activity {
                     // close this activity
                     finish();
                 }
-            }, 2000);
+            }, 10000);
         }
 
 
@@ -114,4 +149,48 @@ public class SplashActivity extends Activity {
         startActivity(intent);
         finish();
     }
+
+//    static class GifView extends View {
+//        Movie movie;
+//
+//        GifView(Context context) {
+//            super(context);
+//            movie = Movie.decodeStream(
+//                    context.getResources().openRawResource(
+//                            R.drawable.truckgif));
+//        }
+//        @Override
+//        protected void onDraw(Canvas canvas) {
+//            if (movie != null) {
+//                movie.setTime(
+//                        (int) SystemClock.uptimeMillis() % movie.duration());
+//                movie.draw(canvas, 0, 0);
+//                invalidate();
+//            }
+//        }
+//    }
+
+    private void jump() {
+//it is safe to use this code even if you
+//do not intend to allow users to skip the splash
+        if(isFinishing())
+            return;
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        jump();
+        return true;
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    }
+
+
 }
