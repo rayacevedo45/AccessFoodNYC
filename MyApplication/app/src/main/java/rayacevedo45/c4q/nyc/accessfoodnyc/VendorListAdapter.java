@@ -177,7 +177,6 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.yelpLogo.setVisibility(View.GONE);
         }
 
-        holder.like.setAllCaps(false);
         holder.like.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {

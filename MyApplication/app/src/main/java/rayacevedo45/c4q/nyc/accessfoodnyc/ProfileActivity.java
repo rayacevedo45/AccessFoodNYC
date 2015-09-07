@@ -118,6 +118,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mTextViewFriends = (TextView) findViewById(R.id.profile_number_friends);
         mTextViewReviews = (TextView) findViewById(R.id.profile_number_reviews);
 
+        Picasso.with(getApplicationContext()).load(me.getString("profile_url")).into(mImageViewProfile);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpListeners(true);
+
+        ParseUser me = ParseUser.getCurrentUser();
+
         ParseRelation<ParseUser> friendRelation = me.getRelation("friends");
         friendRelation.getQuery().countInBackground(new CountCallback() {
             @Override
@@ -133,7 +143,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 mTextViewFavorite.setText(list.size() + "");
             }
         });
-        
+
 
         ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
         reviewQuery.whereEqualTo("writer", me).countInBackground(new CountCallback() {
@@ -143,17 +153,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-
-
-
-        //first.setText(name);
-        Picasso.with(getApplicationContext()).load(me.getString("profile_url")).into(mImageViewProfile);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setUpListeners(true);
     }
 
     @Override

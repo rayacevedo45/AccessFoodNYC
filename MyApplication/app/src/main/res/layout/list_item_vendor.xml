@@ -17,7 +17,10 @@
             android:layout_height="wrap_content">
 
             <LinearLayout
-                android:padding="8dp"
+                android:paddingLeft="8dp"
+                android:paddingTop="8dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="4dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -75,6 +78,7 @@
                         android:id="@+id/textView_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingBottom="4dp"
                         android:textColor="@color/toolbarTextColorSecondary"/>
 
 
@@ -89,10 +93,9 @@
                             android:background="@color/primaryColor"
                             android:textColor="@color/white"
                             android:text="Like"
-                            android:textAllCaps="false"
                             android:layout_gravity="center_vertical|right"
-                            android:layout_width="48dp"
-                            android:layout_height="24dp" />
+                            android:layout_width="52dp"
+                            android:layout_height="28dp" />
 
                         <ImageView
                             android:paddingLeft="4dp"
