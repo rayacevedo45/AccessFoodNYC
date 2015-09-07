@@ -63,14 +63,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         String objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
-
+        final ParseUser me = ParseUser.getCurrentUser();
         mToolbar = (Toolbar) findViewById(R.id.toolbar_profile);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final ParseUser me = ParseUser.getCurrentUser();
+
         String name = me.getString("first_name") + " " + me.getString("last_name");
 
-        getSupportActionBar().setTitle(name);
+        getSupportActionBar().setTitle(name + "'s Profile");
 
 
         if (objectId != null) {
@@ -84,8 +84,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 public void done(List<ParseUser> list, ParseException e) {
                     final ParseUser friend = list.get(0);
                     relation.add(friend);
-                    me.saveInBackground();
                     Toast.makeText(getApplicationContext(), "Accepted!", Toast.LENGTH_SHORT).show();
+
+                    ParseRelation<ParseUser> pendingFriends = me.getRelation("friend_requests");
+                    pendingFriends.remove(friend);
+                    me.saveInBackground();
 
                     ParseUser user = ParseUser.getCurrentUser();
                     String name = user.get("first_name") + " " + user.get("last_name");
@@ -115,6 +118,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mTextViewFriends = (TextView) findViewById(R.id.profile_number_friends);
         mTextViewReviews = (TextView) findViewById(R.id.profile_number_reviews);
 
+        Picasso.with(getApplicationContext()).load(me.getString("profile_url")).into(mImageViewProfile);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setUpListeners(true);
+
+        ParseUser me = ParseUser.getCurrentUser();
+
         ParseRelation<ParseUser> friendRelation = me.getRelation("friends");
         friendRelation.getQuery().countInBackground(new CountCallback() {
             @Override
@@ -130,7 +143,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 mTextViewFavorite.setText(list.size() + "");
             }
         });
-        
+
 
         ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
         reviewQuery.whereEqualTo("writer", me).countInBackground(new CountCallback() {
@@ -140,17 +153,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-
-
-
-        //first.setText(name);
-        Picasso.with(getApplicationContext()).load(me.getString("profile_url")).into(mImageViewProfile);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setUpListeners(true);
     }
 
     @Override

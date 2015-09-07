@@ -11,7 +11,6 @@
         android:layout_width="match_parent"
         android:theme="@style/AppTheme">
 
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_friends"
             android:layout_width="match_parent"
@@ -20,15 +19,11 @@
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             app:theme="@style/ThemeOverlay.AppCompat.Dark"/>
 
-
-
-
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
@@ -46,13 +41,14 @@
             <View
                 android:layout_marginTop="12dp"
                 android:layout_width="fill_parent"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:layout_height="1dp"
                 android:background="@color/accentColor"/>
 
             <LinearLayout
                 android:orientation="vertical"
                 android:id="@+id/pending_container"
-                android:padding="16dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -62,20 +58,23 @@
 
 
 
-
         </LinearLayout>
 
 
         <TextView
             android:textColor="@color/accentColor"
             android:text="Friends"
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
             android:id="@+id/textView_friends"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
         <View
             android:layout_marginTop="12dp"
-            android:layout_width="fill_parent"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/accentColor"/>
 

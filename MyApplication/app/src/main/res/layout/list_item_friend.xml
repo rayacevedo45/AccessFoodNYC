@@ -1,40 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:padding="8dp"
-    android:orientation="horizontal"
+    android:layout_marginTop="8dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView_fr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"/>
 
-
-
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center_vertical">
-
+        android:gravity="left"
+        android:paddingRight="16dp">
 
         <TextView
-            android:textSize="30sp"
-            android:textColor="@color/black"
             android:id="@+id/textView_name_friend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_horizontal" />
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:paddingTop="26dp"/>
+
+        <View
+            android:layout_marginTop="28dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#20212121"
+            android:layout_below="@+id/textView_name_friend"
+            android:layout_alignParentBottom="true"/>
 
 
-    </LinearLayout>
-
-
-
+    </RelativeLayout>
 
 </LinearLayout>
