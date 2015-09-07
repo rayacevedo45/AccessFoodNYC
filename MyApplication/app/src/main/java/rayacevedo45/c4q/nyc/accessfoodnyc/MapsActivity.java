@@ -118,7 +118,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         isFetched = false;
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+        mToolbar.setNavigationIcon(R.drawable.test);
+        getSupportActionBar().setTitle("Access Food");
 
         markerHashMap = new HashMap<>();
 
@@ -608,14 +611,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                                 if (parseObject == null) {
                                                     truck = new Vendor.Builder(vendor.getObjectId())
                                                             .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
-                                                            .isYelp(false).setCategory(vendor.getString("category"))
+                                                            .isYelp(false)
                                                             .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
                                                             .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
                                                             .isLiked(false).build();
                                                 } else {
                                                     truck = new Vendor.Builder(vendor.getObjectId())
                                                             .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
-                                                            .isYelp(false).setCategory(vendor.getString("category"))
+                                                            .isYelp(false)
                                                             .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
                                                             .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
                                                             .isLiked(true).build();

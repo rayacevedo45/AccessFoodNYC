@@ -33,16 +33,8 @@
                         android:layout_width="64dp"
                         android:layout_height="64dp" />
 
-                    <TextView
-                        android:textColor="@color/toolbarTextColorSecondary"
-                        android:id="@+id/vendor_category"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal" />
-
 
                 </LinearLayout>
-
 
 
                 <LinearLayout
@@ -97,6 +89,7 @@
                             android:background="@color/primaryColor"
                             android:textColor="@color/white"
                             android:text="Like"
+                            android:textAllCaps="false"
                             android:layout_gravity="center_vertical|right"
                             android:layout_width="48dp"
                             android:layout_height="24dp" />
