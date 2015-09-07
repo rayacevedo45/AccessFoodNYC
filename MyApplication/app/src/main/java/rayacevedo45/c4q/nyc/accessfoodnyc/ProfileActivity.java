@@ -8,8 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,11 +43,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private Toolbar mToolbar;
 
     //private Button maps;
-    private Button mButtonLogOut;
-    private Button mButtonFindFriends;
-    private Button mButtonFriends;
-    private Button mButtonReviews;
-    private Button mButtonFavorite;
+    private LinearLayout mButtonFriends;
+    private LinearLayout mButtonReviews;
+    private LinearLayout mButtonFavorite;
+    private TextView mTextViewFriends;
+    private TextView mTextViewReviews;
+    private TextView mTextViewFavorite;
 
     private RecyclerView mRecyclerView;
     private VendorListAdapter mAdapter;
@@ -106,34 +107,36 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         mImageViewProfile = (ImageView) findViewById(R.id.imageView_profile);
-        //first = (TextView) findViewById(R.id.profile_name);
-        //mButtonFindFriends = (Button) findViewById(R.id.find_friends);
-        mButtonFriends = (Button) findViewById(R.id.button_friends_list);
-        //mButtonLogOut = (Button) findViewById(R.id.log_out);
-        mButtonReviews = (Button) findViewById(R.id.button_user_reviews);
-        mButtonFavorite = (Button) findViewById(R.id.button_profile_favorite);
+        mButtonFriends = (LinearLayout) findViewById(R.id.button_friends_list);
+        mButtonReviews = (LinearLayout) findViewById(R.id.button_user_reviews);
+        mButtonFavorite = (LinearLayout) findViewById(R.id.button_profile_favorite);
+
+        mTextViewFavorite = (TextView) findViewById(R.id.profile_number_favorite);
+        mTextViewFriends = (TextView) findViewById(R.id.profile_number_friends);
+        mTextViewReviews = (TextView) findViewById(R.id.profile_number_reviews);
 
         ParseRelation<ParseUser> friendRelation = me.getRelation("friends");
         friendRelation.getQuery().countInBackground(new CountCallback() {
             @Override
             public void done(int i, ParseException e) {
-                mButtonFriends.setText(i + "\nfriends");
+                mTextViewFriends.setText(i + "");
             }
         });
 
-        ParseRelation<ParseUser> favoriteRelation = me.getRelation("favorite");
-        favoriteRelation.getQuery().countInBackground(new CountCallback() {
+        ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
+        favorites.whereEqualTo("follower", me).findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(int i, ParseException e) {
-                mButtonFavorite.setText(i + "\nfavorites");
+            public void done(List<ParseObject> list, ParseException e) {
+                mTextViewFavorite.setText(list.size() + "");
             }
         });
+        
 
         ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
         reviewQuery.whereEqualTo("writer", me).countInBackground(new CountCallback() {
             @Override
             public void done(int i, ParseException e) {
-                mButtonReviews.setText(i + "\nreviews");
+                mTextViewReviews.setText(i + "");
             }
         });
 
@@ -158,19 +161,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void setUpListeners(boolean isResumed) {
         if (isResumed) {
-//            mButtonFindFriends.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent = new Intent(getApplicationContext(), FindFriendsActivity.class);
-//                    startActivity(intent);
-//                }
-//            });
-//            mButtonLogOut.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    logOut();
-//                }
-//            });
             mButtonFriends.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

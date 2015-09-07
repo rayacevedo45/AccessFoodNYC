@@ -8,10 +8,8 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -29,7 +27,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -56,7 +53,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
@@ -80,7 +76,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleApiClient mGoogleApiClient;
     private GoogleMap mMap;
     private LocationRequest mLocationRequest;
-    private Location mLastLocation;
+    public static Location mLastLocation;
     private Location mCurrentLocation;
     private boolean mRequestingLocationUpdates;
     private String mLastUpdateTime;
@@ -520,8 +516,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     isListed = true;
                 }
                 break;
-            case R.id.action_filter:
-                filter();
+            case R.id.action_sort:
+                sort();
                 break;
         }
 
@@ -545,20 +541,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLatLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
-        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                Location location = mMap.getMyLocation();
-                searchVendors(new LatLng(location.getLatitude(), location.getLongitude()));
-                return true;
-            }
-        });
-
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
         }
+        ParseUser user = ParseUser.getCurrentUser();
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         final ParseGeoPoint point = new ParseGeoPoint(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
+        user.put("location", point);
+        user.saveInBackground();
+
         mAdapter = new VendorListAdapter(getApplicationContext(), point);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerViewList.setAdapter(mAdapter);
@@ -750,7 +742,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         startActivity(intent);
     }
 
-    private void filter() {
+    private void sort() {
         new SortDialogFragment().show(getSupportFragmentManager(), "");
     }
 

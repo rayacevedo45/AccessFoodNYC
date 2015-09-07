@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.facebook.AccessToken;
@@ -29,10 +30,16 @@ public class FindFriendsActivity extends AppCompatActivity {
     private FindFriendsAdapter mAdapter;
     private List<Friend> mList;
 
+    private Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_friends);
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_find_friends);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_find_friends);
 

@@ -5,9 +5,9 @@
 
 
     <item
-        android:icon="@drawable/ic_filter_list_white_24dp"
-        android:id="@+id/action_filter"
-        android:title="Filter"
+        android:icon="@drawable/ic_sort_white_24dp"
+        android:id="@+id/action_sort"
+        android:title="Sort"
         app:showAsAction="always">
 
     </item>
