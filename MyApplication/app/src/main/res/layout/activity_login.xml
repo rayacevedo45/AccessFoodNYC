@@ -15,30 +15,72 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Access Food"
+        android:text="AccessFood"
         android:textColor="@color/primaryColor"
-        android:textSize="40sp"
+        android:textSize="45sp"
         android:textStyle="bold" />
 
-    <android.support.design.widget.TextInputLayout
-        android:layout_marginTop="150dp"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="NYC"
+        android:textColor="@color/primaryColor"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/person"
+        android:layout_weight="4" />
+
+
+        <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="1">-->
+
 
         <EditText
             android:id="@+id/usernameField"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
             android:hint="@string/username_hint"
-            android:textColor="@color/orange"
-            android:textColorHint="@color/orange" />
+            android:textColor="@color/black"
+            android:textColorHint="@color/accentColor"
+            android:layout_weight="1"
+            />
 
-    </android.support.design.widget.TextInputLayout>
+        <!--</android.support.design.widget.TextInputLayout>-->
 
-    <android.support.design.widget.TextInputLayout
+
+    </LinearLayout>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+
+    <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">>-->
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/password"
+            android:layout_weight="4"/>
 
         <EditText
             android:id="@+id/passwordField"
@@ -46,9 +88,12 @@
             android:layout_height="wrap_content"
             android:ems="10"
             android:hint="@string/password_hint"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:layout_weight="1"/>
 
-    </android.support.design.widget.TextInputLayout>
+    <!--</android.support.design.widget.TextInputLayout>-->
+
+    </LinearLayout>
 
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
@@ -108,16 +153,17 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true">
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            >
 
             <com.facebook.login.widget.LoginButton
                 android:id="@+id/login_button"
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="49dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="30dp" />
+                />
 
 
         </LinearLayout>
