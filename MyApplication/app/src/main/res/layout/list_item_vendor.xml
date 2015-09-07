@@ -23,13 +23,22 @@
                 android:layout_height="wrap_content">
 
                 <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/imageView_vendor"
                         android:layout_width="64dp"
                         android:layout_height="64dp" />
+
+                    <TextView
+                        android:textColor="@color/toolbarTextColorSecondary"
+                        android:id="@+id/vendor_category"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal" />
 
 
                 </LinearLayout>
@@ -48,7 +57,7 @@
 
                         <TextView
                             android:id="@+id/vendor_name"
-                            android:textSize="18sp"
+                            android:textSize="18dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -60,7 +69,7 @@
                             android:textColor="@color/white"
                             android:id="@+id/maps_vendor_rating"
                             android:text="8.0"
-                            android:textSize="14sp"
+                            android:textSize="14dp"
                             android:layout_alignParentRight="true"
                             android:layout_width="36dp"
                             android:layout_height="32dp"
@@ -69,6 +78,12 @@
 
                     </RelativeLayout>
 
+                    <TextView
+                        android:textSize="16dp"
+                        android:id="@+id/textView_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/toolbarTextColorSecondary"/>
 
 
 
@@ -77,36 +92,73 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <ImageView
-                            android:visibility="gone"
-                            android:id="@+id/vendor_rating_img"
-                            android:layout_width="100dp"
-                            android:layout_height="20dp" />
+                        <Button
+                            android:background="@color/primaryColor"
+                            android:textColor="@color/white"
+                            android:text="Like"
+                            android:layout_gravity="center_vertical|right"
+                            android:layout_width="48dp"
+                            android:layout_height="24dp" />
 
                         <ImageView
+                            android:paddingLeft="4dp"
+                            android:id="@+id/friend1"
                             android:visibility="gone"
-                            android:layout_marginLeft="16dp"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp" />
+
+                        <ImageView
+                            android:paddingLeft="4dp"
+                            android:id="@+id/friend2"
+                            android:visibility="gone"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp" />
+
+                        <ImageView
+                            android:paddingLeft="4dp"
+                            android:id="@+id/friend3"
+                            android:visibility="gone"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp" />
+
+                        <ImageView
+                            android:paddingLeft="4dp"
+                            android:id="@+id/friend4"
+                            android:visibility="gone"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp" />
+
+                        <ImageView
+                            android:paddingLeft="4dp"
+                            android:id="@+id/friend5"
+                            android:visibility="gone"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp" />
+
+                        <ImageView
+                            android:paddingLeft="4dp"
+                            android:background="@color/accentColor"
+                            android:visibility="gone"
+                            android:id="@+id/friend_more"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp" />
+
+                        <TextView
+                            android:textColor="@color/toolbarTextColorSecondary"
+                            android:id="@+id/friend_favorited"
+                            android:visibility="gone"
+                            android:text="favorited!"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/yelp_logo"
-                            android:src="@drawable/yelp_logo"/>
+                            android:layout_gravity="center_vertical" />
 
                     </LinearLayout>
 
-                    <TextView
-                        android:textSize="16sp"
-                        android:id="@+id/textView_address"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/toolbarTextColorSecondary"/>
 
 
-                    <TextView
-                        android:textSize="16sp"
-                        android:id="@+id/maps_distance"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/toolbarTextColorSecondary"/>
+
+
+
 
                     <!--<View-->
                     <!--android:layout_marginTop="12dp"-->
@@ -130,73 +182,62 @@
 
             </LinearLayout>
 
+
             <LinearLayout
+                android:paddingLeft="8dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/vendor_category"
-                    android:textColor="@color/white"
-                    android:background="@color/red"
+
+
+                <ImageView
+                    android:padding="4dp"
+                    android:src="@drawable/ic_map_black_18dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/friend1"
-                    android:visibility="gone"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/friend2"
-                    android:visibility="gone"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/friend3"
-                    android:visibility="gone"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/friend4"
-                    android:visibility="gone"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/friend5"
-                    android:visibility="gone"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp" />
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:background="@color/accentColor"
-                    android:visibility="gone"
-                    android:id="@+id/friend_more"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp" />
-
                 <TextView
-                    android:textColor="@color/toolbarTextColorSecondary"
-                    android:id="@+id/friend_favorited"
-                    android:visibility="gone"
-                    android:text="favorited!"
+                    android:paddingLeft="4dp"
+                    android:textSize="14sp"
+                    android:id="@+id/maps_distance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/toolbarTextColorSecondary"
+                    android:gravity="center_vertical"
                     android:layout_gravity="center_vertical" />
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical|right"
+                    android:layout_gravity="right">
+
+                    <ImageView
+                        android:paddingRight="8dp"
+                        android:visibility="gone"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="right"
+                        android:id="@+id/yelp_logo"
+                        android:src="@drawable/yelp_logo" />
+
+                </LinearLayout>
+
 
 
             </LinearLayout>
 
 
             <LinearLayout
-                android:padding="8dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingBottom="8dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
+
 
 
                 <ImageView
@@ -213,16 +254,16 @@
                     android:textSize="14sp"
                     android:id="@+id/textView_hour"
                     android:visibility="gone"
-                    android:layout_width="fill_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/toolbarTextColorSecondary"
                     android:layout_gravity="center_vertical" />
 
 
 
+
+
             </LinearLayout>
-
-
 
 
 
