@@ -242,17 +242,17 @@ public class UserReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             grade4 = (ImageView) itemView.findViewById(R.id.grade_4);
             grade5 = (ImageView) itemView.findViewById(R.id.grade_5);
 
-            writer = (TextView) itemView.findViewById(R.id.user_review_writer);
-            date = (TextView) itemView.findViewById(R.id.user_review_date);
-            title = (TextView) itemView.findViewById(R.id.user_review_title);
-            description = (TextView) itemView.findViewById(R.id.user_review_description);
-
-            writerPicture = (ImageView) itemView.findViewById(R.id.user_review_user_picture);
-            vendorName = (TextView) itemView.findViewById(R.id.user_review_vendor);
-            address = (TextView) itemView.findViewById(R.id.user_review_vendor_address);
-            rating = (TextView) itemView.findViewById(R.id.user_review_rating);
-            hour = (TextView) itemView.findViewById(R.id.user_review_vendor_hour);
-            vendorPicture = (ImageView) itemView.findViewById(R.id.user_review_vendor_picture);
+//            writer = (TextView) itemView.findViewById(R.id.user_review_writer);
+//            date = (TextView) itemView.findViewById(R.id.user_review_date);
+//            title = (TextView) itemView.findViewById(R.id.user_review_title);
+//            description = (TextView) itemView.findViewById(R.id.user_review_description);
+//
+//            writerPicture = (ImageView) itemView.findViewById(R.id.user_review_user_picture);
+//            vendorName = (TextView) itemView.findViewById(R.id.user_review_vendor);
+//            address = (TextView) itemView.findViewById(R.id.user_review_vendor_address);
+//            rating = (TextView) itemView.findViewById(R.id.user_review_rating);
+//            hour = (TextView) itemView.findViewById(R.id.user_review_vendor_hour);
+//            vendorPicture = (ImageView) itemView.findViewById(R.id.user_review_vendor_picture);
         }
     }
 }
