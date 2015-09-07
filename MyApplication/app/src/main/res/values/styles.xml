@@ -10,6 +10,8 @@
         <item name="android:windowBackground">@color/white</item>
         <item name="colorAccent">@color/accentColor</item>
         <item name="android:dialogTheme">@style/Theme.AppCompat.Light.Dialog</item>
+        <item name="android:textColor">@color/accentColor</item>
+        <item name="android:typeface">monospace</item>
     </style>
 
     <style name="MapsTheme" parent="AppTheme.Base"></style>
@@ -22,6 +24,11 @@
     <style name="LoginTheme" parent="AppTheme.Base">
         <item name="android:editTextColor">@color/accentColor</item>
         <item name="android:textColorSecondary">@color/accentColor</item>
+    </style>
+
+    <style name="codeFont" parent="TextAppearance.AppCompat.Small">
+        <item name="android:textColor">@color/accentColor</item>
+        <item name="android:typeface">monospace</item>
     </style>
 
 </resources>

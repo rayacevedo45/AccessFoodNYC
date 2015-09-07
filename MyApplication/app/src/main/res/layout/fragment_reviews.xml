@@ -7,6 +7,7 @@
     android:orientation="vertical">
 
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
@@ -81,10 +82,7 @@
             app:pressedTranslationZ="12dp"
             />
 
-
-
     </RelativeLayout>
-
 
 
 </LinearLayout>

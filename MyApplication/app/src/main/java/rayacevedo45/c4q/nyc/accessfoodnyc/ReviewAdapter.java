@@ -40,9 +40,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHold
 
         ParseUser user = review.getParseUser("writer");
         try {
-            Picasso.with(mContext).load(user.getString("profile_url")).resize(200, 200).centerCrop().into(holder.picture);
+            Picasso.with(mContext).load(user.getString("profile_url")).into(holder.picture);
         } catch (Exception e) {
-            Picasso.with(mContext).load(R.drawable.default_profile).resize(200, 200).centerCrop().into(holder.picture);
+            Picasso.with(mContext).load(R.drawable.default_profile).into(holder.picture);
         }
 
 
