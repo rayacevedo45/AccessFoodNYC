@@ -128,7 +128,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 mButtonFavorite.setText(list.size() + "");
             }
         });
-        
+
 
         ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
         reviewQuery.whereEqualTo("writer", me).countInBackground(new CountCallback() {
@@ -262,6 +262,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 logOut();
                 break;
             case R.id.action_settings:
+                break;
+            case R.id.action_card:
+                Intent card = new Intent(getApplicationContext(), CardActivity.class);
+                startActivity(card);
                 break;
         }
 

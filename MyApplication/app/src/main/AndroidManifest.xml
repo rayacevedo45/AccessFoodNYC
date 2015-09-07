@@ -47,23 +47,31 @@
         <activity
             android:name=".accounts.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/LoginTheme"></activity>
+            android:theme="@style/LoginTheme"/>
         <activity
             android:name=".VendorInfoActivity"
             android:parentActivityName=".MapsActivity"
-            android:theme="@style/MapsTheme"></activity>
-        <activity android:name=".ProfileActivity"></activity>
+            android:theme="@style/MapsTheme"/>
+        <activity android:name=".ProfileActivity"/>
         <activity
             android:name=".FindFriendsActivity"
             android:label="Find Friends"
-            android:parentActivityName=".ProfileActivity"></activity>
+            android:parentActivityName=".ProfileActivity"/>
         <activity
             android:name=".FriendsActivity"
             android:label="Friends"
-            android:parentActivityName=".ProfileActivity"></activity>
+            android:parentActivityName=".ProfileActivity"/>
+
+
         <activity
             android:name=".FriendProfileActivity"
-            android:label="Profile"></activity>
+            android:label="Profile"/>
+
+        <activity
+            android:name=".CardActivity"
+            android:label="Payment"
+            android:parentActivityName=".ProfileActivity"/>
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"

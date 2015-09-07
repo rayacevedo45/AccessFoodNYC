@@ -35,7 +35,7 @@ import retrofit.client.Response;
 public class VendorInfoActivity extends AppCompatActivity implements ActionBar.TabListener {
 
     // Tab titles
-    private static final String[] TABS = { "Details", "Twitter", "Reviews" };
+    private static final String[] TABS = { "Details", "Twitter", "Reviews", "Menu" };
 
     public static ParseApplication sApplication;
 
@@ -105,7 +105,7 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
             yelpBizService.searchBusiness(objectId, new YelpBusinessSearchCallback());
         } else {
             setupViewPager(mViewPager);
-            mViewPager.setOffscreenPageLimit(3);
+            mViewPager.setOffscreenPageLimit(4);
             mTabLayout.setupWithViewPager(mViewPager);
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
@@ -151,7 +151,7 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
 
         @Override
@@ -163,6 +163,8 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
                     return "Twitter";
                 case 2:
                     return "Reviews";
+                case 3:
+                    return "Menu";
             }
             return null;
         }
@@ -187,6 +189,10 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
                     return new TwitterFragment();
                 case 2:
                     fragment = new ReviewsFragment();
+                    fragment.setArguments(bundle);
+                    return fragment;
+                case 3:
+                    fragment = new PaymentFragment();
                     fragment.setArguments(bundle);
                     return fragment;
             }
