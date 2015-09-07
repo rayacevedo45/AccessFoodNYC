@@ -94,7 +94,7 @@ public class FriendProfileActivity extends AppCompatActivity {
                                 });
                             }
                         }
-                        mAdapter.addList(vendors);
+                        //mAdapter.addList(vendors);
                     }
                 });
             }
@@ -103,19 +103,19 @@ public class FriendProfileActivity extends AppCompatActivity {
         mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
-                        Object object = mAdapter.getItem(position);
-                        if (object instanceof Business) {
-                            Business business = (Business) mAdapter.getItem(position);
-                            String businessId = business.getId();
-                            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
-                            intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, businessId);
-                        } else {
-                            ParseObject vendor = (ParseObject) object;
-                            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
-                            intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, vendor.getObjectId());
-                        }
-                        startActivity(intent);
+//                        Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
+//                        Object object = mAdapter.getItem(position);
+//                        if (object instanceof Business) {
+//                            Business business = (Business) mAdapter.getItem(position);
+//                            String businessId = business.getId();
+//                            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
+//                            intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, businessId);
+//                        } else {
+//                            ParseObject vendor = (ParseObject) object;
+//                            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
+//                            intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, vendor.getObjectId());
+//                        }
+//                        startActivity(intent);
                     }
                 })
         );

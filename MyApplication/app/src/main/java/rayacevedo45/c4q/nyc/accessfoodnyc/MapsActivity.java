@@ -49,6 +49,7 @@ import com.parse.ParseUser;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -68,7 +69,7 @@ import retrofit.client.Response;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,
-        GoogleMap.OnCameraChangeListener {
+        GoogleMap.OnCameraChangeListener, SortDialogListener {
 
     private static final String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
     private static final String LOCATION_KEY = "location-key";
@@ -176,14 +177,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     case RecyclerView.SCROLL_STATE_IDLE:
 
                         if (!isMarkerClicked) {
-                            mMap.animateCamera(CameraUpdateFactory.newLatLng(mAdapter.getMarker(position).getPosition()));
+                            mMap.animateCamera(CameraUpdateFactory.newLatLng(mAdapter.getItem(position).getMarker().getPosition()));
                             if (previous != null) {
-                                mAdapter.getMarker(previous).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
+                                mAdapter.getItem(previous).getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
                             }
-                            mAdapter.getMarker(position).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_blue));
+                            mAdapter.getItem(position).getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_blue));
                             previous = position;
                         }
-
 
 
                         //mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
@@ -226,12 +226,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mRecyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if(mRecyclerView.getChildCount()<3){
+                if (mRecyclerView.getChildCount() < 3) {
                     if (mRecyclerView.getChildAt(1) != null) {
                         View v1 = mRecyclerView.getChildAt(1);
                         v1.setScaleY(0.9f);
                     }
-                }else {
+                } else {
                     if (mRecyclerView.getChildAt(0) != null) {
                         View v0 = mRecyclerView.getChildAt(0);
                         v0.setScaleY(0.9f);
@@ -298,9 +298,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                             rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Location location = business.getLocation();
                             Coordinate coordinate = location.getCoordinate();
-                            double latitude = coordinate.getLatitude();
-                            double longitude = coordinate.getLongitude();
-                            LatLng position = new LatLng(latitude, longitude);
+                            final double latitude = coordinate.getLatitude();
+                            final double longitude = coordinate.getLongitude();
                             // create marker
 //                MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title(business.getName());
                             final Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(business.getName())); //...
@@ -309,9 +308,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             // Changing marker icon
                             marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
                             //markerHashMap.put(marker, business.getId());
+                            final List<String> address = DetailsFragment.addressGenerator(business);
 
                             if (vendor == null) {
-                                mAdapter.addYelpItem(business, marker);
+                                Vendor truck = new Vendor.Builder(business.getId()).isYelp(true).isLiked(false)
+                                        .setName(business.getName()).setFriends(new ArrayList<ParseObject>())
+                                        .setMarker(marker).setLocation(new ParseGeoPoint(latitude, longitude))
+                                        .setRating(business.getRating()).setPicture(business.getImageUrl())
+                                        .setAddress(address.get(0)).build();
+                                mAdapter.addVendor(truck);
                             } else {
                                 ParseRelation<ParseUser> friends = user.getRelation("friends");
                                 friends.getQuery().findInBackground(new FindCallback<ParseUser>() {
@@ -324,24 +329,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                         favorites.findInBackground(new FindCallback<ParseObject>() {
                                             @Override
                                             public void done(List<ParseObject> list, ParseException e) {
-                                                mAdapter.addYelpItem(business, list, marker);
+                                                Vendor truck = new Vendor.Builder(business.getId()).isYelp(true).isLiked(false)
+                                                        .setName(business.getName()).setFriends(new ArrayList<ParseObject>())
+                                                        .setMarker(marker).setLocation(new ParseGeoPoint(latitude, longitude))
+                                                        .setRating(business.getRating()).setPicture(business.getImageUrl())
+                                                        .setAddress(address.get(0)).build();
+                                                mAdapter.addVendor(truck);
                                             }
                                         });
 
-
-//                                        final List<ParseUser> friendWhoFavorited = new ArrayList<ParseUser>();
-//                                        for (final ParseUser friend : list) {
-//                                            ParseRelation<ParseObject> favorites = friend.getRelation("favorites");
-//                                            favorites.getQuery().findInBackground(new FindCallback<ParseObject>() {
-//                                                @Override
-//                                                public void done(List<ParseObject> list, ParseException e) {
-//                                                    if (list.contains(vendor)) {
-//                                                        friendWhoFavorited.add(friend);
-//                                                    }
-//                                                }
-//                                            });
-//                                        }
-//                                        mAdapter.addYelpItem(business, friendWhoFavorited);
                                     }
                                 });
                             }
@@ -351,30 +347,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
 
-//            int i = 1;
-//            for (Business business : mYelpList) {
-//                rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Location location = business.getLocation();
-//                Coordinate coordinate = location.getCoordinate();
-//
-//                double latitude = coordinate.getLatitude();
-//                double longitude = coordinate.getLongitude();
-//                LatLng position = new LatLng(latitude, longitude);
-//                // create marker
-////                MarkerOptions marker = new MarkerOptions().position(new LatLng(latitude, longitude)).title(business.getName());
-//                Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title(business.getName())); //...
-//
-////
-////                MarkerCluster mc = new MarkerCluster(latitude, longitude, business.getName(),business.getId());
-////                mClusterManager.addItem(mc);
-//                // Changing marker icon
-//                marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
-//
-//
-//                markerHashMap.put(marker, business.getId());
-////                mMap.addMarker(marker);
-//            }
-//            generateClusterManager(mClusterManager);
-//            mClusterManager.cluster();
             mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                 @Override
                 public boolean onMarkerClick(Marker marker) {
@@ -384,7 +356,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_blue));
                     marker.showInfoWindow();
                     if (previous != null) {
-                        mAdapter.getMarker(previous).setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
+                        mAdapter.getItem(previous).getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
                     }
                     previous = position;
                     mRecyclerView.smoothScrollToPosition(position);
@@ -401,21 +373,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
-                    Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
-                    String objectId;
-                    Object item = mAdapter.getObject(marker);
-                    if (item instanceof Business) {
-                        Business business = (Business) item;
-                        objectId = business.getId();
-                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
-                    } else {
-                        ParseObject vendor = (ParseObject) item;
-                        objectId = vendor.getObjectId();
-                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
-
-                    }
-                    intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
-                    startActivity(intent);
+//                    Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
+//                    String objectId;
+//                    Object item = mAdapter.getObject(marker);
+//                    if (item instanceof Business) {
+//                        Business business = (Business) item;
+//                        objectId = business.getId();
+//                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
+//                    } else {
+//                        ParseObject vendor = (ParseObject) item;
+//                        objectId = vendor.getObjectId();
+//                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
+//
+//                    }
+//                    intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+//                    startActivity(intent);
                 }
             });
 
@@ -436,7 +408,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
     protected void onStart() {
         super.onStart();
-        Log.i("MapsActivity", "It starts!!!!!!!!!!");
+            Log.i("MapsActivity", "It starts!!!!!!!!!!");
     }
 
     @Override
@@ -449,51 +421,34 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-
+    public void goToVendorInfoAcvitity(int position) {
+        Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
+        Vendor vendor = mAdapter.getItem(position);
+        intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, vendor.getId());
+        if (vendor.isYelp()) {
+            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
+        } else {
+            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
+        }
+        startActivity(intent);
+    }
 
     public void setUpListener(boolean isResumed) {
         if (isResumed) {
             mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
-                    Object object = mAdapter.getItem(position);
-                    if (object instanceof Business) {
-                        Business business = (Business) mAdapter.getItem(position);
-                        businessId = business.getId();
-                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
-                        intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, businessId);
-                    } else {
-                        ParseObject vendor = (ParseObject) object;
-                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
-                        intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, vendor.getObjectId());
-                    }
-                    startActivity(intent);
+                   goToVendorInfoAcvitity(position);
                 }
             })
             );
             mRecyclerViewList.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
                         @Override
                         public void onItemClick(View view, int position) {
-                            Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
-                            Object object = mAdapter.getItem(position);
-                            if (object instanceof Business) {
-                                Business business = (Business) mAdapter.getItem(position);
-                                businessId = business.getId();
-                                intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
-                                intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, businessId);
-                            } else {
-                                ParseObject vendor = (ParseObject) object;
-                                intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
-                                intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, vendor.getObjectId());
-                            }
-                            startActivity(intent);
+                            goToVendorInfoAcvitity(position);
                         }
                     })
             );
-
-        } else {
-
         }
     }
 
@@ -593,21 +548,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerViewList.setAdapter(mAdapter);
 
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        final String today = "day" + Integer.toString(day);
+
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
         query.whereNear("location", point).setLimit(50).findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-//                mAdapter = new VendorListAdapter(getApplicationContext(), point, list);
-//                mRecyclerView.setAdapter(mAdapter);
-//                mRecyclerViewList.setAdapter(mAdapter);
                 for (final ParseObject vendor : list) {
                     if (vendor.getString("name") != null) {
 
-                        ParseGeoPoint vendorLocation = vendor.getParseGeoPoint("location");
+                        final ParseGeoPoint vendorLocation = vendor.getParseGeoPoint("location");
                         LatLng position = new LatLng(vendorLocation.getLatitude(), vendorLocation.getLongitude());
                         final Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(vendor.getString("name")));
                         marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
                         //markerHashMap.put(marker, vendor.getObjectId());
+
+                        final String json = vendor.getString(today);
 
                         ParseRelation<ParseUser> friends = user.getRelation("friends");
                         friends.getQuery().findInBackground(new FindCallback<ParseUser>() {
@@ -619,26 +577,36 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 favorites.whereEqualTo("vendor", vendor).whereContainedIn("follower", friends);
                                 favorites.findInBackground(new FindCallback<ParseObject>() {
                                     @Override
-                                    public void done(List<ParseObject> list, ParseException e) {
-                                        mAdapter.addVendorItem(vendor, list, marker);
+                                    public void done(final List<ParseObject> list, ParseException e) {
+
+                                        ParseQuery<ParseObject> fav = ParseQuery.getQuery("Favorite");
+                                        fav.whereEqualTo("follower", user).whereEqualTo("vendor", vendor);
+                                        fav.getFirstInBackground(new GetCallback<ParseObject>() {
+                                            @Override
+                                            public void done(ParseObject parseObject, ParseException e) {
+                                                Vendor truck;
+                                                if (parseObject == null) {
+                                                    truck = new Vendor.Builder(vendor.getObjectId())
+                                                            .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
+                                                            .isYelp(false).setCategory(vendor.getString("category"))
+                                                            .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
+                                                            .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
+                                                            .isLiked(false).build();
+                                                } else {
+                                                    truck = new Vendor.Builder(vendor.getObjectId())
+                                                            .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
+                                                            .isYelp(false).setCategory(vendor.getString("category"))
+                                                            .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
+                                                            .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
+                                                            .isLiked(true).build();
+                                                }
+                                                mAdapter.addVendor(truck);
+                                            }
+                                        });
+
                                     }
                                 });
 
-//
-//
-//                            final List<ParseUser> friendWhoFavorited = new ArrayList<ParseUser>();
-//                            for (final ParseUser friend : friends) {
-//                                ParseRelation<ParseObject> favorites = friend.getRelation("favorites");
-//                                favorites.getQuery().findInBackground(new FindCallback<ParseObject>() {
-//                                    @Override
-//                                    public void done(List<ParseObject> list, ParseException e) {
-//                                        if (list.contains(vendor)) {
-//                                            friendWhoFavorited.add(friend);
-//                                        }
-//                                    }
-//                                });
-//                            }
-//                            mAdapter.addVendorItem(vendor, friendWhoFavorited);
                             }
                         });
                     }
@@ -659,7 +627,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                                Toast.makeText(getActivity(), String.valueOf(ratingsum), Toast.LENGTH_SHORT).show();
                                 double averageRating = Math.round((ratingsum / (list.size())) * 10.0) / 10.0;
 
-                                Toast.makeText(getApplicationContext(), String.valueOf(averageRating), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getApplicationContext(), String.valueOf(averageRating), Toast.LENGTH_SHORT).show();
                                 vendor.put("rating", averageRating);
                                 vendor.saveInBackground();
                             }
@@ -670,9 +638,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         });
-
-
-//        setUpClusterer();
 
         Geocoder geocoder;
         List<Address> addresses = null;
@@ -727,7 +692,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();
     }
 
-
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(10000);
@@ -748,21 +712,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private void getQuery() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-    }
-
-    private void cleanUpMarkers(Set<String> markersToKeep) {
-//        for (String objId : new HashSet<String>(mapMarkers.keySet())) {
-//            if (!markersToKeep.contains(objId)) {
-//                Marker marker = mapMarkers.get(objId);
-//                marker.remove();
-//                mapMarkers.get(objId).remove();
-//                mapMarkers.remove(objId);
-//            }
-//        }
-    }
-
     private void logOut() {
         LoginManager.getInstance().logOut();
         ParseUser.logOut();
@@ -774,8 +723,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void filter() {
-
+        new SortDialogFragment().show(getSupportFragmentManager(), "");
     }
 
-
+    @Override
+    public void sortOptionSelected(int which) {
+        switch (which) {
+            case 0:
+                mAdapter.sortByDistance();
+                break;
+            case 1:
+                mAdapter.sortByRating();
+                break;
+        }
+    }
 }

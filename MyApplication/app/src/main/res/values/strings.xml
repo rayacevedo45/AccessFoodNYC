@@ -5,6 +5,11 @@
     <string name="action_profile">Profile</string>
     <string name="action_logout">Log Out</string>
 
+    <string-array
+        name="sort_option">
+        <item>Distance</item>
+        <item>Rating</item>
+    </string-array>
 
 
     <string name="title_activity_map">Map</string>
