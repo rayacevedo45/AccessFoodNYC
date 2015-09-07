@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -39,10 +40,15 @@ public class LoginActivity extends Activity {
     CallbackManager callbackManager;
 
     protected EditText usernameEditText;
+    protected ImageView usernameimage;
     protected EditText passwordEditText;
+    protected ImageView passwordimage;
     protected EditText usernameEditText2;
+    protected ImageView username2image;
     protected EditText passwordEditText2;
+    protected ImageView passwordimage2;
     protected EditText emailField;
+    protected ImageView emailimage;
     protected Button loginButton;
     protected Button signUpButton;
     protected SignInButton mSignInButton;
@@ -86,11 +92,16 @@ public class LoginActivity extends Activity {
 
         signUpButton = (Button)findViewById(R.id.signupButtonID);
         usernameEditText = (EditText)findViewById(R.id.usernameField);
+        usernameimage = (ImageView) findViewById(R.id.usernamefielsimageid);
         passwordEditText = (EditText)findViewById(R.id.passwordField);
+        passwordimage = (ImageView) findViewById(R.id.passwordFieldimageid);
         usernameEditText2 = (EditText)findViewById(R.id.usernameField2);
+        username2image = (ImageView) findViewById(R.id.usernameField2imageid);
         passwordEditText2 = (EditText)findViewById(R.id.passwordField2);
+        passwordimage2 = (ImageView) findViewById(R.id.passwordFieldimageid2);
         loginButton = (Button)findViewById(R.id.loginButton);
         emailField = (EditText) findViewById(R.id.emailFieldID);
+        emailimage = (ImageView) findViewById(R.id.emailFieldIDimageid);
         backButton = (Button) findViewById(R.id.BackButtonID);
         continueButton = (Button) findViewById(R.id.ContinueButtonID);
         layout = (LinearLayout) findViewById(R.id.layoutID);
@@ -297,15 +308,26 @@ public class LoginActivity extends Activity {
         backButton.setVisibility(View.VISIBLE);
         continueButton.setVisibility(View.VISIBLE);
         layout.setVisibility(View.GONE);
+        usernameimage.setVisibility(View.GONE);
+        passwordimage.setVisibility(View.GONE);
+        username2image.setVisibility(View.VISIBLE);
+        passwordimage2.setVisibility(View.VISIBLE);
+        emailimage.setVisibility(View.VISIBLE);
+
     }
 
     public void back (View v){
         mButtonFacebookLogin.setVisibility(View.VISIBLE);
         usernameEditText.setVisibility(View.VISIBLE);
+        usernameimage.setVisibility(View.VISIBLE);
         passwordEditText.setVisibility(View.VISIBLE);
+        passwordimage.setVisibility(View.VISIBLE);
         usernameEditText2.setVisibility(View.GONE);
+        username2image.setVisibility(View.GONE);
         passwordEditText2.setVisibility(View.GONE);
+        passwordimage2.setVisibility(View.GONE);
         emailField.setVisibility(View.GONE);
+        emailimage.setVisibility(View.GONE);
         loginButton.setVisibility(View.VISIBLE);
         signUpButton.setVisibility(View.VISIBLE);
         backButton.setVisibility(View.GONE);
@@ -334,3 +356,13 @@ public class LoginActivity extends Activity {
         startActivity(intent);
     }
 }
+
+
+
+
+
+
+
+
+
+
