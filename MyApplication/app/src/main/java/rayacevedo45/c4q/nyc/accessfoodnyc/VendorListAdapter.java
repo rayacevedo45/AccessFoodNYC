@@ -5,18 +5,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.Parse;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParsePush;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
@@ -98,20 +103,26 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
     }
 
     @Override
-    public VendorViewHolder onCreateViewHolder(ViewGroup parent, int position) {
+    public VendorViewHolder onCreateViewHolder(ViewGroup parent, final int position) {
         View row = LayoutInflater.from(mContext).inflate(R.layout.list_item_vendor, parent, false);
         return new VendorViewHolder(row);
     }
 
 
     @Override
-    public void onBindViewHolder(VendorViewHolder holder, int position) {
-        DecimalFormat df = new DecimalFormat("#.0");
+    public void onBindViewHolder(final VendorViewHolder holder, int position) {
+        DecimalFormat df = new DecimalFormat("#0.0");
 
-        Vendor vendor = getItem(position);
+        final Vendor vendor = getItem(position);
 
         holder.name.setText(vendor.getName());
         holder.address.setText(vendor.getAddress());
+
+        if (vendor.isLiked()) {
+            holder.like.setText("liked!");
+        } else {
+            holder.like.setText("like");
+        }
 
         double rate = vendor.getRating();
         String rating = df.format(rate);
@@ -166,6 +177,48 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.hour.setVisibility(View.VISIBLE);
             holder.yelpLogo.setVisibility(View.GONE);
         }
+
+
+        holder.like.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (holder.like.getText().toString().equalsIgnoreCase("like")) {
+                    holder.like.setText("liked!");
+
+                    if (vendor.isYelp()) {
+
+                        final ParseObject newVendor = new ParseObject("Vendor");
+                        newVendor.put("yelpId", vendor.getId());
+                        newVendor.saveInBackground(new SaveCallback() {
+                            @Override
+                            public void done(ParseException e) {
+                                addToLikedList(newVendor);
+                            }
+                        });
+                    } else {
+                        ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
+                        findVendor.getInBackground(vendor.getId(), new GetCallback<ParseObject>() {
+                            @Override
+                            public void done(ParseObject parseObject, ParseException e) {
+                                addToLikedList(parseObject);
+                            }
+                        });
+                    }
+
+                } else {
+                    holder.like.setText("like");
+                    ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
+                    findVendor.getInBackground(vendor.getId(), new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(ParseObject parseObject, ParseException e) {
+                            removeFromLikedList(parseObject);
+                        }
+                    });
+
+                }
+                return true;
+            }
+        });
 
 
 //        switch (friends.size()) {
@@ -231,6 +284,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         protected ImageView friend5;
         protected ImageView more;
         protected TextView favorited;
+        protected Button like;
 
         public VendorViewHolder(View itemView) {
             super(itemView);
@@ -242,6 +296,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             rating = (TextView) itemView.findViewById(R.id.maps_vendor_rating);
             icon = (ImageView) itemView.findViewById(R.id.schedule_icon);
             distance = (TextView) itemView.findViewById(R.id.maps_distance);
+            like = (Button) itemView.findViewById(R.id.vendor_like);
 
             category = (TextView) itemView.findViewById(R.id.vendor_category);
             friend1 = (ImageView) itemView.findViewById(R.id.friend1);
@@ -254,4 +309,38 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         }
 
     }
+
+
+    private void addToLikedList(ParseObject vendor) {
+        ParseUser user = ParseUser.getCurrentUser();
+        ParsePush.subscribeInBackground(vendor.getObjectId());
+        ParseObject favorite = new ParseObject("Favorite");
+        favorite.put("follower", user);
+        favorite.put("vendor", vendor);
+        favorite.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                Toast.makeText(mContext, "Added to your liked list!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void removeFromLikedList(ParseObject vendor) {
+        ParseUser user = ParseUser.getCurrentUser();
+        ParseQuery<ParseObject> find = ParseQuery.getQuery("Favorite");
+        find.whereEqualTo("vendor", vendor).whereEqualTo("follower", user);
+        find.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject favorite, ParseException e) {
+                favorite.deleteInBackground(new DeleteCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        Toast.makeText(mContext, "Removed from your liked list!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+    }
+
+
 }

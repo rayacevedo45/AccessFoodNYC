@@ -81,9 +81,9 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
         final Friend friend = mList.get(position);
 
         if (friend.getThumbnailUrl().length() == 0) {
-            Picasso.with(mContext).load(R.drawable.default_profile).resize(200, 200).centerCrop().into(holder.thumbnail);
+            Picasso.with(mContext).load(R.drawable.default_profile).into(holder.thumbnail);
         } else {
-            Picasso.with(mContext).load(friend.getThumbnailUrl()).resize(200, 200).centerCrop().into(holder.thumbnail);
+            Picasso.with(mContext).load(friend.getThumbnailUrl()).into(holder.thumbnail);
         }
 
         holder.name.setText(friend.getName());
