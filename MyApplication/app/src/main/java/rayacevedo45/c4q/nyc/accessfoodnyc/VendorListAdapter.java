@@ -220,49 +220,80 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             }
         });
 
+        int size = vendor.getFriends().size();
+        if (size == 0) {
+            holder.friend5.setVisibility(View.GONE);
+            holder.friend4.setVisibility(View.GONE);
+            holder.friend3.setVisibility(View.GONE);
+            holder.friend2.setVisibility(View.GONE);
+            holder.friend1.setVisibility(View.GONE);
+            holder.more.setVisibility(View.GONE);
+        } else if (size == 1) {
+            holder.friend5.setVisibility(View.GONE);
+            holder.friend4.setVisibility(View.GONE);
+            holder.friend3.setVisibility(View.GONE);
+            holder.friend2.setVisibility(View.GONE);
+            holder.friend1.setVisibility(View.VISIBLE);
+            holder.more.setVisibility(View.GONE);
+            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
+        } else if (size == 2) {
+            holder.friend5.setVisibility(View.GONE);
+            holder.friend4.setVisibility(View.GONE);
+            holder.friend3.setVisibility(View.GONE);
+            holder.friend2.setVisibility(View.VISIBLE);
+            holder.friend1.setVisibility(View.VISIBLE);
+            holder.more.setVisibility(View.GONE);
+            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
+            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
+        } else if (size == 3) {
+            holder.friend5.setVisibility(View.GONE);
+            holder.friend4.setVisibility(View.GONE);
+            holder.friend3.setVisibility(View.VISIBLE);
+            holder.friend2.setVisibility(View.VISIBLE);
+            holder.friend1.setVisibility(View.VISIBLE);
+            holder.more.setVisibility(View.GONE);
+            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
+            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
+            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser("follower").getString("profile_url")).into(holder.friend3);
+        } else if (size == 4) {
+            holder.friend5.setVisibility(View.GONE);
+            holder.friend4.setVisibility(View.VISIBLE);
+            holder.friend3.setVisibility(View.VISIBLE);
+            holder.friend2.setVisibility(View.VISIBLE);
+            holder.friend1.setVisibility(View.VISIBLE);
+            holder.more.setVisibility(View.GONE);
+            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
+            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
+            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser("follower").getString("profile_url")).into(holder.friend3);
+            Picasso.with(mContext).load(vendor.getFriends().get(3).getParseUser("follower").getString("profile_url")).into(holder.friend4);
+        } else if (size == 5) {
+            holder.friend5.setVisibility(View.VISIBLE);
+            holder.friend4.setVisibility(View.VISIBLE);
+            holder.friend3.setVisibility(View.VISIBLE);
+            holder.friend2.setVisibility(View.VISIBLE);
+            holder.friend1.setVisibility(View.VISIBLE);
+            holder.more.setVisibility(View.GONE);
+            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
+            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
+            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser("follower").getString("profile_url")).into(holder.friend3);
+            Picasso.with(mContext).load(vendor.getFriends().get(3).getParseUser("follower").getString("profile_url")).into(holder.friend4);
+            Picasso.with(mContext).load(vendor.getFriends().get(4).getParseUser("follower").getString("profile_url")).into(holder.friend5);
+        } else {
+            holder.friend5.setVisibility(View.VISIBLE);
+            holder.friend4.setVisibility(View.VISIBLE);
+            holder.friend3.setVisibility(View.VISIBLE);
+            holder.friend2.setVisibility(View.VISIBLE);
+            holder.friend1.setVisibility(View.VISIBLE);
+            holder.more.setVisibility(View.VISIBLE);
+            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
+            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
+            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser("follower").getString("profile_url")).into(holder.friend3);
+            Picasso.with(mContext).load(vendor.getFriends().get(3).getParseUser("follower").getString("profile_url")).into(holder.friend4);
+            Picasso.with(mContext).load(vendor.getFriends().get(4).getParseUser("follower").getString("profile_url")).into(holder.friend5);
+            holder.more.setText("+" + (size-5));
+        }
 
-//        switch (friends.size()) {
-//            case 5:
-//                holder.friend5.setVisibility(View.VISIBLE);
-//                Picasso.with(mContext).load(friends.get(4).getParseUser("follower").getString("profile_url")).into(holder.friend5);
-//                holder.favorited.setVisibility(View.VISIBLE);
-//            case 4:
-//                holder.friend4.setVisibility(View.VISIBLE);
-//                Picasso.with(mContext).load(friends.get(3).getParseUser("follower").getString("profile_url")).into(holder.friend4);
-//            case 3:
-//                holder.friend3.setVisibility(View.VISIBLE);
-//                Picasso.with(mContext).load(friends.get(2).getParseUser("follower").getString("profile_url")).into(holder.friend3);
-//            case 2:
-//                holder.friend2.setVisibility(View.VISIBLE);
-//                Picasso.with(mContext).load(friends.get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
-//            case 1:
-//                holder.friend1.setVisibility(View.VISIBLE);
-//                Picasso.with(mContext).load(friends.get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
-//                holder.favorited.setText(" favorited this place!");
-//                break;
-//            case 0:
-//                holder.friend5.setVisibility(View.GONE);
-//                holder.friend4.setVisibility(View.GONE);
-//                holder.friend3.setVisibility(View.GONE);
-//                holder.friend2.setVisibility(View.GONE);
-//                holder.friend1.setVisibility(View.GONE);
-//                holder.more.setVisibility(View.GONE);
-//                break;
-//            default:
-//                holder.friend5.setVisibility(View.VISIBLE);
-//                holder.friend4.setVisibility(View.VISIBLE);
-//                holder.friend3.setVisibility(View.VISIBLE);
-//                holder.friend2.setVisibility(View.VISIBLE);
-//                holder.friend1.setVisibility(View.VISIBLE);
-//                Picasso.with(mContext).load(friends.get(4).getParseUser("follower").getString("profile_url")).into(holder.friend5);
-//                Picasso.with(mContext).load(friends.get(3).getParseUser("follower").getString("profile_url")).into(holder.friend4);
-//                Picasso.with(mContext).load(friends.get(2).getParseUser("follower").getString("profile_url")).into(holder.friend3);
-//                Picasso.with(mContext).load(friends.get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
-//                Picasso.with(mContext).load(friends.get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
-//                holder.more.setVisibility(View.VISIBLE);
-//        }
-//        List<String> address = DetailsFragment.addressGenerator(business);
-//        holder.address.setText(address.get(0) + ", " + address.get(1));
+
     }
 
     public static class VendorViewHolder extends RecyclerView.ViewHolder {
@@ -282,8 +313,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         protected ImageView friend3;
         protected ImageView friend4;
         protected ImageView friend5;
-        protected ImageView more;
-        protected TextView favorited;
+        protected TextView more;
         protected Button like;
 
         public VendorViewHolder(View itemView) {
@@ -304,8 +334,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             friend3 = (ImageView) itemView.findViewById(R.id.friend3);
             friend4 = (ImageView) itemView.findViewById(R.id.friend4);
             friend5 = (ImageView) itemView.findViewById(R.id.friend5);
-            more = (ImageView) itemView.findViewById(R.id.friend_more);
-            favorited = (TextView) itemView.findViewById(R.id.friend_favorited);
+            more = (TextView) itemView.findViewById(R.id.friend_more);
         }
 
     }
