@@ -63,14 +63,14 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         String objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
-
+        final ParseUser me = ParseUser.getCurrentUser();
         mToolbar = (Toolbar) findViewById(R.id.toolbar_profile);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final ParseUser me = ParseUser.getCurrentUser();
+
         String name = me.getString("first_name") + " " + me.getString("last_name");
 
-        getSupportActionBar().setTitle(name);
+        getSupportActionBar().setTitle(name + "'s Profile");
 
 
         if (objectId != null) {
