@@ -42,28 +42,48 @@
                 android:layout_height="wrap_content">
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_margin="16dp"
                     android:id="@+id/imageView_profile"
+                    android:background="@color/amber"
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_gravity="center"/>
 
 
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
                     <Button
-                        android:textSize="15sp"
+                        android:textSize="32dp"
                         android:layout_weight="1"
+                        android:fontFamily="sans-serif-thin"
                         android:id="@+id/button_profile_favorite"
                         android:background="@color/amber"
                         android:layout_width="match_parent"
                         android:textAllCaps="false"
-                        android:layout_height="match_parent"
-                        android:singleLine="true"/>
+                        android:layout_height="fill_parent"/>
+
+                    <TextView
+                        android:text="Likes"
+                        android:gravity="center_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
 
                     <Button
-                        android:textSize="15sp"
+                        android:textSize="32dp"
                         android:layout_weight="1"
+                        android:fontFamily="sans-serif-thin"
                         android:id="@+id/button_user_reviews"
                         android:background="@color/amber"
                         android:textAllCaps="false"
@@ -71,9 +91,24 @@
                         android:layout_height="match_parent"
                         android:singleLine="true"/>
 
+                    <TextView
+                        android:text="Reviews"
+                        android:gravity="center_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent">
+
                     <Button
-                        android:textSize="15sp"
+                        android:textSize="32dp"
                         android:layout_weight="1"
+                        android:fontFamily="sans-serif-thin"
                         android:id="@+id/button_friends_list"
                         android:background="@color/amber"
                         android:textAllCaps="false"
@@ -81,14 +116,20 @@
                         android:layout_height="match_parent"
                         android:singleLine="true"/>
 
-
-
+                    <TextView
+                        android:text="Friends"
+                        android:gravity="center_horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
                 </LinearLayout>
 
 
 
 
+
+
+                </LinearLayout>
 
 
 
@@ -112,46 +153,6 @@
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="500dp"/>-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:orientation="vertical">
-
-
-
-
-
-
-            <!--<Button-->
-                <!--android:background="@color/accentColor"-->
-                <!--android:text="Find Friends"-->
-                <!--android:id="@+id/find_friends"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content" />-->
-
-
-            <!--<Button-->
-                <!--android:id="@+id/log_out"-->
-                <!--android:text="@string/logout_label"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:background="@color/primaryColor"/>-->
-
-
-
-        </LinearLayout>
-
-
-
-
-
-
 
 
 </android.support.design.widget.CoordinatorLayout>
-
-
-
-
-

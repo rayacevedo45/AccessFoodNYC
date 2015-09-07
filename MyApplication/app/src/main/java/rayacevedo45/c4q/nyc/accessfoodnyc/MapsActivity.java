@@ -80,7 +80,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleApiClient mGoogleApiClient;
     private GoogleMap mMap;
     private LocationRequest mLocationRequest;
-    private Location mLastLocation;
+    public static Location mLastLocation;
     private Location mCurrentLocation;
     private boolean mRequestingLocationUpdates;
     private String mLastUpdateTime;
@@ -545,20 +545,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLatLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
-        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                Location location = mMap.getMyLocation();
-                searchVendors(new LatLng(location.getLatitude(), location.getLongitude()));
-                return true;
-            }
-        });
-
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
         }
+        ParseUser user = ParseUser.getCurrentUser();
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         final ParseGeoPoint point = new ParseGeoPoint(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
+        user.put("location", point);
+        user.saveInBackground();
+
         mAdapter = new VendorListAdapter(getApplicationContext(), point);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerViewList.setAdapter(mAdapter);
