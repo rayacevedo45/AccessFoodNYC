@@ -88,62 +88,37 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <Button
-                            android:id="@+id/vendor_like"
-                            android:background="@color/primaryColor"
-                            android:textColor="@color/white"
-                            android:text="Like"
-                            android:layout_gravity="center_vertical|right"
-                            android:layout_width="52dp"
-                            android:layout_height="28dp" />
-
-                        <ImageView
-                            android:paddingLeft="4dp"
-                            android:id="@+id/friend1"
-                            android:visibility="gone"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp" />
-
-                        <ImageView
-                            android:paddingLeft="4dp"
-                            android:id="@+id/friend2"
-                            android:visibility="gone"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp" />
-
-                        <ImageView
-                            android:paddingLeft="4dp"
-                            android:id="@+id/friend3"
-                            android:visibility="gone"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp" />
-
-                        <ImageView
-                            android:paddingLeft="4dp"
-                            android:id="@+id/friend4"
-                            android:visibility="gone"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp" />
-
-                        <ImageView
-                            android:paddingLeft="4dp"
-                            android:id="@+id/friend5"
-                            android:visibility="gone"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp" />
-
                         <TextView
-                            android:textColor="@color/white"
                             android:paddingLeft="4dp"
-                            android:background="@color/accentColor"
+                            android:textSize="14sp"
+                            android:id="@+id/textView_hour"
                             android:visibility="gone"
-                            android:id="@+id/friend_more"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp" />
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/toolbarTextColorSecondary"
+                            android:layout_gravity="center_vertical" />
+
+                        <LinearLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical|right"
+                            android:layout_gravity="right">
+
+                            <ImageView
+                                android:paddingRight="8dp"
+                                android:visibility="gone"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="right"
+                                android:id="@+id/yelp_logo"
+                                android:src="@drawable/yelp_logo" />
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
 
-                    
+
 
                     <!--<View-->
                     <!--android:layout_marginTop="12dp"-->
@@ -170,49 +145,6 @@
 
             <LinearLayout
                 android:paddingLeft="8dp"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-                <ImageView
-                    android:padding="4dp"
-                    android:src="@drawable/ic_map_black_18dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:paddingLeft="4dp"
-                    android:textSize="14sp"
-                    android:id="@+id/maps_distance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/toolbarTextColorSecondary"
-                    android:gravity="center_vertical"
-                    android:layout_gravity="center_vertical" />
-
-                <LinearLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical|right"
-                    android:layout_gravity="right">
-
-                    <ImageView
-                        android:paddingRight="8dp"
-                        android:visibility="gone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:id="@+id/yelp_logo"
-                        android:src="@drawable/yelp_logo" />
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:paddingLeft="8dp"
                 android:paddingRight="8dp"
                 android:paddingBottom="8dp"
                 android:orientation="horizontal"
@@ -222,25 +154,30 @@
 
                 <ImageView
                     android:padding="4dp"
-                    android:id="@+id/schedule_icon"
-                    android:visibility="gone"
-                    android:src="@drawable/ic_schedule_black_18dp"
+                    android:id="@+id/user_review_user_picture"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp" />
+
+                <TextView
+                    android:id="@+id/user_review_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-
                 <TextView
-                    android:paddingLeft="4dp"
-                    android:textSize="14sp"
-                    android:id="@+id/textView_hour"
-                    android:visibility="gone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/toolbarTextColorSecondary"
-                    android:layout_gravity="center_vertical" />
+                    android:id="@+id/user_review_date"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" />
+
 
 
             </LinearLayout>
+
+
+            <TextView
+                android:padding="8dp"
+                android:id="@+id/user_review_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
         </LinearLayout>
 
