@@ -145,24 +145,17 @@
 
 
             </LinearLayout>
-            <!--<TextView-->
-                <!--android:textSize="20sp"-->
-                <!--android:id="@+id/profile_name"-->
-                <!--android:layout_marginLeft="16sp"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:textColor="@color/white"/>-->
 
-
+            <android.support.v7.widget.RecyclerView
+                android:layout_marginTop="8dp"
+                android:id="@+id/recyclerView_profile_favorite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 
 
-        <!--<android.support.v7.widget.RecyclerView-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:id="@+id/recyclerView_profile_favorite"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="500dp"/>-->
+
 
 
 
