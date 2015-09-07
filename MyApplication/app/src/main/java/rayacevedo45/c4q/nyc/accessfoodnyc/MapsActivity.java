@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.facebook.appevents.AppEventsLogger;
@@ -30,6 +31,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -69,7 +71,7 @@ import retrofit.client.Response;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,
-        GoogleMap.OnCameraChangeListener, SortDialogListener {
+        GoogleMap.OnCameraChangeListener, SortDialogListener, TouchableWrapper.UpdateMapAfterUserInterection {
 
     private static final String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
     private static final String LOCATION_KEY = "location-key";
@@ -109,6 +111,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public HashMap<Marker, Integer> markerHashMap;
     private Integer previous;
     private boolean isMarkerClicked;
+    private Button mButtonSearchThisArea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,7 +131,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         buildGoogleApiClient();
         createLocationRequest();
 
-        final MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+        final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mMap = mapFragment.getMap();
 
@@ -151,6 +154,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void initializeViews() {
         mRecyclerView = (RecyclerViewPager) findViewById(R.id.recyclerView_grid);
         mRecyclerViewList = (RecyclerView) findViewById(R.id.recyclerView_list);
+        mButtonSearchThisArea = (Button) findViewById(R.id.search_this_area);
         //mRecyclerView.setHasFixedSize(true);
         //mRecyclerViewList.setHasFixedSize(true);
 
@@ -449,6 +453,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
                     })
             );
+            mButtonSearchThisArea.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    searchVendors(mMap.getCameraPosition().target);
+                    mButtonSearchThisArea.setVisibility(View.GONE);
+                }
+            });
         }
     }
 
@@ -534,19 +545,36 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLatLng));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
 
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                Location location = mMap.getMyLocation();
+                searchVendors(new LatLng(location.getLatitude(), location.getLongitude()));
+                return true;
+            }
+        });
+
         if (mRequestingLocationUpdates) {
             startLocationUpdates();
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        lastLatLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-
         final ParseGeoPoint point = new ParseGeoPoint(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        final ParseUser user = ParseUser.getCurrentUser();
-
         mAdapter = new VendorListAdapter(getApplicationContext(), point);
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerViewList.setAdapter(mAdapter);
+        searchVendors(new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude()));
+    }
+
+
+    public void searchVendors(LatLng currentLocation) {
+
+        final ParseGeoPoint point = new ParseGeoPoint(currentLocation.latitude, currentLocation.longitude);
+        final ParseUser user = ParseUser.getCurrentUser();
+
+        mAdapter = new VendorListAdapter(getApplicationContext(), point);
+        mRecyclerView.swapAdapter(mAdapter, true);
+        mRecyclerViewList.swapAdapter(mAdapter, true);
+
 
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -644,7 +672,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         geocoder = new Geocoder(this, Locale.getDefault());
 
         try {
-            addresses = geocoder.getFromLocation(mLastLocation.getLatitude(), mLastLocation.getLongitude(), 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+            addresses = geocoder.getFromLocation(currentLocation.latitude, currentLocation.longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
             String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
             String city = addresses.get(0).getLocality();
             String state = addresses.get(0).getAdminArea();
@@ -658,7 +686,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         } catch (IOException e) {
             e.printStackTrace();
         }
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(lastLatLng));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(13));
     }
 
@@ -736,5 +764,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 mAdapter.sortByRating();
                 break;
         }
+    }
+
+    @Override
+    public void onUpdateMapAfterUserInterection() {
+        mButtonSearchThisArea.setVisibility(View.VISIBLE);
     }
 }
