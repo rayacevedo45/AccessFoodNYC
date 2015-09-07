@@ -1,6 +1,7 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -154,6 +155,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mRecyclerView = (RecyclerViewPager) findViewById(R.id.recyclerView_grid);
         mRecyclerViewList = (RecyclerView) findViewById(R.id.recyclerView_list);
         mButtonSearchThisArea = (Button) findViewById(R.id.search_this_area);
+        //mButtonSearchThisArea.setBackgroundColor(R.color.accentColor);
+        mButtonSearchThisArea.setBackgroundColor(Color.argb(125, 3, 169, 244));
         //mRecyclerView.setHasFixedSize(true);
         //mRecyclerViewList.setHasFixedSize(true);
 
@@ -510,10 +513,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 break;
             case R.id.action_list:
                 if (isListed) {
+                    mButtonSearchThisArea.setVisibility(View.VISIBLE);
                     mRecyclerViewList.setVisibility(View.GONE);
                     mRecyclerView.setVisibility(View.VISIBLE);
                     isListed = false;
                 } else {
+                    mButtonSearchThisArea.setVisibility(View.GONE);
                     mRecyclerViewList.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.GONE);
                     isListed = true;
