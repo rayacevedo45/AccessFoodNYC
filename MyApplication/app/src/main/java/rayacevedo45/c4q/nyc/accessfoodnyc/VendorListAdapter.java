@@ -127,7 +127,6 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         double rate = vendor.getRating();
         String rating = df.format(rate);
         holder.rating.setText(rating);
-        holder.category.setText(vendor.getCategory());
         ParseGeoPoint location = vendor.getLocation();
         double distance = mPoint.distanceInMilesTo(location);
         holder.distance.setText(df.format(distance) + " miles away");
@@ -178,12 +177,12 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.yelpLogo.setVisibility(View.GONE);
         }
 
-
+        holder.like.setAllCaps(false);
         holder.like.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 if (holder.like.getText().toString().equalsIgnoreCase("like")) {
-                    holder.like.setText("liked!");
+                    holder.like.setText("Liked!");
 
                     if (vendor.isYelp()) {
 
@@ -206,7 +205,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
                     }
 
                 } else {
-                    holder.like.setText("like");
+                    holder.like.setText("Like");
                     ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
                     findVendor.getInBackground(vendor.getId(), new GetCallback<ParseObject>() {
                         @Override
@@ -307,7 +306,6 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         protected ImageView icon;
         protected TextView distance;
 
-        protected TextView category;
         protected ImageView friend1;
         protected ImageView friend2;
         protected ImageView friend3;
@@ -328,7 +326,6 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             distance = (TextView) itemView.findViewById(R.id.maps_distance);
             like = (Button) itemView.findViewById(R.id.vendor_like);
 
-            category = (TextView) itemView.findViewById(R.id.vendor_category);
             friend1 = (ImageView) itemView.findViewById(R.id.friend1);
             friend2 = (ImageView) itemView.findViewById(R.id.friend2);
             friend3 = (ImageView) itemView.findViewById(R.id.friend3);

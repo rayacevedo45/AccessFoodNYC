@@ -31,6 +31,7 @@ public class FriendsActivity extends AppCompatActivity {
 
     private LinearLayout mPendingParent;
     private LinearLayout mPendingContainer;
+    private TextView mTextViewFriendsNumber;
 
     private Toolbar mToolbar;
 
@@ -41,7 +42,9 @@ public class FriendsActivity extends AppCompatActivity {
 
         mPendingParent = (LinearLayout) findViewById(R.id.pending_parent);
         mPendingContainer = (LinearLayout) findViewById(R.id.pending_container);
+        mTextViewFriendsNumber = (TextView) findViewById(R.id.textView_friends);
         mToolbar = (Toolbar) findViewById(R.id.toolbar_friends);
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -52,7 +55,6 @@ public class FriendsActivity extends AppCompatActivity {
         LinearLayoutManager lm = new LinearLayoutManager(this);
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(lm);
-
 
         ParseRelation<ParseUser> pending = user.getRelation("friend_requests");
         pending.getQuery().findInBackground(new FindCallback<ParseUser>() {
@@ -109,16 +111,13 @@ public class FriendsActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
         ParseRelation<ParseUser> relation = user.getRelation("friends");
         relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> list, ParseException e) {
                 mAdapter = new FriendsAdapter(getApplicationContext(), list);
                 mRecyclerView.setAdapter(mAdapter);
+                mTextViewFriendsNumber.append(" (" + list.size() + ")");
                 mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
@@ -131,8 +130,6 @@ public class FriendsActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
     @Override
     protected void onPause() {

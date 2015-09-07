@@ -12,7 +12,6 @@ public class Vendor {
     private final boolean isYelp;
     private final String name;
     private final String address;
-    private final String category;
     private final String hours;
     private final double rating;
     private final ParseGeoPoint location;
@@ -27,7 +26,6 @@ public class Vendor {
         private boolean isYelp = false;
         private String name = "";
         private String address = "";
-        private String category = "";
         private String hours = "";
         private String picture = "";
         private double rating = 0;
@@ -47,11 +45,6 @@ public class Vendor {
 
         public Builder setAddress(String address) {
             this.address = address;
-            return this;
-        }
-
-        public Builder setCategory(String category) {
-            this.category = category;
             return this;
         }
 
@@ -104,7 +97,6 @@ public class Vendor {
         id = builder.id;
         name = builder.name;
         address = builder.address;
-        category = builder.category;
         hours = builder.hours;
         marker = builder.marker;
         isLiked = builder.isLiked;
@@ -129,10 +121,6 @@ public class Vendor {
 
     public String getAddress() {
         return address;
-    }
-
-    public String getCategory() {
-        return category;
     }
 
     public String getHours() {
