@@ -42,15 +42,15 @@
 
 
         <Button
-            android:layout_margin="8dp"
-            android:visibility="gone"
-            android:text="Search this area"
             android:textAllCaps="false"
+            android:layout_margin="12dp"
+            android:visibility="gone"
+            android:text="search this area"
             android:capitalize="none"
             android:id="@+id/search_this_area"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="10sp"/>
+            android:layout_height="38dp"
+            android:textSize="9sp"/>
 
     </RelativeLayout>
 
