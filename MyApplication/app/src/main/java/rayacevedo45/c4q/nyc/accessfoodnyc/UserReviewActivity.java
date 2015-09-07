@@ -29,8 +29,8 @@ public class UserReviewActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_user_reviews);
         setSupportActionBar(mToolbar);
         ParseUser user = ParseUser.getCurrentUser();
-        mToolbar.setTitle(user.getString("first_name") + " " + user.getString("last_name") + "'s Reviews");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(user.getString("first_name") + " " + user.getString("last_name") + "'s Reviews");
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_user_reviews);
         mRecyclerView.setHasFixedSize(true);
