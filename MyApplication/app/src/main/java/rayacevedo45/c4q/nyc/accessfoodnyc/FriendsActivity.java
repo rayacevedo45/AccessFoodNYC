@@ -40,6 +40,8 @@ public class FriendsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
 
+        ParseUser user = ParseUser.getCurrentUser();
+
         mPendingParent = (LinearLayout) findViewById(R.id.pending_parent);
         mPendingContainer = (LinearLayout) findViewById(R.id.pending_container);
         mTextViewFriendsNumber = (TextView) findViewById(R.id.textView_friends);
@@ -47,8 +49,8 @@ public class FriendsActivity extends AppCompatActivity {
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.setTitle(user.getString("first_name") + " " + user.getString("last_name"));
 
-        ParseUser user = ParseUser.getCurrentUser();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_friends);
         mRecyclerView.setHasFixedSize(true);

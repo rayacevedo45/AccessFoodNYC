@@ -10,7 +10,7 @@ import android.support.v7.app.AlertDialog;
 
 public class SortDialogFragment extends DialogFragment {
 
-    private SortDialogListener mListener;
+    private DialogCallback mListener;
 
     @NonNull
     @Override
@@ -21,7 +21,7 @@ public class SortDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item
-                        mListener.sortOptionSelected(which);
+                        mListener.dialogClicked(which);
                     }
                 });
         return builder.create();
@@ -30,6 +30,6 @@ public class SortDialogFragment extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        mListener = (SortDialogListener) activity;
+        mListener = (DialogCallback) activity;
     }
 }

@@ -84,8 +84,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 public void done(List<ParseUser> list, ParseException e) {
                     final ParseUser friend = list.get(0);
                     relation.add(friend);
-                    me.saveInBackground();
                     Toast.makeText(getApplicationContext(), "Accepted!", Toast.LENGTH_SHORT).show();
+
+                    ParseRelation<ParseUser> pendingFriends = me.getRelation("friend_requests");
+                    pendingFriends.remove(friend);
+                    me.saveInBackground();
 
                     ParseUser user = ParseUser.getCurrentUser();
                     String name = user.get("first_name") + " " + user.get("last_name");
