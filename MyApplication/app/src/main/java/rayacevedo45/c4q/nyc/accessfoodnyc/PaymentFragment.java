@@ -17,8 +17,6 @@ public class PaymentFragment extends Fragment {
 
         View result = inflater.inflate(R.layout.fragment_payment, container, false);
 
-        Stripe stripe = Stripe.
-
 
 
         return result;

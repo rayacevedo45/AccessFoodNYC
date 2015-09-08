@@ -25,7 +25,7 @@ public class AddCardDialogFragment extends DialogFragment {
                 .setPositiveButton("Add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Card card = new Card()
+                      
                     }
                 }).create();
     }
