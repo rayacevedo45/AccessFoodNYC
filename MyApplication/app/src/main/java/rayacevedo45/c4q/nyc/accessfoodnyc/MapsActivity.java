@@ -1,6 +1,7 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -8,10 +9,8 @@ import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -29,7 +28,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -56,7 +54,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Set;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
@@ -71,7 +68,7 @@ import retrofit.client.Response;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,
-        GoogleMap.OnCameraChangeListener, SortDialogListener, TouchableWrapper.UpdateMapAfterUserInterection {
+        GoogleMap.OnCameraChangeListener, DialogCallback, TouchableWrapper.UpdateMapAfterUserInterection {
 
     private static final String REQUESTING_LOCATION_UPDATES_KEY = "requesting-location-updates-key";
     private static final String LOCATION_KEY = "location-key";
@@ -122,7 +119,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         isFetched = false;
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+        mToolbar.setNavigationIcon(R.drawable.whitetruck);
+        getSupportActionBar().setTitle("Access Food");
 
         markerHashMap = new HashMap<>();
 
@@ -155,6 +155,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mRecyclerView = (RecyclerViewPager) findViewById(R.id.recyclerView_grid);
         mRecyclerViewList = (RecyclerView) findViewById(R.id.recyclerView_list);
         mButtonSearchThisArea = (Button) findViewById(R.id.search_this_area);
+        //mButtonSearchThisArea.setBackgroundColor(R.color.accentColor);
+        mButtonSearchThisArea.setBackgroundColor(Color.argb(125, 3, 169, 244));
         //mRecyclerView.setHasFixedSize(true);
         //mRecyclerViewList.setHasFixedSize(true);
 
@@ -511,17 +513,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 break;
             case R.id.action_list:
                 if (isListed) {
+                    mButtonSearchThisArea.setVisibility(View.VISIBLE);
                     mRecyclerViewList.setVisibility(View.GONE);
                     mRecyclerView.setVisibility(View.VISIBLE);
                     isListed = false;
                 } else {
+                    mButtonSearchThisArea.setVisibility(View.GONE);
                     mRecyclerViewList.setVisibility(View.VISIBLE);
                     mRecyclerView.setVisibility(View.GONE);
                     isListed = true;
                 }
                 break;
-            case R.id.action_filter:
-                filter();
+            case R.id.action_sort:
+                sort();
                 break;
         }
 
@@ -612,14 +616,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                                 if (parseObject == null) {
                                                     truck = new Vendor.Builder(vendor.getObjectId())
                                                             .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
-                                                            .isYelp(false).setCategory(vendor.getString("category"))
+                                                            .isYelp(false)
                                                             .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
                                                             .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
                                                             .isLiked(false).build();
                                                 } else {
                                                     truck = new Vendor.Builder(vendor.getObjectId())
                                                             .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
-                                                            .isYelp(false).setCategory(vendor.getString("category"))
+                                                            .isYelp(false)
                                                             .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
                                                             .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
                                                             .isLiked(true).build();
@@ -746,12 +750,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         startActivity(intent);
     }
 
-    private void filter() {
+    private void sort() {
         new SortDialogFragment().show(getSupportFragmentManager(), "");
     }
 
     @Override
-    public void sortOptionSelected(int which) {
+    public void dialogClicked(int which) {
         switch (which) {
             case 0:
                 mAdapter.sortByDistance();

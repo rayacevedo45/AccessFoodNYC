@@ -30,7 +30,7 @@ import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class FriendProfileActivity extends AppCompatActivity {
+public class FriendProfileActivity extends AppCompatActivity implements DialogCallback {
 
     private String objectId;
     private ImageView mImageView;
@@ -144,5 +144,14 @@ public class FriendProfileActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         mButtonRemove.setOnClickListener(null);
+    }
+
+    @Override
+    public void dialogClicked(int which) {
+        Intent intent = new Intent(getApplicationContext(), ProfileActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 }

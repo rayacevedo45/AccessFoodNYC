@@ -1,6 +1,7 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.content.Context;
+import android.provider.CalendarContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,115 +16,51 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-
-public class UserReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.UserReviewHolder> {
 
     private Context mContext;
-    private List<ParseObject> mList;
+    private List<Review> mList;
 
-    public UserReviewAdapter(Context context, List<ParseObject> list) {
+    public UserReviewAdapter(Context context) {
         mContext = context;
-        mList = list;
+        mList = new ArrayList<>();
     }
 
     @Override
-    public int getItemViewType(int position) {
-        ParseObject review = getItem(position);
-        ParseObject vendor = review.getParseObject("vendor");
-        if (vendor.getString("yelpId") == null) {
-            return 1;
-        } else {
-            return 2;
-        }
+    public UserReviewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View row = LayoutInflater.from(mContext).inflate(R.layout.list_item_user_review, parent, false);
+        return new UserReviewHolder(row);
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View row;
-        switch (viewType) {
-            case 1:
-                row = LayoutInflater.from(mContext).inflate(R.layout.list_item_user_review, parent, false);
-                return new UserReviewHolder(row);
-            case 2:
-                row = LayoutInflater.from(mContext).inflate(R.layout.list_item_yelp_review, parent, false);
-                return new YelpReviewHolder(row);
-        }
-        return null;
-    }
+    public void onBindViewHolder(UserReviewHolder holder, int position) {
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        DecimalFormat df = new DecimalFormat("#0.0");
+        Review review = getItem(position);
+        Vendor vendor = review.getVendor();
 
-        if (holder instanceof YelpReviewHolder) {
-            onBindYelpViewHolder((YelpReviewHolder) holder, position);
-        } else {
-            onBindUserViewHolder((UserReviewHolder) holder, position);
-        }
-    }
+        holder.vendorName.setText(vendor.getName());
+        holder.address.setText(vendor.getAddress());
+        Picasso.with(mContext).load(vendor.getPicture()).into(holder.vendorPicture);
 
-    public ParseObject getItem(int position) {
-        return mList.get(position);
-    }
+        double rate = vendor.getRating();
+        String rating = df.format(rate);
+        holder.rating.setText(rating);
 
-    public void onBindYelpViewHolder(YelpReviewHolder holder, int position) {
-        ParseObject review = getItem(position);
-        ParseObject vendor = review.getParseObject("vendor");
-        String yelpId = vendor.getString("yelpId");
-        String yelpVendorName = yelpId.replaceAll("-", " ");
-        yelpVendorName = Character.toString(yelpVendorName.charAt(0)).toUpperCase() + yelpVendorName.substring(1);
-        holder.vendor.setText(yelpVendorName);
-
-        Date uploadDate = review.getCreatedAt();
-        holder.date.setText(uploadDate.getMonth() + "/" + uploadDate.getDay() + "/" + uploadDate.getYear());
-
-        holder.title.setText(review.getString("title"));
-        holder.description.setText(review.getString("description"));
-
-        ParseUser user = review.getParseUser("writer");
-        try {
-            Picasso.with(mContext).load(user.getString("profile_url")).resize(200, 200).centerCrop().into(holder.picture);
-        } catch (Exception e) {
-            Picasso.with(mContext).load(R.drawable.default_profile).resize(200, 200).centerCrop().into(holder.picture);
-        }
-
-        int rating = review.getInt("rating");
-        switch (rating) {
-            case 1:
-                holder.grade2.setVisibility(View.GONE);
-            case 2:
-                holder.grade3.setVisibility(View.GONE);
-            case 3:
-                holder.grade4.setVisibility(View.GONE);
-            case 4:
-                holder.grade5.setVisibility(View.GONE);
-        }
-    }
-
-    public void onBindUserViewHolder(UserReviewHolder holder, int position) {
-        ParseObject review = getItem(position);
-
-        ParseObject vendor = review.getParseObject("vendor");
-
-        holder.vendorName.setText(vendor.getString("name"));
-        Picasso.with(mContext).load(vendor.getString("profile_url")).centerCrop().resize(200, 200).into(holder.vendorPicture);
-
-        Calendar calendar = Calendar.getInstance();
-        int day = calendar.get(Calendar.DAY_OF_WEEK);
-
-        String today = "day" + Integer.toString(day);
-        String json = vendor.getString(today);
-        try {
-            JSONObject info = new JSONObject(json);
-            holder.address.setText(info.getString("address"));
-            if (info.getBoolean("isOpen")) {
-
+        String hour = vendor.getHours();
+        if (!hour.equals("closed")) {
+            try {
+                JSONObject info = new JSONObject(hour);
                 String opening = info.getString("openAt");
                 String closing = info.getString("closeAt");
-
                 long current = System.currentTimeMillis();
                 Date open = new Date(current);
                 Date close = new Date(current);
@@ -132,86 +69,65 @@ public class UserReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 open.setMinutes(Integer.valueOf(opening.substring(2)));
                 close.setHours(Integer.valueOf(closing.substring(0,2)));
                 close.setMinutes(Integer.valueOf(closing.substring(2)));
-
+                String minutes = close.getMinutes() + "";
                 if (now.after(open) && now.before(close)) {
-                    holder.hour.setText("Open until " + close.getHours() + ":" + close.getMinutes());
+                    if (close.getMinutes() == 0) {
+                        minutes = "00";
+                    }
+                    if (close.getHours() > 12) {
+                        holder.hour.setText("Open until " + (close.getHours() - 12) + ":" + minutes + " PM");
+                    } else {
+                        holder.hour.setText("Open until " + close.getHours() + ":" + minutes + " AM");
+                    }
                 } else {
                     holder.hour.setText("Closed now");
                 }
-
-            } else {
-                holder.hour.setText("Closed now");
+            } catch (JSONException e1) {
+                e1.printStackTrace();
             }
+        } else {
+            holder.hour.setText("Closed today");
+        }
 
-        } catch (JSONException e1) {
-            e1.printStackTrace();
+        if (vendor.isYelp()) {
+            holder.hour.setVisibility(View.GONE);
+            holder.yelpLogo.setVisibility(View.VISIBLE);
+        } else {
+            holder.hour.setVisibility(View.VISIBLE);
+            holder.yelpLogo.setVisibility(View.GONE);
         }
 
 
+        holder.title.setText(review.getTitle());
+        holder.description.setText(review.getDescription());
 
-        holder.title.setText(review.getString("title"));
-        holder.description.setText(review.getString("description"));
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String date = dateFormat.format(review.getDate());
+        holder.date.setText(date);
 
-        Date uploadDate = review.getCreatedAt();
-        holder.date.setText(uploadDate.getMonth() + "/" + uploadDate.getDay() + "/" + uploadDate.getYear());
-
-        ParseUser user = review.getParseUser("writer");
+        ParseUser user = ParseUser.getCurrentUser();
         try {
-            Picasso.with(mContext).load(user.getString("profile_url")).resize(200, 200).centerCrop().into(holder.writerPicture);
+            Picasso.with(mContext).load(user.getString("profile_url")).into(holder.writerPicture);
         } catch (Exception e) {
-            Picasso.with(mContext).load(R.drawable.default_profile).resize(200, 200).centerCrop().into(holder.writerPicture);
+            Picasso.with(mContext).load(R.drawable.default_profile).into(holder.writerPicture);
         }
 
-        int rating = review.getInt("rating");
-        switch (rating) {
-            case 1:
-                holder.grade2.setVisibility(View.GONE);
-            case 2:
-                holder.grade3.setVisibility(View.GONE);
-            case 3:
-                holder.grade4.setVisibility(View.GONE);
-            case 4:
-                holder.grade5.setVisibility(View.GONE);
-        }
+
     }
 
+    public void addReview(Review review) {
+        mList.add(review);
+        notifyItemInserted(mList.size() - 1);
+        notifyItemChanged(mList.size() - 1);
+    }
 
+    public Review getItem(int position) {
+        return mList.get(position);
+    }
 
     @Override
     public int getItemCount() {
         return mList.size();
-    }
-
-    public static class YelpReviewHolder extends RecyclerView.ViewHolder {
-        protected TextView vendor;
-
-        protected ImageView picture;
-        protected TextView writer;
-        protected TextView date;
-        protected TextView title;
-        protected TextView description;
-
-        protected ImageView grade1;
-        protected ImageView grade2;
-        protected ImageView grade3;
-        protected ImageView grade4;
-        protected ImageView grade5;
-
-        public YelpReviewHolder(View itemView) {
-            super(itemView);
-            grade1 = (ImageView) itemView.findViewById(R.id.grade_1);
-            grade2 = (ImageView) itemView.findViewById(R.id.grade_2);
-            grade3 = (ImageView) itemView.findViewById(R.id.grade_3);
-            grade4 = (ImageView) itemView.findViewById(R.id.grade_4);
-            grade5 = (ImageView) itemView.findViewById(R.id.grade_5);
-
-            picture = (ImageView) itemView.findViewById(R.id.yelp_review_user_picture);
-            vendor = (TextView) itemView.findViewById(R.id.yelp_review_vendor);
-            writer = (TextView) itemView.findViewById(R.id.yelp_review_writer);
-            date = (TextView) itemView.findViewById(R.id.yelp_review_date);
-            title = (TextView) itemView.findViewById(R.id.yelp_review_title);
-            description = (TextView) itemView.findViewById(R.id.yelp_review_description);
-        }
     }
 
     public static class UserReviewHolder extends RecyclerView.ViewHolder {
@@ -221,38 +137,27 @@ public class UserReviewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         protected TextView address;
         protected TextView rating;
         protected TextView hour;
-
+        protected TextView userRatings;
         protected ImageView writerPicture;
-        protected TextView writer;
         protected TextView date;
         protected TextView title;
         protected TextView description;
-
-        protected ImageView grade1;
-        protected ImageView grade2;
-        protected ImageView grade3;
-        protected ImageView grade4;
-        protected ImageView grade5;
+        protected ImageView yelpLogo;
 
         public UserReviewHolder(View itemView) {
             super(itemView);
-            grade1 = (ImageView) itemView.findViewById(R.id.grade_1);
-            grade2 = (ImageView) itemView.findViewById(R.id.grade_2);
-            grade3 = (ImageView) itemView.findViewById(R.id.grade_3);
-            grade4 = (ImageView) itemView.findViewById(R.id.grade_4);
-            grade5 = (ImageView) itemView.findViewById(R.id.grade_5);
 
-            writer = (TextView) itemView.findViewById(R.id.user_review_writer);
+            userRatings = (TextView) itemView.findViewById(R.id.user_review_how_many);
             date = (TextView) itemView.findViewById(R.id.user_review_date);
             title = (TextView) itemView.findViewById(R.id.user_review_title);
             description = (TextView) itemView.findViewById(R.id.user_review_description);
-
             writerPicture = (ImageView) itemView.findViewById(R.id.user_review_user_picture);
-            vendorName = (TextView) itemView.findViewById(R.id.user_review_vendor);
-            address = (TextView) itemView.findViewById(R.id.user_review_vendor_address);
-            rating = (TextView) itemView.findViewById(R.id.user_review_rating);
-            hour = (TextView) itemView.findViewById(R.id.user_review_vendor_hour);
-            vendorPicture = (ImageView) itemView.findViewById(R.id.user_review_vendor_picture);
+            vendorName = (TextView) itemView.findViewById(R.id.vendor_name);
+            address = (TextView) itemView.findViewById(R.id.textView_address);
+            rating = (TextView) itemView.findViewById(R.id.vendor_rating);
+            hour = (TextView) itemView.findViewById(R.id.textView_hour);
+            vendorPicture = (ImageView) itemView.findViewById(R.id.imageView_vendor);
+            yelpLogo = (ImageView) itemView.findViewById(R.id.yelp_logo);
         }
     }
 }

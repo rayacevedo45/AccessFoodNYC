@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,13 +43,19 @@ public class UserFavoriteActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private VendorListAdapter mAdapter;
 
-    private List<ParseObject> yelpList;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_favorite);
 
+        final ParseUser user = ParseUser.getCurrentUser();
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_user_favorite);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(user.getString("first_name") + " " + user.getString("last_name") + "'s Likes");
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         final String today = "day" + Integer.toString(day);
@@ -59,7 +66,7 @@ public class UserFavoriteActivity extends AppCompatActivity {
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(lm);
 
-        final ParseUser user = ParseUser.getCurrentUser();
+
         ParseGeoPoint point = user.getParseGeoPoint("location");
 
         mAdapter = new VendorListAdapter(getApplicationContext(), point);
@@ -127,7 +134,7 @@ public class UserFavoriteActivity extends AppCompatActivity {
 
                                         Vendor truck = new Vendor.Builder(vendor.getObjectId())
                                                 .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
-                                                .isYelp(false).setCategory(vendor.getString("category"))
+                                                .isYelp(false)
                                                 .setFriends(list).setLocation(vendor.getParseGeoPoint("location")).setHours(json)
                                                 .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
                                                 .isLiked(true).build();
