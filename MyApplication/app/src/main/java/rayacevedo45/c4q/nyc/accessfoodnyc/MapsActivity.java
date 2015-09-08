@@ -121,7 +121,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        mToolbar.setNavigationIcon(R.drawable.whitetruck);
+        mToolbar.setNavigationIcon(R.drawable.white_orange);
         getSupportActionBar().setTitle("Access Food");
 
         markerHashMap = new HashMap<>();
@@ -187,7 +187,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             if (previous != null) {
                                 mAdapter.getItem(previous).getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
                             }
-                            mAdapter.getItem(position).getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_blue));
+                            mAdapter.getItem(position).getMarker().setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_blue2));
                             previous = position;
                         }
 

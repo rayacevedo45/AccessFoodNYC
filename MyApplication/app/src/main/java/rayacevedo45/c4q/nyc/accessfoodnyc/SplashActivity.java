@@ -101,7 +101,7 @@ public class SplashActivity extends Activity {
                     // close this activity
                     finish();
                 }
-            }, 10000);
+            }, 8000);
         }
 
 
