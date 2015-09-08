@@ -38,7 +38,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.clustering.ClusterManager;
 import com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager;
 import com.parse.FindCallback;
+import com.parse.FunctionCallback;
 import com.parse.GetCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
@@ -612,24 +614,38 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                         fav.whereEqualTo("follower", user).whereEqualTo("vendor", vendor);
                                         fav.getFirstInBackground(new GetCallback<ParseObject>() {
                                             @Override
-                                            public void done(ParseObject parseObject, ParseException e) {
-                                                Vendor truck;
-                                                if (parseObject == null) {
-                                                    truck = new Vendor.Builder(vendor.getObjectId())
-                                                            .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
-                                                            .isYelp(false)
-                                                            .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
-                                                            .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
-                                                            .isLiked(false).build();
-                                                } else {
-                                                    truck = new Vendor.Builder(vendor.getObjectId())
-                                                            .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
-                                                            .isYelp(false)
-                                                            .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
-                                                            .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
-                                                            .isLiked(true).build();
-                                                }
-                                                mAdapter.addVendor(truck);
+                                            public void done(final ParseObject parseObject, ParseException e) {
+
+                                                HashMap<String, Object> params = new HashMap<String, Object>();
+                                                params.put("vendor", vendor);
+                                                ParseCloud.callFunctionInBackground("averageRatings", params, new FunctionCallback<Float>() {
+                                                    @Override
+                                                    public void done(Float rate, ParseException e) {
+                                                        if (rate == null) {
+                                                            rate = 4.0f;
+                                                        }
+                                                        Vendor truck;
+                                                        if (parseObject == null) {
+                                                            truck = new Vendor.Builder(vendor.getObjectId())
+                                                                    .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
+                                                                    .isYelp(false)
+                                                                    .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
+                                                                    .setPicture(vendor.getString("profile_url")).setRating(rate)
+                                                                    .isLiked(false).build();
+                                                        } else {
+                                                            truck = new Vendor.Builder(vendor.getObjectId())
+                                                                    .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
+                                                                    .isYelp(false)
+                                                                    .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
+                                                                    .setPicture(vendor.getString("profile_url")).setRating(rate)
+                                                                    .isLiked(true).build();
+                                                        }
+                                                        mAdapter.addVendor(truck);
+
+                                                    }
+                                                });
+
+
                                             }
                                         });
 
@@ -641,27 +657,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
 
 
-                    ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
-                    reviewQuery.whereEqualTo("vendor", vendor).findInBackground(new FindCallback<ParseObject>() {
-                        @Override
-                        public void done(List<ParseObject> list, ParseException e) {
-                            if (list.size() == 0) {
-
-                            } else {
-
-                                double ratingsum = 0;
-                                for (final ParseObject review : list) {
-                                    ratingsum += (Integer) review.get("rating");
-                                }
-//                                Toast.makeText(getActivity(), String.valueOf(ratingsum), Toast.LENGTH_SHORT).show();
-                                double averageRating = Math.round((ratingsum / (list.size())) * 10.0) / 10.0;
-
-                                //Toast.makeText(getApplicationContext(), String.valueOf(averageRating), Toast.LENGTH_SHORT).show();
-                                vendor.put("rating", averageRating);
-                                vendor.saveInBackground();
-                            }
-                        }
-                    });
+//                    ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
+//                    reviewQuery.whereEqualTo("vendor", vendor).findInBackground(new FindCallback<ParseObject>() {
+//                        @Override
+//                        public void done(List<ParseObject> list, ParseException e) {
+//                            if (list.size() == 0) {
+//
+//                            } else {
+//                                double ratingsum = 0;
+//                                for (final ParseObject review : list) {
+//                                    ratingsum += (Integer) review.get("rating");
+//                                }
+////                                Toast.makeText(getActivity(), String.valueOf(ratingsum), Toast.LENGTH_SHORT).show();
+//                                double averageRating = Math.round((ratingsum / (list.size())) * 10.0) / 10.0;
+//
+//                                //Toast.makeText(getApplicationContext(), String.valueOf(averageRating), Toast.LENGTH_SHORT).show();
+//                                vendor.put("rating", averageRating);
+//                                vendor.saveInBackground();
+//                            }
+//                        }
+//                    });
 
                 }
 

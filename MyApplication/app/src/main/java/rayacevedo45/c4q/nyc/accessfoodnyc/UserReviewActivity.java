@@ -9,12 +9,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.parse.FindCallback;
+import com.parse.FunctionCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
@@ -61,7 +64,7 @@ public class UserReviewActivity extends AppCompatActivity {
 
                 for (final ParseObject review : list) {
 
-                    ParseObject vendor = review.getParseObject("vendor");
+                    final ParseObject vendor = review.getParseObject("vendor");
                     if (vendor.getParseGeoPoint("location") == null) {
 
                         YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
@@ -89,19 +92,33 @@ public class UserReviewActivity extends AppCompatActivity {
                         });
 
                     } else {
-                        Vendor truck = new Vendor.Builder(vendor.getObjectId())
-                                .setRating(vendor.getDouble("rating"))
-                                .setPicture(vendor.getString("profile_url"))
-                                .setAddress(vendor.getString("address"))
-                                .setHours(vendor.getString(today))
-                                .isYelp(false).setName(vendor.getString("name")).build();
-                        final Review item = new Review();
-                        item.setTitle(review.getString("title"));
-                        item.setDescription(review.getString("description"));
-                        item.setRating(review.getInt("rating"));
-                        item.setDate(review.getCreatedAt());
-                        item.setVendor(truck);
-                        mAdapter.addReview(item);
+
+                        HashMap<String, Object> params = new HashMap<String, Object>();
+                        params.put("vendor", vendor);
+                        ParseCloud.callFunctionInBackground("averageRatings", params, new FunctionCallback<Float>() {
+                            @Override
+                            public void done(Float rate, ParseException e) {
+                                if (rate == null) {
+                                    rate = 4.0f;
+                                }
+                                Vendor truck = new Vendor.Builder(vendor.getObjectId())
+                                        .setRating(rate)
+                                        .setPicture(vendor.getString("profile_url"))
+                                        .setAddress(vendor.getString("address"))
+                                        .setHours(vendor.getString(today))
+                                        .isYelp(false).setName(vendor.getString("name")).build();
+                                final Review item = new Review();
+                                item.setTitle(review.getString("title"));
+                                item.setDescription(review.getString("description"));
+                                item.setRating(review.getInt("rating"));
+                                item.setDate(review.getCreatedAt());
+                                item.setVendor(truck);
+                                mAdapter.addReview(item);
+
+                            }
+                        });
+
+
                     }
 
                 }
