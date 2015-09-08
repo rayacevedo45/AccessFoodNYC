@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.stripe.Stripe;
+
 public class PaymentFragment extends Fragment {
 
     @Nullable
@@ -15,6 +17,7 @@ public class PaymentFragment extends Fragment {
 
         View result = inflater.inflate(R.layout.fragment_payment, container, false);
 
+        Stripe stripe = Stripe.
 
 
 
