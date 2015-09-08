@@ -1,6 +1,7 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.content.Context;
+import android.provider.CalendarContract;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +16,9 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -98,8 +101,9 @@ public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.Us
         holder.title.setText(review.getTitle());
         holder.description.setText(review.getDescription());
 
-        Date uploadDate = review.getDate();
-        holder.date.setText(uploadDate.getMonth() + "/" + uploadDate.getDay() + "/" + uploadDate.getYear());
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String date = dateFormat.format(review.getDate());
+        holder.date.setText(date);
 
         ParseUser user = ParseUser.getCurrentUser();
         try {

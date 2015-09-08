@@ -71,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         String name = me.getString("first_name") + " " + me.getString("last_name");
 
-        getSupportActionBar().setTitle(name + "'s Profile");
+        mToolbar.setTitle(name + "'s Profile");
 
 
         if (objectId != null) {
