@@ -121,7 +121,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
 
-        mToolbar.setNavigationIcon(R.drawable.test);
+        mToolbar.setNavigationIcon(R.drawable.whitetruck);
         getSupportActionBar().setTitle("Access Food");
 
         markerHashMap = new HashMap<>();

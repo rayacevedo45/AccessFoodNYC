@@ -10,125 +10,129 @@
         android:layout_width="match_parent"
         android:theme="@style/AppTheme">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_profile"
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark"/>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            android:layout_height="match_parent"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:background="@color/amber"
-            android:layout_height="180dp">
-
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_profile"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:theme="@style/ThemeOverlay.AppCompat.Dark"/>
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:layout_marginTop="?attr/actionBarSize"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:background="@color/amber"
-                android:layout_gravity="center_vertical"
-                android:layout_height="match_parent">
+                android:layout_height="180dp"
+                app:layout_collapseMode="parallax">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:layout_margin="16dp"
-                    android:id="@+id/imageView_profile"
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
                     android:background="@color/amber"
-                    android:layout_width="84dp"
-                    android:layout_height="84dp"
-                    android:layout_gravity="center"/>
-
-
-                <LinearLayout
-                    android:id="@+id/button_profile_favorite"
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_gravity="center_vertical"
                     android:layout_height="match_parent">
 
-                    <TextView
-                        android:textSize="36dp"
-                        android:layout_weight="1"
-                        android:fontFamily="sans-serif-thin"
-                        android:id="@+id/profile_number_favorite"
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:layout_margin="16dp"
+                        android:id="@+id/imageView_profile"
                         android:background="@color/amber"
-                        android:layout_width="match_parent"
-                        android:textAllCaps="false"
-                        android:gravity="bottom|center_horizontal"
-                        android:layout_height="wrap_content"/>
+                        android:layout_width="84dp"
+                        android:layout_height="84dp"
+                        android:layout_gravity="center"/>
 
-                    <TextView
-                        android:text="Likes"
+
+                    <LinearLayout
+                        android:id="@+id/button_profile_favorite"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:gravity="center_horizontal|"
-                        android:layout_width="match_parent"
-                        android:layout_height="36dp" />
+                        android:layout_height="match_parent">
 
-                </LinearLayout>
+                        <TextView
+                            android:textSize="36dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-thin"
+                            android:id="@+id/profile_number_favorite"
+                            android:background="@color/amber"
+                            android:layout_width="match_parent"
+                            android:textAllCaps="false"
+                            android:gravity="bottom|center_horizontal"
+                            android:layout_height="wrap_content"/>
 
-                <LinearLayout
-                    android:id="@+id/button_user_reviews"
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
+                        <TextView
+                            android:text="Likes"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal|"
+                            android:layout_width="match_parent"
+                            android:layout_height="36dp" />
 
-                    <TextView
-                        android:textSize="36dp"
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/button_user_reviews"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:fontFamily="sans-serif-thin"
-                        android:id="@+id/profile_number_reviews"
-                        android:background="@color/amber"
-                        android:textAllCaps="false"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="bottom|center_horizontal"/>
+                        android:layout_height="match_parent">
 
-                    <TextView
-                        android:text="Reviews"
+                        <TextView
+                            android:textSize="36dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-thin"
+                            android:id="@+id/profile_number_reviews"
+                            android:background="@color/amber"
+                            android:textAllCaps="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom|center_horizontal"/>
+
+                        <TextView
+                            android:text="Reviews"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="36dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/button_friends_list"
+                        android:orientation="vertical"
+                        android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:gravity="center_horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="36dp" />
+                        android:layout_height="match_parent">
 
-                </LinearLayout>
+                        <TextView
+                            android:textSize="36dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-thin"
+                            android:id="@+id/profile_number_friends"
+                            android:background="@color/amber"
+                            android:textAllCaps="false"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom|center_horizontal"/>
 
-                <LinearLayout
-                    android:id="@+id/button_friends_list"
-                    android:orientation="vertical"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent">
+                        <TextView
+                            android:text="Friends"
+                            android:layout_weight="1"
+                            android:gravity="center_horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="36dp" />
 
-                    <TextView
-                        android:textSize="36dp"
-                        android:layout_weight="1"
-                        android:fontFamily="sans-serif-thin"
-                        android:id="@+id/profile_number_friends"
-                        android:background="@color/amber"
-                        android:textAllCaps="false"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="bottom|center_horizontal"/>
-
-                    <TextView
-                        android:text="Friends"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"
-                        android:layout_width="match_parent"
-                        android:layout_height="36dp" />
-
-                </LinearLayout>
+                    </LinearLayout>
 
 
 
@@ -141,15 +145,23 @@
 
             </LinearLayout>
 
-            <android.support.v7.widget.RecyclerView
-                android:layout_marginTop="8dp"
-                android:id="@+id/recyclerView_profile_favorite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
 
-        </LinearLayout>
+        </android.support.design.widget.CollapsingToolbarLayout>
 
 
+
+
+
+
+    </android.support.design.widget.AppBarLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginTop="8dp"
+        android:id="@+id/recyclerView_profile_favorite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 
 
