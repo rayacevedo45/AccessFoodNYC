@@ -458,6 +458,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             mButtonSearchThisArea.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    mMap.clear();
                     searchVendors(mMap.getCameraPosition().target);
                     mButtonSearchThisArea.setVisibility(View.GONE);
                 }
