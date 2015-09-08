@@ -193,25 +193,25 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
             dialog.setArguments(argument);
             dialog.show(manager, "Review");
 
-            ParseQuery<ParseObject> reviewquery = ParseQuery.getQuery("Review");
-            reviewquery.whereEqualTo("vendor", objectId);
-            reviewquery.countInBackground(new CountCallback() {
-                public void done(int count, ParseException e) {
-                    if (e == null) {
-                        final int rating = count;
-                        ParseQuery<ParseObject> vendorquery = ParseQuery.getQuery("Vendor");
-                        vendorquery.whereEqualTo("objectId", objectId);
-                        vendorquery.getInBackground(objectId, new GetCallback<ParseObject>(){
-                            public void done(ParseObject object, ParseException e) {
-                                if (e == null) {
-                                   object.put("ratingCount", rating);
-                                }
-                            }
-                        });
-
-                    }
-                }
-            });
+//            ParseQuery<ParseObject> reviewquery = ParseQuery.getQuery("Review");
+//            reviewquery.whereEqualTo("vendor", objectId);
+//            reviewquery.countInBackground(new CountCallback() {
+//                public void done(int count, ParseException e) {
+//                    if (e == null) {
+//                        final int rating = count;
+//                        ParseQuery<ParseObject> vendorquery = ParseQuery.getQuery("Vendor");
+//                        vendorquery.whereEqualTo("objectId", objectId);
+//                        vendorquery.getInBackground(objectId, new GetCallback<ParseObject>(){
+//                            public void done(ParseObject object, ParseException e) {
+//                                if (e == null) {
+//                                   object.put("ratingCount", rating);
+//                                }
+//                            }
+//                        });
+//
+//                    }
+//                }
+//            });
         }
     }
 
