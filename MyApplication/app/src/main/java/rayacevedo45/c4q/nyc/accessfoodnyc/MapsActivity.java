@@ -621,6 +621,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                                 ParseCloud.callFunctionInBackground("averageRatings", params, new FunctionCallback<Float>() {
                                                     @Override
                                                     public void done(Float rate, ParseException e) {
+
                                                         if (rate == null) {
                                                             rate = 4.0f;
                                                         }
