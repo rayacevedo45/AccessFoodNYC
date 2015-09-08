@@ -62,8 +62,8 @@
                             android:padding="6dp"
                             android:background="@drawable/rounded_corner"
                             android:textColor="@color/white"
-                            android:id="@+id/maps_vendor_rating"
-                            android:text="8.0"
+                            android:id="@+id/vendor_rating"
+                            android:text="4.0"
                             android:textSize="14dp"
                             android:layout_alignParentRight="true"
                             android:layout_width="36dp"
@@ -158,12 +158,15 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp" />
 
+
                 <TextView
-                    android:id="@+id/user_review_title"
+                    android:id="@+id/user_review_how_many"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
+
                 <TextView
+                    android:textColor="@color/toolbarTextColorSecondary"
                     android:id="@+id/user_review_date"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content" />
@@ -173,8 +176,26 @@
             </LinearLayout>
 
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:textColor="@color/black"
+                    android:id="@+id/user_review_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+
+
+            </LinearLayout>
+
+
             <TextView
                 android:padding="8dp"
+                android:textColor="@color/black"
                 android:id="@+id/user_review_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
