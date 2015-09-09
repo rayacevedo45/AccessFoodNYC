@@ -2,9 +2,14 @@ package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,8 +17,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.parse.GetCallback;
@@ -50,19 +56,19 @@ public class ReviewDialogFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         mDialogView = inflater.inflate(R.layout.dialog_review, null);
 
-        RelativeLayout background = (RelativeLayout) mDialogView.findViewById(R.id.background_view);
+        LinearLayout background = (LinearLayout) mDialogView.findViewById(R.id.background_view);
         background.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
         mRatingBar = (RatingBar) mDialogView.findViewById(R.id.ratingBar);
-        mTextViewTitle = (TextView) mDialogView.findViewById(R.id.dialog_review_title);
+     //   mTextViewTitle = (TextView) mDialogView.findViewById(R.id.dialog_review_title);
         mTextViewRating = (TextView) mDialogView.findViewById(R.id.dialog_review_rating);
         mEditTextTitle = (EditText) mDialogView.findViewById(R.id.editText_dialog_title);
         mEditTextDescription = (EditText) mDialogView.findViewById(R.id.editText_dialog_description);
 
-        mImageViewRiviewDialogUserFace =(ImageView) mDialogView. findViewById(R.id.review_dialog_round_pic);
+       // mImageViewRiviewDialogUserFace =(ImageView) mDialogView. findViewById(R.id.review_dialog_round_pic);
 
-        ParseUser user = ParseUser.getCurrentUser();
-        Picasso.with(getActivity()).load(user.getString("profile_url")).resize(150, 150).centerCrop().into(mImageViewRiviewDialogUserFace);
+     //   ParseUser user = ParseUser.getCurrentUser();
+      //  Picasso.with(getActivity()).load(user.getString("profile_url")).resize(150, 150).centerCrop().into(mImageViewRiviewDialogUserFace);
 
         mTextViewCounter = (TextView) mDialogView.findViewById(R.id.textView_counter);
 
@@ -88,6 +94,11 @@ public class ReviewDialogFragment extends DialogFragment {
         });
 
         mRatingBar.setStepSize(1);
+        mRatingBar.getProgressDrawable().setColorFilter(Color.parseColor("#03A9F4"), PorterDuff.Mode.SRC_IN);
+
+        Drawable progress = mRatingBar.getProgressDrawable();
+        DrawableCompat.setTint(progress,Color.parseColor("#03A9F4"));
+
         mRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
@@ -113,7 +124,7 @@ public class ReviewDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.Base_Theme_AppCompat_Light_Dialog);
         builder.setView(mDialogView)
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override

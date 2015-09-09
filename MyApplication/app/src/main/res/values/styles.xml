@@ -24,4 +24,8 @@
         <item name="android:textColorSecondary">@color/accentColor</item>
     </style>
 
+    <style name="alertStyle" parent="AlertDialog.AppCompat.Light">
+        <item name="android:background">@color/white</item>
+    </style>
+
 </resources>
