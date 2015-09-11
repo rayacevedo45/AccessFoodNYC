@@ -65,6 +65,9 @@ public class DetailsFragment extends Fragment {
     private FavoritedFriendsAdapter mFriendsAdapter;
     private TextView countFavs;
     private LinearLayout followers;
+    private TextView numberOfRatings;
+    private TextView followersText;
+    private TextView ratings;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -76,6 +79,9 @@ public class DetailsFragment extends Fragment {
         mRecyclerViewFriends = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_friends_fav);
         countFavs = (TextView) rootView.findViewById(R.id.count_favs);
         followers = (LinearLayout) rootView.findViewById(R.id.followers);
+        numberOfRatings = (TextView) rootView.findViewById(R.id.number_of_ratings);
+        followersText = (TextView) rootView.findViewById(R.id.followers_text);
+        ratings = (TextView) rootView.findViewById(R.id.ratings);
 
         abouttv = (TextView) rootView.findViewById(R.id.aboutId);
 
@@ -190,6 +196,7 @@ public class DetailsFragment extends Fragment {
                 public void done(final ParseObject vendor, ParseException e) {
 
                     getCountFavs(vendor);
+                    setRatings(vendor.getDouble("rating"));
 
                     ParseRelation<ParseObject> pictures = vendor.getRelation("pictures");
                     pictures.getQuery().findInBackground(new FindCallback<ParseObject>() {
@@ -241,6 +248,15 @@ public class DetailsFragment extends Fragment {
                         @Override
                         public void done(final ParseObject vendor, ParseException e) {
 
+                            ParseQuery<ParseObject> reviews = ParseQuery.getQuery("Review");
+                            reviews.whereEqualTo("vendor", vendor).countInBackground(new CountCallback() {
+                                @Override
+                                public void done(int i, ParseException e) {
+                                    if (i != 0) {
+                                        numberOfRatings.setText("  " + i);
+                                    }
+                                }
+                            });
 
                             if (list.size() != 0) {
                                 ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Review");
@@ -328,8 +344,25 @@ public class DetailsFragment extends Fragment {
 
         mId = business.getId();
 
+        numberOfRatings.setText(" " + business.getReviewCount());
 
+        setRatings(business.getRating());
 
+    }
+
+    public void setRatings(Double rating) {
+        ratings.setText(rating + "");
+        if (rating >= 4.5) {
+            ratings.setBackgroundResource(R.drawable.circle_5);
+        } else if (rating >= 4.0) {
+            ratings.setBackgroundResource(R.drawable.circle_4);
+        } else if (rating >= 3.5) {
+            ratings.setBackgroundResource(R.drawable.circle_3);
+        } else if (rating >= 3.0) {
+            ratings.setBackgroundResource(R.drawable.circle_2);
+        } else {
+            ratings.setBackgroundResource(R.drawable.circle_1);
+        }
     }
 
     public static String catListIterator (Business business){
@@ -470,10 +503,7 @@ public class DetailsFragment extends Fragment {
         fav.whereEqualTo("vendor", vendor).countInBackground(new CountCallback() {
             @Override
             public void done(int i, ParseException e) {
-                if (i != 0)
-                    countFavs.setText(i + "");
-                else
-                    followers.setVisibility(View.GONE);
+                countFavs.setText(i + "");
             }
         });
     }
