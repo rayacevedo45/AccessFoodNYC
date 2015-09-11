@@ -1,0 +1,10 @@
+{
+  "applications": {
+    "AccessFood": {
+      "applicationId": "f6l2pZcEvoOFI1O1mvueXd3Wz0bijxEg17qFmvsm"
+    },
+    "_default": {
+      "link": "AccessFood"
+    }
+  }
+}

@@ -51,8 +51,9 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:textSize="36dp"
+                            android:textSize="46dp"
                             android:layout_weight="1"
+                            android:textColor="@color/white"
                             android:fontFamily="sans-serif-thin"
                             android:id="@+id/profile_number_favorite"
                             android:background="#FFA726"
@@ -78,8 +79,9 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:textSize="36dp"
+                            android:textSize="46dp"
                             android:layout_weight="1"
+                            android:textColor="@color/white"
                             android:fontFamily="sans-serif-thin"
                             android:id="@+id/profile_number_reviews"
                             android:background="#FFA726"
@@ -105,8 +107,9 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:textSize="36dp"
+                            android:textSize="46dp"
                             android:layout_weight="1"
+                            android:textColor="@color/white"
                             android:fontFamily="sans-serif-thin"
                             android:id="@+id/profile_number_friends"
                             android:background="#FFA726"
