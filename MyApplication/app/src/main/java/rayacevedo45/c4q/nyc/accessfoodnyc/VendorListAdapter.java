@@ -127,6 +127,18 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         double rate = vendor.getRating();
         String rating = df.format(rate);
         holder.rating.setText(rating);
+        if (rate >= 4.5) {
+            holder.rating.setBackgroundResource(R.drawable.round_5);
+        } else if (rate >= 4.0) {
+            holder.rating.setBackgroundResource(R.drawable.round_4);
+        } else if (rate >= 3.5) {
+            holder.rating.setBackgroundResource(R.drawable.round_3);
+        } else if (rate >= 3.0) {
+            holder.rating.setBackgroundResource(R.drawable.round_2);
+        } else {
+            holder.rating.setBackgroundResource(R.drawable.round_1);
+        }
+
         ParseGeoPoint location = vendor.getLocation();
         double distance = mPoint.distanceInMilesTo(location);
         holder.distance.setText(df.format(distance) + " miles away");

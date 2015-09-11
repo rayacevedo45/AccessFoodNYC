@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
@@ -40,35 +41,33 @@ import rayacevedo45.c4q.nyc.accessfoodnyc.vendor.PicDialog;
 public class DetailsFragment extends Fragment {
 
     private static final String TAG = DetailsFragment.class.getName();
-
     private TextView mVendorNameText;
     private ImageView mVendorPicImage;
     private ImageView mVendorRatingImage;
     private ImageButton add;
     private ParseObject selectedVendor;
-
     private ImageView yelpLogo;
-
     private static List <String> addList;
-
-    private TextView mCategoriesText;
     private static String mCategories;
-
     private TextView mPhoneText;
     private TextView mSnippetText;
     private TextView abouttv;
-
     private static String mId;
-
     private RecyclerView mRecyclerViewPictures;
     private RecyclerView mRecyclerViewReview;
     private ReviewAdapter mAdapter;
     private PicturesAdapter mPicturesAdapter;
-
     private boolean isYelp;
     private String objectId;
-
     private ImageButton cb;
+
+    private RecyclerView mRecyclerViewFriends;
+    private FavoritedFriendsAdapter mFriendsAdapter;
+    private TextView countFavs;
+    private LinearLayout followers;
+    private TextView numberOfRatings;
+    private TextView followersText;
+    private TextView ratings;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -77,6 +76,13 @@ public class DetailsFragment extends Fragment {
         cb = (ImageButton) rootView.findViewById(R.id.cbid);
         yelpLogo = (ImageView) rootView.findViewById(R.id.yelp_logo);
         mRecyclerViewPictures = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_pictures);
+        mRecyclerViewFriends = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_friends_fav);
+        countFavs = (TextView) rootView.findViewById(R.id.count_favs);
+        followers = (LinearLayout) rootView.findViewById(R.id.followers);
+        numberOfRatings = (TextView) rootView.findViewById(R.id.number_of_ratings);
+        followersText = (TextView) rootView.findViewById(R.id.followers_text);
+        ratings = (TextView) rootView.findViewById(R.id.ratings);
+
         abouttv = (TextView) rootView.findViewById(R.id.aboutId);
 
         objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
@@ -105,6 +111,11 @@ public class DetailsFragment extends Fragment {
 
         mRecyclerViewReview.setLayoutManager(lm);
 
+        LinearLayoutManager lm3 = new LinearLayoutManager(getActivity());
+        lm3.setOrientation(LinearLayoutManager.HORIZONTAL);
+        mRecyclerViewFriends.setLayoutManager(lm3);
+        mFriendsAdapter = new FavoritedFriendsAdapter(getActivity());
+        mRecyclerViewFriends.setAdapter(mFriendsAdapter);
 //        RecyclerView.LayoutParams params = new    RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
 //        params.setMargins(0,0,0,0);
 
@@ -118,6 +129,8 @@ public class DetailsFragment extends Fragment {
         mPicturesAdapter = new PicturesAdapter(getActivity());
         mRecyclerViewPictures.setAdapter(mPicturesAdapter);
 
+
+
         ParseUser user = ParseUser.getCurrentUser();
         final ParseRelation<ParseUser> relation = user.getRelation("friends");
 
@@ -125,11 +138,12 @@ public class DetailsFragment extends Fragment {
 
             yelpLogo.setVisibility(View.VISIBLE);
             ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
-            findVendor.whereEqualTo("yelpId", objectId).findInBackground(new FindCallback<ParseObject>() {
+            findVendor.whereEqualTo("yelpId", objectId).getFirstInBackground(new GetCallback<ParseObject>() {
                 @Override
-                public void done(List<ParseObject> list, ParseException e) {
-                    if (list.size() != 0) {
-                        final ParseObject vendor = list.get(0);
+                public void done(final ParseObject vendor, ParseException e) {
+                    if (vendor != null) {
+
+                        getCountFavs(vendor);
                         relation.getQuery().findInBackground(new FindCallback<ParseUser>() {
                             @Override
                             public void done(List<ParseUser> list, ParseException e) {
@@ -146,12 +160,29 @@ public class DetailsFragment extends Fragment {
                                             }
                                         }
                                     });
+
+                                    ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
+                                    favorites.include("follower");
+                                    favorites.whereEqualTo("vendor", vendor).whereContainedIn("follower", list);
+                                    favorites.findInBackground(new FindCallback<ParseObject>() {
+                                        @Override
+                                        public void done(List<ParseObject> list, ParseException e) {
+                                            if (list.size() != 0) {
+                                                for (ParseObject favorite : list) {
+                                                    ParseObject friend = favorite.getParseObject("follower");
+                                                    mFriendsAdapter.addFriend(friend);
+                                                }
+                                            }
+                                        }
+                                    });
+
                                 }
                             }
                         });
                     }
                 }
             });
+
         } else {
 
 
@@ -163,6 +194,9 @@ public class DetailsFragment extends Fragment {
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
                 @Override
                 public void done(final ParseObject vendor, ParseException e) {
+
+                    getCountFavs(vendor);
+                    setRatings(vendor.getDouble("rating"));
 
                     ParseRelation<ParseObject> pictures = vendor.getRelation("pictures");
                     pictures.getQuery().findInBackground(new FindCallback<ParseObject>() {
@@ -202,7 +236,6 @@ public class DetailsFragment extends Fragment {
                     mSnippetText.setText(vendor.getString("description"));
 
 
-
                 }
             });
 
@@ -214,6 +247,17 @@ public class DetailsFragment extends Fragment {
                     findVendorQuery.getInBackground(objectId, new GetCallback<ParseObject>() {
                         @Override
                         public void done(final ParseObject vendor, ParseException e) {
+
+                            ParseQuery<ParseObject> reviews = ParseQuery.getQuery("Review");
+                            reviews.whereEqualTo("vendor", vendor).countInBackground(new CountCallback() {
+                                @Override
+                                public void done(int i, ParseException e) {
+                                    if (i != 0) {
+                                        numberOfRatings.setText("  " + i);
+                                    }
+                                }
+                            });
+
                             if (list.size() != 0) {
                                 ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Review");
                                 query1.include("writer");
@@ -227,13 +271,36 @@ public class DetailsFragment extends Fragment {
                                         }
                                     }
                                 });
+
+
+
+                                ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
+                                favorites.include("follower");
+                                favorites.whereEqualTo("vendor", vendor).whereContainedIn("follower", list);
+                                favorites.findInBackground(new FindCallback<ParseObject>() {
+                                    @Override
+                                    public void done(List<ParseObject> list, ParseException e) {
+                                        if (list.size() != 0) {
+                                            for (ParseObject favorite : list) {
+                                                ParseObject friend = favorite.getParseObject("follower");
+                                                mFriendsAdapter.addFriend(friend);
+                                            }
+
+                                        }
+                                    }
+                                });
                             }
+
+
                         }
                     });
+
+
 
                 }
             });
         }
+
 
         return rootView;
     }
@@ -277,8 +344,25 @@ public class DetailsFragment extends Fragment {
 
         mId = business.getId();
 
+        numberOfRatings.setText(" " + business.getReviewCount());
 
+        setRatings(business.getRating());
 
+    }
+
+    public void setRatings(Double rating) {
+        ratings.setText(rating + "");
+        if (rating >= 4.5) {
+            ratings.setBackgroundResource(R.drawable.circle_5);
+        } else if (rating >= 4.0) {
+            ratings.setBackgroundResource(R.drawable.circle_4);
+        } else if (rating >= 3.5) {
+            ratings.setBackgroundResource(R.drawable.circle_3);
+        } else if (rating >= 3.0) {
+            ratings.setBackgroundResource(R.drawable.circle_2);
+        } else {
+            ratings.setBackgroundResource(R.drawable.circle_1);
+        }
     }
 
     public static String catListIterator (Business business){
@@ -410,6 +494,16 @@ public class DetailsFragment extends Fragment {
             @Override
             public void done(ParseException e) {
                 Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getCountFavs(ParseObject vendor) {
+        ParseQuery<ParseObject> fav = ParseQuery.getQuery("Favorite");
+        fav.whereEqualTo("vendor", vendor).countInBackground(new CountCallback() {
+            @Override
+            public void done(int i, ParseException e) {
+                countFavs.setText(i + "");
             }
         });
     }

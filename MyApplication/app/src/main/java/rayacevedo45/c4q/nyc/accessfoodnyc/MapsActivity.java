@@ -378,28 +378,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             });
 
-            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-                @Override
-                public void onInfoWindowClick(Marker marker) {
-//                    Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
-//                    String objectId;
-//                    Object item = mAdapter.getObject(marker);
-//                    if (item instanceof Business) {
-//                        Business business = (Business) item;
-//                        objectId = business.getId();
-//                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
-//                    } else {
-//                        ParseObject vendor = (ParseObject) item;
-//                        objectId = vendor.getObjectId();
-//                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
-//
-//                    }
-//                    intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
-//                    startActivity(intent);
-                }
-            });
-
-
         }
 
         @Override
