@@ -394,7 +394,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
     protected void onStart() {
         super.onStart();
-            Log.i("MapsActivity", "It starts!!!!!!!!!!");
     }
 
     @Override
@@ -403,7 +402,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpListener(true);
         // Logs 'install' and 'app activate' App Events.
         AppEventsLogger.activateApp(this);
-        Log.i("MapsActivity", "it resumes!!!!!!!");
 
     }
 
