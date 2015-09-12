@@ -64,7 +64,7 @@ public class DetailsFragment extends Fragment {
     private RecyclerView mRecyclerViewFriends;
     private FavoritedFriendsAdapter mFriendsAdapter;
     private TextView countFavs;
-    private TextView numberOfRatings;
+    //private TextView numberOfRatings;
     private TextView ratings;
 
     private LinearLayout mParentLayout;
@@ -79,7 +79,7 @@ public class DetailsFragment extends Fragment {
         mRecyclerViewPictures = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_pictures);
         mRecyclerViewFriends = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_friends_fav);
         countFavs = (TextView) rootView.findViewById(R.id.count_favs);
-        numberOfRatings = (TextView) rootView.findViewById(R.id.number_of_ratings);
+        //numberOfRatings = (TextView) rootView.findViewById(R.id.number_of_ratings);
         ratings = (TextView) rootView.findViewById(R.id.ratings);
         mParentLayout = (LinearLayout) rootView.findViewById(R.id.review_container);
 
@@ -247,15 +247,15 @@ public class DetailsFragment extends Fragment {
                         @Override
                         public void done(final ParseObject vendor, ParseException e) {
 
-                            ParseQuery<ParseObject> reviews = ParseQuery.getQuery("Review");
-                            reviews.whereEqualTo("vendor", vendor).countInBackground(new CountCallback() {
-                                @Override
-                                public void done(int i, ParseException e) {
-                                    if (i != 0) {
-                                        numberOfRatings.setText("  " + i);
-                                    }
-                                }
-                            });
+//                            ParseQuery<ParseObject> reviews = ParseQuery.getQuery("Review");
+//                            reviews.whereEqualTo("vendor", vendor).countInBackground(new CountCallback() {
+//                                @Override
+//                                public void done(int i, ParseException e) {
+//                                    if (i != 0) {
+//                                        numberOfRatings.setText("  " + i);
+//                                    }
+//                                }
+//                            });
 
                             if (list.size() != 0) {
                                 ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Review");
@@ -345,7 +345,7 @@ public class DetailsFragment extends Fragment {
 
         mId = business.getId();
 
-        numberOfRatings.setText(" " + business.getReviewCount());
+        //numberOfRatings.setText(" " + business.getReviewCount());
 
         setRatings(business.getRating());
 

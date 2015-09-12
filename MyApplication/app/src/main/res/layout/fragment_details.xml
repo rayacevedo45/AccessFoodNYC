@@ -247,10 +247,10 @@
                     <TextView
                         android:id="@+id/number_of_ratings"
                         android:paddingTop="4dp"
-                        android:gravity="center_vertical"
+                        android:gravity="center_vertical|center_horizontal"
                         android:textColor="@color/black"
                         android:layout_width="64dp"
-                        android:drawableLeft="@drawable/ic_face_black_18dp"
+                        android:text="Ratings"
                         android:layout_height="wrap_content" />
 
 
@@ -283,7 +283,8 @@
 
 
         <LinearLayout
-            android:padding="16dp"
+            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -297,14 +298,10 @@
 
 
 
-            <View
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="@color/dividerColor"/>
+
 
             <LinearLayout
+                android:layout_marginTop="16dp"
                 android:orientation="vertical"
                 android:id="@+id/review_container"
                 android:layout_width="match_parent"
