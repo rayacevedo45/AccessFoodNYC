@@ -55,10 +55,9 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(lm);
 
-
         ParseUser user = ParseUser.getCurrentUser();
 
-        Picasso.with(getActivity()).load(user.getString("profile_url")).resize(300, 300).centerCrop().into(mImageViewUserFace);
+        Picasso.with(getActivity()).load(user.getString("profile_url")).resize(200,200).centerCrop().into(mImageViewUserFace);
         String name = user.getString("first_name") + " " + user.getString("last_name");
         mTextViewName.setText(name);
 
@@ -128,11 +127,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
 
         }
 
-
-
-
         return rootView;
-
     }
 
 

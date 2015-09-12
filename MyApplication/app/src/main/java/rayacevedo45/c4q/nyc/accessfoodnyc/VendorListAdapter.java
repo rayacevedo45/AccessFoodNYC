@@ -119,9 +119,9 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         holder.address.setText(vendor.getAddress());
 
         if (vendor.isLiked()) {
-            holder.like.setText("liked!");
+            holder.like.setText("favorited!");
         } else {
-            holder.like.setText("like");
+            holder.like.setText("favorite");
         }
 
         double rate = vendor.getRating();
@@ -192,8 +192,8 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         holder.like.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                if (holder.like.getText().toString().equalsIgnoreCase("like")) {
-                    holder.like.setText("Liked!");
+                if (holder.like.getText().toString().equalsIgnoreCase("favorite")) {
+                    holder.like.setText("Favorited!");
 
                     if (vendor.isYelp()) {
 
@@ -216,7 +216,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
                     }
 
                 } else {
-                    holder.like.setText("Like");
+                    holder.like.setText("Favorite");
                     ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
                     findVendor.getInBackground(vendor.getId(), new GetCallback<ParseObject>() {
                         @Override

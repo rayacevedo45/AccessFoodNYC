@@ -92,9 +92,8 @@
                             android:id="@+id/vendor_like"
                             android:background="@color/primaryColor"
                             android:textColor="@color/white"
-                            android:text="Like"
                             android:layout_gravity="center_vertical|right"
-                            android:layout_width="52dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="28dp" />
 
                         <ImageView

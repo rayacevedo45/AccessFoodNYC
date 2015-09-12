@@ -52,7 +52,7 @@ public class SplashActivity extends Activity {
 //            MediaController mediaController = new MediaController(this);
 //            mediaController.setAnchorView(videoHolder);
             Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
-                    + R.raw.accessfood3);
+                    + R.raw.accessfood);
 //            videoHolder.setMediaController(mediaController);
 //            videoHolder.setMediaController(new MediaController(this));
             videoHolder.setVideoURI(video);
@@ -101,7 +101,7 @@ public class SplashActivity extends Activity {
                     // close this activity
                     finish();
                 }
-            }, 8000);
+            }, 5000);
         }
 
 
