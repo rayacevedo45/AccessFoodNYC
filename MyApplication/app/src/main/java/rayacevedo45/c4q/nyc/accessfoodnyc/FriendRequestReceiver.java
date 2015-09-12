@@ -72,10 +72,8 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                 PendingIntent accept = PendingIntent.getActivity(context, Constants.REQUEST_CODE_FRIEND_ACCEPT, acceptIntent, PendingIntent.FLAG_ONE_SHOT);
                 parseBuilder.addAction(R.drawable.ic_done_black_24dp, "Accept", accept);
                 parseBuilder.addAction(R.drawable.ic_clear_black_18dp, "Decline", pDeleteIntent);
-
                 final ParseUser ore = ParseUser.getCurrentUser();
                 final ParseRelation<ParseUser> friendRequests = ore.getRelation("friend_requests");
-
                 ParseQuery<ParseUser> friend = ParseQuery.getQuery("_User");
                 friend.getInBackground(objectId, new GetCallback<ParseUser>() {
                     @Override
@@ -135,6 +133,7 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                 return null;
             }
 
+            parseBuilder.setAutoCancel(true);
             return parseBuilder.build();
         } else {
             return null;

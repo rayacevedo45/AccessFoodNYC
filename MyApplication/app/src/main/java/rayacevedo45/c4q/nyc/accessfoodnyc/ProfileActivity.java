@@ -1,7 +1,17 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -59,6 +70,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private RecyclerView mRecyclerView;
     private UserReviewAdapter mAdapter;
 
+    private CollapsingToolbarLayout mToolbarLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,13 +79,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
         final ParseUser me = ParseUser.getCurrentUser();
         mToolbar = (Toolbar) findViewById(R.id.toolbar_profile);
+        mToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String name = me.getString("first_name") + " " + me.getString("last_name");
 
-        mToolbar.setTitle(name + "'s Profile");
-
+        getSupportActionBar().setTitle(name + "'s Profile");
+        mToolbarLayout.setTitle(name + "'s Profile");
+        mToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
+        mToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
         if (objectId != null) {
 
@@ -110,7 +126,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             });
         }
 
-        mImageViewProfile = (ImageView) findViewById(R.id.imageView_profile);
+     //  mImageViewProfile = (ImageView) findViewById(R.id.imageView_profile);
+        mImageViewProfile = (ImageView)findViewById(R.id.imageView_profile);
+
         mButtonFriends = (LinearLayout) findViewById(R.id.button_friends_list);
         mButtonReviews = (LinearLayout) findViewById(R.id.button_user_reviews);
         mButtonFavorite = (LinearLayout) findViewById(R.id.button_profile_favorite);
@@ -194,7 +212,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 }
             }
         });
+
     }
+
+
+
+
+
 
     @Override
     protected void onResume() {
@@ -346,4 +370,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }
