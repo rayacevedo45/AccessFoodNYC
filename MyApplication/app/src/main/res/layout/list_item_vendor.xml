@@ -133,13 +133,14 @@
                             android:layout_height="32dp" />
 
                         <TextView
+                            android:gravity="center_horizontal|center_vertical"
                             android:textColor="@color/white"
                             android:paddingLeft="4dp"
                             android:background="@color/accentColor"
                             android:visibility="gone"
                             android:id="@+id/friend_more"
                             android:layout_width="32dp"
-                            android:layout_height="32dp" />
+                            android:layout_height="28dp" />
 
                     </LinearLayout>
 
