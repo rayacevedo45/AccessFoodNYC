@@ -4,11 +4,14 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.NotificationCompat;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.ParseAnalytics;
 import com.parse.ParseException;
 import com.parse.ParsePushBroadcastReceiver;
 import com.parse.ParseQuery;
@@ -32,6 +35,8 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
             return null;
         }
     }
+
+
 
     @Override
     protected Notification getNotification(Context context, Intent intent) {
@@ -63,13 +68,12 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                 Intent acceptIntent = new Intent(context, ProfileActivity.class);
                 String objectId = pushData.optString(Constants.EXTRA_KEY_OBJECT_ID, "");
                 acceptIntent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                acceptIntent.setPackage(packageName);
                 PendingIntent accept = PendingIntent.getActivity(context, Constants.REQUEST_CODE_FRIEND_ACCEPT, acceptIntent, PendingIntent.FLAG_ONE_SHOT);
                 parseBuilder.addAction(R.drawable.ic_done_black_24dp, "Accept", accept);
                 parseBuilder.addAction(R.drawable.ic_clear_black_18dp, "Decline", pDeleteIntent);
-
                 final ParseUser ore = ParseUser.getCurrentUser();
                 final ParseRelation<ParseUser> friendRequests = ore.getRelation("friend_requests");
-
                 ParseQuery<ParseUser> friend = ParseQuery.getQuery("_User");
                 friend.getInBackground(objectId, new GetCallback<ParseUser>() {
                     @Override
@@ -129,6 +133,7 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                 return null;
             }
 
+            parseBuilder.setAutoCancel(true);
             return parseBuilder.build();
         } else {
             return null;

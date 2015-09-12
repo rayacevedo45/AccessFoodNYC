@@ -17,9 +17,16 @@ import rayacevedo45.c4q.nyc.accessfoodnyc.PicActivity;
 public class PicDialog extends DialogFragment {
     static final int EXTERNAL_CONTENT_URI = 0;
     Uri targetUri;
+    private String objectId;
+    private boolean isYelp;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
+        isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
+
+
         builder.setTitle("Pics")
                 .setPositiveButton("Take Pic", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -27,6 +34,8 @@ public class PicDialog extends DialogFragment {
                         // of the selected item
                         Intent intent = new Intent(getActivity(), PicActivity.class);
                         intent.putExtra(Constants.EXTRA_PICTIRE, Constants.FLAG_CAMERA);
+                        intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, isYelp);
                         startActivity(intent);
                     }
                 })
@@ -35,6 +44,8 @@ public class PicDialog extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), PicActivity.class);
                         intent.putExtra(Constants.EXTRA_PICTIRE, Constants.FLAG_GALLERY);
+                        intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                        intent.putExtra(Constants.EXTRA_KEY_IS_YELP, isYelp);
                         startActivity(intent);
                     }
                 });

@@ -81,9 +81,9 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
         final Friend friend = mList.get(position);
 
         if (friend.getThumbnailUrl().length() == 0) {
-            Picasso.with(mContext).load(R.drawable.default_profile).resize(200, 200).centerCrop().into(holder.thumbnail);
+            Picasso.with(mContext).load(R.drawable.default_profile).into(holder.thumbnail);
         } else {
-            Picasso.with(mContext).load(friend.getThumbnailUrl()).resize(200, 200).centerCrop().into(holder.thumbnail);
+            Picasso.with(mContext).load(friend.getThumbnailUrl()).into(holder.thumbnail);
         }
 
         holder.name.setText(friend.getName());
@@ -92,9 +92,10 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
         // TODO : check if this friend is in pending list.
         if (mPendingCheckList.get(position)) {
             holder.request.setText("Sent");
+            holder.request.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_white_24dp, 0, 0, 0);
             holder.request.setOnClickListener(null);
         } else {
-            holder.request.setText("+ Add");
+            holder.request.setText("Add");
             holder.request.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -107,6 +108,7 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
                                 "\"objectId\": \"" + user.getObjectId() + "\"}");
                         Toast.makeText(mContext, "Friend request is sent to " + friend.getName(), Toast.LENGTH_SHORT).show();
                         holder.request.setText("sent");
+                        holder.request.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_white_24dp, 0, 0, 0);
 
                         ParseQuery query = ParseInstallation.getQuery();
                         query.whereEqualTo("fbId", friend.getId());

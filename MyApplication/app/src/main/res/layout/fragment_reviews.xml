@@ -11,7 +11,8 @@
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:gravity="bottom"
-        android:layout_marginBottom="56dp">
+        android:layout_marginBottom="56dp"
+        >
 
 
         <LinearLayout
@@ -30,6 +31,7 @@
                 app:layout_widthPercent="30%"/>
 
             <TextView
+                android:textColor="@color/black"
                 android:textSize="20sp"
                 android:id="@+id/review_user_name"
                 android:layout_width="match_parent"
@@ -40,6 +42,7 @@
 
             <TextView
                 android:text="Rate this truck"
+                android:textColor="@color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -64,6 +67,7 @@
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:padding="16dp"
             android:id="@+id/recyclerView_review"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

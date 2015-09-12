@@ -4,14 +4,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/nestedScrollView"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+    android:id="@+id/nestedScrollView">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+
+
+            <android.support.v7.widget.RecyclerView
+
+                android:id="@+id/recyclerView_details_pictures"
+                android:layout_height="250dp"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:visibility="gone">
+            </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="About"
+            android:textSize="24dp"
+            android:textColor="@color/orange"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:id="@+id/aboutId"
+            android:visibility="gone"/>
+
+
 
 
         <RelativeLayout
@@ -22,6 +45,8 @@
             android:clickable="true">
 
 
+
+
             <de.hdodenhof.circleimageview.CircleImageView
                 xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/vendor_pic"
@@ -29,7 +54,7 @@
                 android:layout_height="200dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp" />
+                android:layout_marginTop="20dp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -37,15 +62,10 @@
                 android:id="@+id/yelp_logo"
                 android:layout_toRightOf="@id/vendor_pic"
                 android:src="@drawable/yelp_logo"
-                android:layout_marginTop="40dp"/>
-
-            <ImageButton
-                android:id="@+id/cbid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="40dp"
-                android:layout_toLeftOf="@id/vendor_pic"
-                android:src="@drawable/camerapic"/>
+                android:visibility="gone"/>
+
+
 
 
             <TextView
@@ -56,7 +76,8 @@
                 android:text=""
                 android:layout_below="@+id/vendor_pic"
                 android:layout_centerHorizontal="true"
-                android:textColor="#303030" />
+                android:textColor="#303030"
+                />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -125,48 +146,177 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:padding="16dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
+            <ImageButton
+                android:id="@+id/cbid"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@color/accentColor"
+                android:layout_marginRight="1dp"
+                android:layout_marginLeft="1dp"
+                android:src="@drawable/photo_camera_white_oneeightdp"/>
 
-            <Button
+            <ImageButton
                 android:layout_weight="1"
                 android:id="@+id/button_add"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:background="@color/accentColor"
+                android:layout_marginRight="1dp"
+                android:layout_marginLeft="1dp"
+                android:src="@drawable/favorite_border_white_oneeightdp"/>
 
         </LinearLayout>
 
 
 
-        <View
-            android:layout_margin="8dp"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor"/>
 
-        <TextView
-            android:text="Here is what your friends say"
+
+        <LinearLayout
+            android:padding="16dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content">
 
-        <View
-            android:layout_margin="8dp"
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@color/dividerColor"/>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"/>
 
-        <android.support.v7.widget.RecyclerView
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/followers"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:paddingRight="16dp"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:text="0"
+                        android:id="@+id/count_favs"
+                        android:textSize="32dp"
+                        android:fontFamily="sans-serif-thin"
+                        android:textColor="@color/white"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:background="@drawable/circle_corner"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp" />
+
+                    <TextView
+                        android:id="@+id/followers_text"
+                        android:paddingTop="4dp"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:textColor="@color/black"
+                        android:text="Followers"
+                        android:layout_width="64dp"
+                        android:layout_height="wrap_content" />
+
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:paddingRight="8dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:id="@+id/ratings"
+                        android:textSize="26dp"
+                        android:textColor="@color/white"
+                        android:gravity="center_horizontal|center_vertical"
+                        android:background="@drawable/circle_corner"
+                        android:layout_width="64dp"
+                        android:layout_height="64dp" />
+
+                    <TextView
+                        android:id="@+id/number_of_ratings"
+                        android:paddingTop="4dp"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:textColor="@color/black"
+                        android:layout_width="64dp"
+                        android:text="Ratings"
+                        android:layout_height="wrap_content" />
+
+
+
+                </LinearLayout>
+
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"
+                    android:id="@+id/recyclerView_details_friends_fav"
+                    android:layout_width="wrap_content"
+                    android:layout_height="135dp"/>
+
+
+
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/dividerColor"/>
+
+
+        </LinearLayout>
+
+
+
+
+        <LinearLayout
+            android:paddingTop="8dp"
+            android:paddingLeft="16dp"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:id="@+id/recyclerView_friends_review">
+            android:layout_height="wrap_content">
 
-        </android.support.v7.widget.RecyclerView>
+            <TextView
+                android:textSize="20dp"
+                android:textColor="@color/black"
+                android:text="Here is what your friends say"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+
+
+
+
+            <LinearLayout
+                android:layout_marginTop="16dp"
+                android:orientation="vertical"
+                android:id="@+id/review_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+
 
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -13,11 +14,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.ProgressCallback;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
@@ -30,12 +37,27 @@ import java.util.Locale;
 public class PicActivity extends AppCompatActivity {
     private Uri imageUri;
     private ImageView imageView;
-    Bitmap bitmap;
+    private Bitmap bitmap;
+    private String objectId;
+    private boolean isYelp;
+
+
+    private ProgressDialog mProgressDialog;
+    private ProgressBar progressBar;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        //progressBar.setVisibility(View.GONE);
+
+        Intent intent = getIntent();
+        objectId = intent.getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
+        isYelp = intent.getBooleanExtra(Constants.EXTRA_KEY_IS_YELP, true);
 
         int flag = getIntent().getIntExtra(Constants.EXTRA_PICTIRE, -1);
 
@@ -52,6 +74,7 @@ public class PicActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_pic);
+        progressBar = (ProgressBar) findViewById(R.id.pgid);
         imageView = (ImageView) findViewById(R.id.imageID);
 
 
@@ -138,21 +161,82 @@ public class PicActivity extends AppCompatActivity {
         }
     }
     public void save (View v){
+        progressBar.setVisibility(View.VISIBLE);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] byteArray = stream.toByteArray();
 
-
-
         final ParseFile file = new ParseFile("picture.jpg", byteArray);
+
         file.saveInBackground(new SaveCallback() {
+
             @Override
             public void done(ParseException e) {
-                ParseUser user = ParseUser.getCurrentUser();
-                user.put("food_pic", file);
-                user.saveInBackground();
+                final ParseObject picture = new ParseObject("Picture");
+                picture.put("data", file);
+                picture.put("uploader", ParseUser.getCurrentUser());
+                //picture.saveInBackground();
+
+
+
                 Toast.makeText(getApplicationContext(), "uploaded", Toast.LENGTH_SHORT).show();
+
+                if (isYelp){
+                    final ParseObject newYelpVendor = new ParseObject("Vendor");
+                    newYelpVendor.put("yelpId", objectId);
+                    newYelpVendor.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            picture.put("vendor", newYelpVendor);
+                            picture.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    ParseRelation<ParseObject> pictures = newYelpVendor.getRelation("pictures");
+                                    pictures.add(picture);
+                                    newYelpVendor.saveInBackground();
+
+                                }
+                            });
+                           // progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "uploaded1", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+
+                }
+                else {
+
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+                    query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                        @Override
+                        public void done(final ParseObject vendor, ParseException e) {
+                            picture.put("vendor", vendor);
+                            picture.saveInBackground(new SaveCallback() {
+                                @Override
+                                public void done(ParseException e) {
+                                    ParseRelation<ParseObject> pictures = vendor.getRelation("pictures");
+                                    pictures.add(picture);
+                                    vendor.saveInBackground();
+                                }
+                            });
+                            //progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "uploaded2", Toast.LENGTH_SHORT).show();
+
+                        }
+
+
+                    });
+
+                }
+            }
+        }, new ProgressCallback() {
+            @Override
+            public void done(Integer integer) {
+               // progressBar.getProgress(integer);
+
             }
         });
     }
 }
+
+

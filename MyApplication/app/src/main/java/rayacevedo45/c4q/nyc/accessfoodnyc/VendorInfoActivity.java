@@ -227,7 +227,7 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_map, menu);
+        getMenuInflater().inflate(R.menu.menu_vendor_info, menu);
         return true;
     }
 

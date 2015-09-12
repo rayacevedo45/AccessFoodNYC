@@ -1,19 +1,31 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
+import com.makeramen.roundedimageview.RoundedImageView;
 import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -29,48 +41,54 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.accounts.LoginActivity;
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.ServiceGenerator;
+import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.service.YelpBusinessSearchService;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView mImageViewProfile;
-    private TextView first;
-    private TextView last;
 
     private Toolbar mToolbar;
 
-    //private Button maps;
-    private Button mButtonLogOut;
-    private Button mButtonFindFriends;
-    private Button mButtonFriends;
-    private Button mButtonReviews;
-    private Button mButtonFavorite;
+    private LinearLayout mButtonFriends;
+    private LinearLayout mButtonReviews;
+    private LinearLayout mButtonFavorite;
+    private TextView mTextViewFriends;
+    private TextView mTextViewReviews;
+    private TextView mTextViewFavorite;
 
     private RecyclerView mRecyclerView;
-    private VendorListAdapter mAdapter;
+    private UserReviewAdapter mAdapter;
 
-    private String mFavoriteBizName;
-    private TextView mName;
-    private List<ParseObject> mOurVendorList;
-    private List<Business> result = new ArrayList<>();
+    private CollapsingToolbarLayout mToolbarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         String objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
-
+        final ParseUser me = ParseUser.getCurrentUser();
         mToolbar = (Toolbar) findViewById(R.id.toolbar_profile);
+        mToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        final ParseUser me = ParseUser.getCurrentUser();
+
         String name = me.getString("first_name") + " " + me.getString("last_name");
 
-        getSupportActionBar().setTitle(name);
-
+        getSupportActionBar().setTitle(name + "'s Profile");
+        mToolbarLayout.setTitle(name + "'s Profile");
+        mToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
+        mToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
         if (objectId != null) {
 
@@ -83,8 +101,11 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 public void done(List<ParseUser> list, ParseException e) {
                     final ParseUser friend = list.get(0);
                     relation.add(friend);
-                    me.saveInBackground();
                     Toast.makeText(getApplicationContext(), "Accepted!", Toast.LENGTH_SHORT).show();
+
+                    ParseRelation<ParseUser> pendingFriends = me.getRelation("friend_requests");
+                    pendingFriends.remove(friend);
+                    me.saveInBackground();
 
                     ParseUser user = ParseUser.getCurrentUser();
                     String name = user.get("first_name") + " " + user.get("last_name");
@@ -105,49 +126,132 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             });
         }
 
-        mImageViewProfile = (ImageView) findViewById(R.id.imageView_profile);
-        //first = (TextView) findViewById(R.id.profile_name);
-        //mButtonFindFriends = (Button) findViewById(R.id.find_friends);
-        mButtonFriends = (Button) findViewById(R.id.button_friends_list);
-        //mButtonLogOut = (Button) findViewById(R.id.log_out);
-        mButtonReviews = (Button) findViewById(R.id.button_user_reviews);
-        mButtonFavorite = (Button) findViewById(R.id.button_profile_favorite);
+     //  mImageViewProfile = (ImageView) findViewById(R.id.imageView_profile);
+        mImageViewProfile = (ImageView)findViewById(R.id.imageView_profile);
 
-        ParseRelation<ParseUser> friendRelation = me.getRelation("friends");
-        friendRelation.getQuery().countInBackground(new CountCallback() {
-            @Override
-            public void done(int i, ParseException e) {
-                mButtonFriends.setText(i + "\nfriends");
-            }
-        });
+        mButtonFriends = (LinearLayout) findViewById(R.id.button_friends_list);
+        mButtonReviews = (LinearLayout) findViewById(R.id.button_user_reviews);
+        mButtonFavorite = (LinearLayout) findViewById(R.id.button_profile_favorite);
 
-        ParseRelation<ParseUser> favoriteRelation = me.getRelation("favorite");
-        favoriteRelation.getQuery().countInBackground(new CountCallback() {
-            @Override
-            public void done(int i, ParseException e) {
-                mButtonFavorite.setText(i + "\nfavorites");
-            }
-        });
+        mTextViewFavorite = (TextView) findViewById(R.id.profile_number_favorite);
+        mTextViewFriends = (TextView) findViewById(R.id.profile_number_friends);
+        mTextViewReviews = (TextView) findViewById(R.id.profile_number_reviews);
 
-        ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
-        reviewQuery.whereEqualTo("writer", me).countInBackground(new CountCallback() {
-            @Override
-            public void done(int i, ParseException e) {
-                mButtonReviews.setText(i + "\nreviews");
-            }
-        });
-
-
-
-
-        //first.setText(name);
         Picasso.with(getApplicationContext()).load(me.getString("profile_url")).into(mImageViewProfile);
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_profile_favorite);
+        //mRecyclerView.setHasFixedSize(true);
+        LinearLayoutManager lm = new LinearLayoutManager(this);
+        lm.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(lm);
+
+        mAdapter = new UserReviewAdapter(getApplicationContext());
+        mRecyclerView.setAdapter(mAdapter);
+
+        Calendar calendar = Calendar.getInstance();
+        int day = calendar.get(Calendar.DAY_OF_WEEK);
+        final String today = "day" + Integer.toString(day);
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Review");
+        query.include("vendor");
+        query.whereEqualTo("writer", me).findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+
+                Collections.sort(list, new Comparator<ParseObject>() {
+                    @Override
+                    public int compare(ParseObject lhs, ParseObject rhs) {
+                        return lhs.getCreatedAt().compareTo(rhs.getCreatedAt());
+                    }
+                });
+                for (final ParseObject review : list) {
+
+                    ParseObject vendor = review.getParseObject("vendor");
+                    if (vendor.getParseGeoPoint("location") == null) {
+
+                        YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
+                        yelpBizService.searchBusiness(vendor.getString("yelpId"), new Callback<Business>() {
+                            @Override
+                            public void success(Business business, Response response) {
+                                Vendor truck = new Vendor.Builder(business.getId())
+                                        .setRating(business.getRating())
+                                        .setPicture(business.getImageUrl())
+                                        .setAddress(DetailsFragment.addressGenerator(business).get(0))
+                                        .isYelp(true).setName(business.getName()).build();
+                                final Review item = new Review();
+                                item.setTitle(review.getString("title"));
+                                item.setDescription(review.getString("description"));
+                                item.setRating(review.getInt("rating"));
+                                item.setDate(review.getCreatedAt());
+                                item.setVendor(truck);
+                                mAdapter.addReview(item);
+                            }
+
+                            @Override
+                            public void failure(RetrofitError error) {
+
+                            }
+                        });
+
+                    } else {
+                        Vendor truck = new Vendor.Builder(vendor.getObjectId())
+                                .setRating(vendor.getDouble("rating"))
+                                .setPicture(vendor.getString("profile_url"))
+                                .setAddress(vendor.getString("address"))
+                                .setHours(vendor.getString(today))
+                                .isYelp(false).setName(vendor.getString("name")).build();
+                        final Review item = new Review();
+                        item.setTitle(review.getString("title"));
+                        item.setDescription(review.getString("description"));
+                        item.setRating(review.getInt("rating"));
+                        item.setDate(review.getCreatedAt());
+                        item.setVendor(truck);
+                        mAdapter.addReview(item);
+                    }
+
+                }
+            }
+        });
+
     }
+
+
+
+
+
 
     @Override
     protected void onResume() {
         super.onResume();
         setUpListeners(true);
+
+        ParseUser me = ParseUser.getCurrentUser();
+
+        ParseRelation<ParseUser> friendRelation = me.getRelation("friends");
+        friendRelation.getQuery().countInBackground(new CountCallback() {
+            @Override
+            public void done(int i, ParseException e) {
+                mTextViewFriends.setText(i + "");
+            }
+        });
+
+        ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
+        favorites.whereEqualTo("follower", me).findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                mTextViewFavorite.setText(list.size() + "");
+            }
+        });
+
+
+        ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
+        reviewQuery.whereEqualTo("writer", me).countInBackground(new CountCallback() {
+            @Override
+            public void done(int i, ParseException e) {
+                mTextViewReviews.setText(i + "");
+            }
+        });
+
     }
 
     @Override
@@ -158,19 +262,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
     private void setUpListeners(boolean isResumed) {
         if (isResumed) {
-//            mButtonFindFriends.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Intent intent = new Intent(getApplicationContext(), FindFriendsActivity.class);
-//                    startActivity(intent);
-//                }
-//            });
-//            mButtonLogOut.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    logOut();
-//                }
-//            });
             mButtonFriends.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -279,4 +370,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }

@@ -3,20 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:paddingTop="16dp">
+
 
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_margin="8dp"
         android:id="@+id/imageView_review_profile"
         android:layout_gravity="top"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-/>
+        android:layout_width="48dp"
+        android:layout_height="48dp" />
 
 
     <LinearLayout
-        android:layout_marginLeft="8dp"
+        android:paddingTop="4dp"
+        android:paddingLeft="16dp"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
@@ -25,7 +26,9 @@
         <TextView
             android:id="@+id/textView_review_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000000" />
+
 
         <LinearLayout
             android:orientation="horizontal"
@@ -63,25 +66,40 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:paddingLeft="16dp"
+                android:textColor="@color/black"
                 android:id="@+id/textView_review_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
+
+
         </LinearLayout>
 
-
-
         <TextView
+            android:paddingTop="12dp"
+            android:textStyle="bold"
             android:id="@+id/textView_review_title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textColor="#000000" />
+
 
         <TextView
+            android:paddingTop="6dp"
             android:id="@+id/textView_review_description"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
+            android:layout_height="wrap_content"
+            android:textColor="#000000" />
 
     </LinearLayout>
+
+
+
+
+
+
+
+
 
 </LinearLayout>

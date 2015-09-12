@@ -27,6 +27,10 @@ repositories {
     mavenCentral()
 }
 
+repositories {
+    mavenCentral()
+}
+
 android {
     packagingOptions {
         exclude 'META-INF/LICENSE.txt'
@@ -38,6 +42,7 @@ dependencies {
     compile(name: 'identitytoolkit-api11', ext: 'aar')
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
+    compile 'com.makeramen:roundedimageview:2.2.0'
     compile 'com.android.support:recyclerview-v7:22.2.1'
     compile 'com.android.support:cardview-v7:22.2.1'
     compile "com.android.support:leanback-v17:22.2.1"
@@ -53,4 +58,6 @@ dependencies {
     compile 'com.google.maps.android:android-maps-utils:0.4+'
     compile 'de.hdodenhof:circleimageview:1.3.0'
     compile 'org.twitter4j:twitter4j-core:4.0.2'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.1.+'
+    compile 'com.lsjwzh:recyclerviewpager:1.0.8'
 }

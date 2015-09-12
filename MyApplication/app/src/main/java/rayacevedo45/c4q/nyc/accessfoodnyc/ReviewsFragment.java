@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -34,6 +36,8 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
     private ImageView mImageViewUserFace;
     private TextView mTextViewName;
     private TextView mTextViewNoReview;
+
+//    private ArrayList<Integer> ratingNums;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,7 +64,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
         objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
         isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
         if (isYelp) {
 
             query.whereEqualTo("yelpId", objectId).findInBackground(new FindCallback<ParseObject>() {
@@ -88,7 +92,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
         } else {
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
                 @Override
-                public void done(ParseObject parseObject, ParseException e) {
+                public void done(final ParseObject parseObject, ParseException e) {
                     ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
                     reviewQuery.include("writer");
                     reviewQuery.whereEqualTo("vendor", parseObject).findInBackground(new FindCallback<ParseObject>() {
@@ -100,11 +104,27 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                             } else {
                                 mAdapter = new ReviewAdapter(getActivity(), list);
                                 mRecyclerView.setAdapter(mAdapter);
+                                double ratingsum = 0;
+                                for (final ParseObject review : list) {
+                                    ratingsum += (Integer) review.get("rating");
+                                }
+//                                Toast.makeText(getActivity(), String.valueOf(ratingsum), Toast.LENGTH_SHORT).show();
+                                double averageRating = Math.round((ratingsum / (list.size())) * 10.0) / 10.0;
+
+                                Toast.makeText(getActivity(), String.valueOf(averageRating), Toast.LENGTH_SHORT).show();
+                                parseObject.put("rating", averageRating);
+                                parseObject.put("ratingCount", list.size());
+                                parseObject.saveInBackground();
                             }
                         }
                     });
+
+
                 }
+
             });
+
+
         }
 
         return rootView;
@@ -167,6 +187,27 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
             argument.putBoolean(Constants.EXTRA_KEY_IS_YELP, false);
             dialog.setArguments(argument);
             dialog.show(manager, "Review");
+
+//            ParseQuery<ParseObject> reviewquery = ParseQuery.getQuery("Review");
+//            reviewquery.whereEqualTo("vendor", objectId);
+//            reviewquery.countInBackground(new CountCallback() {
+//                public void done(int count, ParseException e) {
+//                    if (e == null) {
+//                        final int rating = count;
+//                        ParseQuery<ParseObject> vendorquery = ParseQuery.getQuery("Vendor");
+//                        vendorquery.whereEqualTo("objectId", objectId);
+//                        vendorquery.getInBackground(objectId, new GetCallback<ParseObject>(){
+//                            public void done(ParseObject object, ParseException e) {
+//                                if (e == null) {
+//                                   object.put("ratingCount", rating);
+//                                }
+//                            }
+//                        });
+//
+//                    }
+//                }
+//            });
         }
     }
+
 }
