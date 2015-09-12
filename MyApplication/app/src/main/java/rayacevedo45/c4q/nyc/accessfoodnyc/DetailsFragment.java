@@ -64,10 +64,11 @@ public class DetailsFragment extends Fragment {
     private RecyclerView mRecyclerViewFriends;
     private FavoritedFriendsAdapter mFriendsAdapter;
     private TextView countFavs;
-    private LinearLayout followers;
     private TextView numberOfRatings;
-    private TextView followersText;
     private TextView ratings;
+
+    private LinearLayout mParentLayout;
+    private NoScrollAdapter<ParseObject> mNoScrollAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,15 +79,16 @@ public class DetailsFragment extends Fragment {
         mRecyclerViewPictures = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_pictures);
         mRecyclerViewFriends = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_friends_fav);
         countFavs = (TextView) rootView.findViewById(R.id.count_favs);
-        followers = (LinearLayout) rootView.findViewById(R.id.followers);
         numberOfRatings = (TextView) rootView.findViewById(R.id.number_of_ratings);
-        followersText = (TextView) rootView.findViewById(R.id.followers_text);
         ratings = (TextView) rootView.findViewById(R.id.ratings);
+        mParentLayout = (LinearLayout) rootView.findViewById(R.id.review_container);
 
         abouttv = (TextView) rootView.findViewById(R.id.aboutId);
 
         objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
         isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
+
+        mNoScrollAdapter = new NoScrollAdapter<>(getActivity(), mParentLayout);
 
         cb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -104,12 +106,6 @@ public class DetailsFragment extends Fragment {
             }
         });
 
-        mRecyclerViewReview = (RecyclerView) rootView.findViewById(R.id.recyclerView_friends_review);
-        //mRecyclerViewReview.setHasFixedSize(true);
-        LinearLayoutManager lm = new LinearLayoutManager(getActivity());
-        lm.setOrientation(LinearLayoutManager.VERTICAL);
-
-        mRecyclerViewReview.setLayoutManager(lm);
 
         LinearLayoutManager lm3 = new LinearLayoutManager(getActivity());
         lm3.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -155,8 +151,11 @@ public class DetailsFragment extends Fragment {
                                         @Override
                                         public void done(List<ParseObject> list, ParseException e) {
                                             if (list.size() != 0) {
-                                                mAdapter = new ReviewAdapter(getActivity(), list);
-                                                mRecyclerViewReview.setAdapter(mAdapter);
+
+                                                mNoScrollAdapter.addReviews(list);
+
+//                                                mAdapter = new ReviewAdapter(getActivity(), list);
+//                                                mRecyclerViewReview.setAdapter(mAdapter);
                                             }
                                         }
                                     });
@@ -266,8 +265,10 @@ public class DetailsFragment extends Fragment {
                                     @Override
                                     public void done(List<ParseObject> list, ParseException e) {
                                         if (list.size() != 0) {
-                                            mAdapter = new ReviewAdapter(getActivity(), list);
-                                            mRecyclerViewReview.setAdapter(mAdapter);
+
+                                            mNoScrollAdapter.addReviews(list);
+//                                            mAdapter = new ReviewAdapter(getActivity(), list);
+//                                            mRecyclerViewReview.setAdapter(mAdapter);
                                         }
                                     }
                                 });

@@ -11,6 +11,7 @@ import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -69,6 +70,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
     private RecyclerView mRecyclerView;
     private UserReviewAdapter mAdapter;
 
+    private CollapsingToolbarLayout mToolbarLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,13 +79,16 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         String objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);
         final ParseUser me = ParseUser.getCurrentUser();
         mToolbar = (Toolbar) findViewById(R.id.toolbar_profile);
+        mToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.collapsing_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         String name = me.getString("first_name") + " " + me.getString("last_name");
 
-        mToolbar.setTitle(name + "'s Profile");
-
+        getSupportActionBar().setTitle(name + "'s Profile");
+        mToolbarLayout.setTitle(name + "'s Profile");
+        mToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
+        mToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
         if (objectId != null) {
 
