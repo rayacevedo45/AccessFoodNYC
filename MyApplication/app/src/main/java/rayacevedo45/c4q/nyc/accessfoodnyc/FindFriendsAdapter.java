@@ -92,9 +92,10 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
         // TODO : check if this friend is in pending list.
         if (mPendingCheckList.get(position)) {
             holder.request.setText("Sent");
+            holder.request.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_white_24dp, 0, 0, 0);
             holder.request.setOnClickListener(null);
         } else {
-            holder.request.setText("+ Add");
+            holder.request.setText("Add");
             holder.request.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -107,6 +108,7 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
                                 "\"objectId\": \"" + user.getObjectId() + "\"}");
                         Toast.makeText(mContext, "Friend request is sent to " + friend.getName(), Toast.LENGTH_SHORT).show();
                         holder.request.setText("sent");
+                        holder.request.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_check_white_24dp, 0, 0, 0);
 
                         ParseQuery query = ParseInstallation.getQuery();
                         query.whereEqualTo("fbId", friend.getId());
