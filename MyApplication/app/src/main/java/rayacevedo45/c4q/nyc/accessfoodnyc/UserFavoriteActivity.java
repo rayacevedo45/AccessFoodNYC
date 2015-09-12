@@ -79,6 +79,7 @@ public class UserFavoriteActivity extends AppCompatActivity {
             public void done(List<ParseObject> list, ParseException e) {
                 for (ParseObject favorite : list) {
                     final ParseObject vendor = favorite.getParseObject("vendor");
+
                     if (vendor.getParseGeoPoint("location") == null) {
 
                         ParseRelation<ParseUser> friends = user.getRelation("friends");
