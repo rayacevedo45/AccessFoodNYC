@@ -1,6 +1,7 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,7 +30,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -115,9 +115,20 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mButtonReviews = (LinearLayout) findViewById(R.id.button_user_reviews);
         mButtonFavorite = (LinearLayout) findViewById(R.id.button_profile_favorite);
 
+
+        // Font path
+        String fontPath = "fonts/Quicksand-Regular.ttf";
+
         mTextViewFavorite = (TextView) findViewById(R.id.profile_number_favorite);
         mTextViewFriends = (TextView) findViewById(R.id.profile_number_friends);
         mTextViewReviews = (TextView) findViewById(R.id.profile_number_reviews);
+
+        Typeface tf = Typeface.createFromAsset(getAssets(), fontPath);
+
+        mTextViewFavorite.setTypeface(tf);
+        mTextViewFriends.setTypeface(tf);
+        mTextViewReviews.setTypeface(tf);
+
 
         Picasso.with(getApplicationContext()).load(me.getString("profile_url")).into(mImageViewProfile);
 
