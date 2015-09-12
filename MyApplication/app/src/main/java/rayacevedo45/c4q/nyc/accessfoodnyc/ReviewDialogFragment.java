@@ -53,16 +53,16 @@ public class ReviewDialogFragment extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        textView1star = (TextView) mDialogView.findViewById(R.id.text_1star);
-        textView2star = (TextView) mDialogView.findViewById(R.id.text_2star);
-        textView3star = (TextView) mDialogView.findViewById(R.id.text_3star);
-        textView4star = (TextView) mDialogView.findViewById(R.id.text_4star);
-        textView5star = (TextView) mDialogView.findViewById(R.id.text_5star);
+//        textView1star = (TextView) mDialogView.findViewById(R.id.text_1star);
+//        textView2star = (TextView) mDialogView.findViewById(R.id.text_2star);
+//        textView3star = (TextView) mDialogView.findViewById(R.id.text_3star);
+//        textView4star = (TextView) mDialogView.findViewById(R.id.text_4star);
+//        textView5star = (TextView) mDialogView.findViewById(R.id.text_5star);
 
-        textView5star = new TextView(mDialogView.getContext());
-        textView5star.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
-                LayoutParams.WRAP_CONTENT, 2f));
-
+//        textView5star = new TextView(mDialogView.getContext());
+//        textView5star.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+//                LayoutParams.WRAP_CONTENT, 2f));
+//
 
 
         objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
