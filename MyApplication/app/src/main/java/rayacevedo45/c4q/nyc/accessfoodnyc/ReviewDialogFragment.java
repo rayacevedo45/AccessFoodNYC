@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.parse.GetCallback;
@@ -28,6 +29,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
+import android.widget.LinearLayout.LayoutParams;
 
 public class ReviewDialogFragment extends DialogFragment {
 
@@ -45,9 +47,21 @@ public class ReviewDialogFragment extends DialogFragment {
     double newRating;
     int reviewCount;
 
+    private TextView textView5star,textView4star,textView3star,textView2star,textView1star;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        textView1star = (TextView) mDialogView.findViewById(R.id.text_1star);
+        textView2star = (TextView) mDialogView.findViewById(R.id.text_2star);
+        textView3star = (TextView) mDialogView.findViewById(R.id.text_3star);
+        textView4star = (TextView) mDialogView.findViewById(R.id.text_4star);
+        textView5star = (TextView) mDialogView.findViewById(R.id.text_5star);
+
+        textView5star = new TextView(mDialogView.getContext());
+        textView5star.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT, 2f));
 
 
 
@@ -117,7 +131,6 @@ public class ReviewDialogFragment extends DialogFragment {
                 mTextViewRating.setText(ratingText);
             }
         });
-
 
     }
 
