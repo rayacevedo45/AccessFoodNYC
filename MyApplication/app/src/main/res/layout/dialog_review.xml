@@ -31,7 +31,7 @@
             <!--android:layout_height="wrap_content" />-->
 
         <RatingBar
-            android:id="@+id/ratingBar"
+            android:id="@+id/ratingBarRightPart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"

@@ -39,4 +39,9 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="RateBar" parent="Base.Theme.AppCompat.Light">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+
 </resources>
