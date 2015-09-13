@@ -21,8 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-
-
     <LinearLayout
         android:gravity="center_horizontal"
         android:orientation="horizontal"

@@ -1,6 +1,7 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,6 +51,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
     private Context mContext;
     private List<Vendor> mList;
     private ParseGeoPoint mPoint;
+
 
     public VendorListAdapter(Context context, ParseGeoPoint point) {
         mContext = context;
@@ -121,9 +123,9 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
 
         if (vendor.isLiked()) {
             holder.like.setVisibility(View.VISIBLE);
-            holder.like.setBackgroundResource(R.color.accentColor);
             holder.like.setImageResource(R.drawable.ic_favorite_white_24dp);
-
+            int color = Color.parseColor("#ff0000");
+            holder.like.setColorFilter(color);
         } else {
             holder.like.setVisibility(View.GONE);
         }

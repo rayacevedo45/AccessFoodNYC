@@ -195,12 +195,10 @@ public class DetailsFragment extends Fragment {
                     mSnippetText.setText(vendor.getString("description"));
 
 
-                    //dfjaslkdfj;alkdjfl;a
-                    ParseRelation<ParseObject> pictures = vendor.getRelation("pictures");
-                    pictures.getQuery().findInBackground(new FindCallback<ParseObject>() {
+                    ParseQuery<ParseObject> pictures = ParseQuery.getQuery("Picture");
+                    pictures.whereEqualTo("vendor", vendor).findInBackground(new FindCallback<ParseObject>() {
                         @Override
                         public void done(List<ParseObject> list, ParseException e) {
-
                             if (list.size() != 0) {
                                 mPicturesAdapter = new PicturesAdapter(getActivity(), list);
                                 mRecyclerViewPictures.setAdapter(mPicturesAdapter);
@@ -210,12 +208,10 @@ public class DetailsFragment extends Fragment {
                             } else {
                                 Picasso.with(getActivity()).load(vendor.getString("profile_url")).into(mVendorPicImage);
                             }
-
                         }
                     });
 
-
-
+                   
                 }
             });
 
