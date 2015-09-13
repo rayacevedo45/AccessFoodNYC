@@ -1,5 +1,6 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -10,10 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.parse.CountCallback;
+import com.example.android.recyclerplayground.layout.FixedGridLayoutManager;
+import com.juliengenoud.percentsamples.PercentLinearLayout;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -22,8 +24,8 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.List;
-
 
 public class ReviewsFragment extends Fragment implements View.OnClickListener {
 
@@ -33,9 +35,17 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
     private String objectId;
     private boolean isYelp;
 
-    private ImageView mImageViewUserFace;
-    private TextView mTextViewName;
     private TextView mTextViewNoReview;
+    private TextView mTextViewRatingScore;
+    private TextView mTextViewReviewsCount;
+
+    private LinearLayout oneBar;
+    private LinearLayout twoBar;
+    private LinearLayout threeBar;
+    private LinearLayout fourBar;
+    private LinearLayout fiveBar;
+
+    private LinearLayout ratingInto;
 
 //    private ArrayList<Integer> ratingNums;
 
@@ -46,9 +56,16 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.fragment_reviews, container, false);
         mButtonReview = (FloatingActionButton) rootView.findViewById(R.id.button_review);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerView_review);
-        mImageViewUserFace = (ImageView) rootView.findViewById(R.id.review_profile);
-        mTextViewName = (TextView) rootView.findViewById(R.id.review_user_name);
         mTextViewNoReview = (TextView) rootView.findViewById(R.id.textView_no_review);
+        mTextViewRatingScore = (TextView) rootView.findViewById(R.id.rating_score);
+        mTextViewReviewsCount = (TextView) rootView.findViewById(R.id.reviews_count);
+        ratingInto = (LinearLayout) rootView.findViewById(R.id.rating_info);
+
+        oneBar = (LinearLayout) rootView.findViewById(R.id.text_1star);
+        twoBar = (LinearLayout) rootView.findViewById(R.id.text_2star);
+        threeBar = (LinearLayout) rootView.findViewById(R.id.text_3star);
+        fourBar = (LinearLayout) rootView.findViewById(R.id.text_4star);
+        fiveBar = (LinearLayout) rootView.findViewById(R.id.text_5star);
 
         mRecyclerView.setHasFixedSize(true);
         LinearLayoutManager lm = new LinearLayoutManager(getActivity());
@@ -57,13 +74,15 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
 
         ParseUser user = ParseUser.getCurrentUser();
 
-        Picasso.with(getActivity()).load(user.getString("profile_url")).resize(200,200).centerCrop().into(mImageViewUserFace);
-        String name = user.getString("first_name") + " " + user.getString("last_name");
-        mTextViewName.setText(name);
-
         objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
         isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
 
+        refresh();
+
+        return rootView;
+    }
+
+    private void refresh() {
         final ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
         if (isYelp) {
 
@@ -71,18 +90,20 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
                     if (list.size() != 0) {
-                        ParseObject vendor = list.get(0);
+                        final ParseObject vendor = list.get(0);
                         ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
                         reviewQuery.include("writer");
                         reviewQuery.whereEqualTo("vendor", vendor).findInBackground(new FindCallback<ParseObject>() {
                             @Override
-                            public void done(List<ParseObject> list, ParseException e) {
-                                if (list.size() == 0) {
+                            public void done(List<ParseObject> reviews, ParseException e) {
+                                if (reviews.size() == 0) {
+                                    ratingInto.setVisibility(View.GONE);
                                     mTextViewNoReview.setText("No reviews yet :( \nWhy don't you write one?");
                                     mTextViewNoReview.setVisibility(View.VISIBLE);
                                 } else {
-                                    mAdapter = new ReviewAdapter(getActivity(), list);
+                                    mAdapter = new ReviewAdapter(getActivity(), reviews);
                                     mRecyclerView.setAdapter(mAdapter);
+                                    calculateReviews(vendor, reviews);
                                 }
                             }
                         });
@@ -97,37 +118,35 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                     reviewQuery.include("writer");
                     reviewQuery.whereEqualTo("vendor", parseObject).findInBackground(new FindCallback<ParseObject>() {
                         @Override
-                        public void done(List<ParseObject> list, ParseException e) {
-                            if (list.size() == 0) {
+                        public void done(List<ParseObject> reviews, ParseException e) {
+                            if (reviews.size() == 0) {
+                                ratingInto.setVisibility(View.GONE);
                                 mTextViewNoReview.setText("No reviews yet :( \nWhy don't you write one?");
                                 mTextViewNoReview.setVisibility(View.VISIBLE);
                             } else {
-                                mAdapter = new ReviewAdapter(getActivity(), list);
+                                calculateReviews(parseObject, reviews);
+                                mAdapter = new ReviewAdapter(getActivity(), reviews);
                                 mRecyclerView.setAdapter(mAdapter);
                                 double ratingsum = 0;
-                                for (final ParseObject review : list) {
+                                for (final ParseObject review : reviews) {
                                     ratingsum += (Integer) review.get("rating");
                                 }
 //                                Toast.makeText(getActivity(), String.valueOf(ratingsum), Toast.LENGTH_SHORT).show();
-                                double averageRating = Math.round((ratingsum / (list.size())) * 10.0) / 10.0;
+                                double averageRating = Math.round((ratingsum / (reviews.size())) * 10.0) / 10.0;
 
                                 //Toast.makeText(getActivity(), String.valueOf(averageRating), Toast.LENGTH_SHORT).show();
                                 parseObject.put("rating", averageRating);
-                                parseObject.put("ratingCount", list.size());
+                                parseObject.put("ratingCount", reviews.size());
                                 parseObject.saveInBackground();
                             }
                         }
                     });
 
-
                 }
 
             });
 
-
         }
-
-        return rootView;
     }
 
 
@@ -177,6 +196,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                     }
                     argument.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
                     dialog.setArguments(argument);
+                    dialog.setTargetFragment(ReviewsFragment.this, 0);
                     dialog.show(manager, "Review");
                 }
             });
@@ -186,28 +206,82 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
             argument.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
             argument.putBoolean(Constants.EXTRA_KEY_IS_YELP, false);
             dialog.setArguments(argument);
+            dialog.setTargetFragment(ReviewsFragment.this, 0);
             dialog.show(manager, "Review");
 
-//            ParseQuery<ParseObject> reviewquery = ParseQuery.getQuery("Review");
-//            reviewquery.whereEqualTo("vendor", objectId);
-//            reviewquery.countInBackground(new CountCallback() {
-//                public void done(int count, ParseException e) {
-//                    if (e == null) {
-//                        final int rating = count;
-//                        ParseQuery<ParseObject> vendorquery = ParseQuery.getQuery("Vendor");
-//                        vendorquery.whereEqualTo("objectId", objectId);
-//                        vendorquery.getInBackground(objectId, new GetCallback<ParseObject>(){
-//                            public void done(ParseObject object, ParseException e) {
-//                                if (e == null) {
-//                                   object.put("ratingCount", rating);
-//                                }
-//                            }
-//                        });
-//
-//                    }
-//                }
-//            });
+
         }
     }
 
+    private void calculateReviews(ParseObject vendor, List<ParseObject> reviews) {
+        ratingInto.setVisibility(View.VISIBLE);
+        int count = reviews.size();
+        int one = 0;
+        int two = 0;
+        int three = 0;
+        int four = 0;
+        int five = 0;
+        double sum = 0;
+        for (ParseObject review : reviews) {
+            int rate = review.getInt("rating");
+            sum += rate;
+            switch (rate) {
+                case 1:
+                    one++;
+                    break;
+                case 2:
+                    two++;
+                    break;
+                case 3:
+                    three++;
+                    break;
+                case 4:
+                    four++;
+                    break;
+                case 5:
+                    five++;
+                    break;
+            }
+        }
+
+        int totalLength = oneBar.getLayoutParams().width;
+
+        ViewGroup.LayoutParams params = oneBar.getLayoutParams();
+        params.width = (totalLength * one) / count;
+        oneBar.setLayoutParams(params);
+
+        ViewGroup.LayoutParams params2 = twoBar.getLayoutParams();
+        params2.width = (totalLength * two) / count;
+        twoBar.setLayoutParams(params2);
+
+        ViewGroup.LayoutParams params3 = threeBar.getLayoutParams();
+        params3.width = (totalLength * three) / count;
+        threeBar.setLayoutParams(params3);
+
+        ViewGroup.LayoutParams params4 = fourBar.getLayoutParams();
+        params4.width = (params4.width * four) / count;
+        fourBar.setLayoutParams(params4);
+
+        ViewGroup.LayoutParams params5 = fiveBar.getLayoutParams();
+        params5.width = (params5.width * five) / count;
+        fiveBar.setLayoutParams(params5);
+
+
+        DecimalFormat df = new DecimalFormat("0.0");
+        double score = sum / count;
+        mTextViewRatingScore.setText(df.format(score));
+        mTextViewReviewsCount.setText(count + "");
+        vendor.put("rating", score);
+        vendor.saveInBackground();
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 0:
+                refresh();
+                break;
+        }
+    }
 }

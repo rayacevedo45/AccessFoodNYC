@@ -13,43 +13,18 @@
         android:layout_marginBottom="56dp">
 
         <LinearLayout
-            android:id="@+id/writer_info"
+            android:paddingTop="16dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:id="@+id/rating_info"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:layout_margin="16dp"
-                android:id="@+id/review_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                app:layout_heightPercent="30%"
-                app:layout_widthPercent="30%" />
-
-            <TextView
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                android:id="@+id/review_user_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:textStyle="bold"
-                android:gravity="center_vertical|center_horizontal" />
-
-            <TextView
-                android:text="Rate this truck"
-                android:textColor="@color/black"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:gravity="center_vertical|center_horizontal" />
 
 
             <LinearLayout
                 android:id="@+id/ratingBar"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -63,14 +38,13 @@
                     android:layout_weight="1">
 
                     <TextView
-                        android:id="@+id/ratingScore"
+                        android:id="@+id/rating_score"
                         android:layout_gravity="center_horizontal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="2"
-                        android:hint="0.0"
-                        android:textSize="60sp"
-                        style="@style/RateBar"/>
+                        android:textColor="@color/black"
+                        android:textSize="60dp" />
 
                     <LinearLayout
                         android:orientation="horizontal"
@@ -114,6 +88,7 @@
                         android:layout_height="wrap_content">
 
                         <TextView
+                            android:id="@+id/reviews_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textSize="10dp"
@@ -124,13 +99,14 @@
 
                             android:layout_width="12dp"
                             android:layout_height="12dp"
-                            android:src="@drawable/ic_perm_identity_black_18dp" />
+                            android:src="@drawable/ic_face_black_18dp" />
                     </LinearLayout>
 
 
                 </LinearLayout>
 
                 <LinearLayout
+                    android:paddingRight="8dp"
                     android:id="@id/ratingBarRightPart"
                     android:gravity="center_vertical"
                     android:orientation="vertical"
@@ -170,9 +146,10 @@
                             android:layout_width="12dp"
                             android:layout_height="12dp" />
 
-                        <TextView
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:id="@+id/text_5star"
-                            android:layout_width="match_parent"
+                            android:layout_width="150dp"
                             android:layout_height="10dp"
                             android:background="@color/five_stars" />
 
@@ -211,9 +188,10 @@
                             android:layout_width="12dp"
                             android:layout_height="12dp" />
 
-                        <TextView
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:id="@+id/text_4star"
-                            android:layout_width="match_parent"
+                            android:layout_width="150dp"
                             android:layout_height="10dp"
                             android:background="@color/four_stars" />
 
@@ -253,9 +231,10 @@
                             android:layout_width="12dp"
                             android:layout_height="12dp" />
 
-                        <TextView
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:id="@+id/text_3star"
-                            android:layout_width="match_parent"
+                            android:layout_width="150dp"
                             android:layout_height="10dp"
                             android:background="@color/three_starts" />
 
@@ -296,9 +275,10 @@
                             android:layout_width="12dp"
                             android:layout_height="12dp" />
 
-                        <TextView
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:id="@+id/text_2star"
-                            android:layout_width="match_parent"
+                            android:layout_width="150dp"
                             android:layout_height="10dp"
                             android:background="@color/two_stars" />
 
@@ -341,9 +321,10 @@
                             android:layout_width="12dp"
                             android:layout_height="12dp" />
 
-                        <TextView
+                        <LinearLayout
+                            android:orientation="vertical"
                             android:id="@+id/text_1star"
-                            android:layout_width="match_parent"
+                            android:layout_width="150dp"
                             android:layout_height="10dp"
                             android:background="@color/one_star" />
                     </LinearLayout>
@@ -358,24 +339,26 @@
                 android:layout_height="1dp"
                 android:background="@color/dividerColor" />
 
-            <TextView
-                android:layout_marginTop="8dp"
-                android:visibility="gone"
-                android:textSize="20sp"
-                android:textColor="@color/toolbarTextColorSecondary"
-                android:id="@+id/textView_no_review"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal" />
+
 
         </LinearLayout>
 
+        <TextView
+            android:layout_marginTop="8dp"
+            android:visibility="gone"
+            android:textSize="20sp"
+            android:textColor="@color/toolbarTextColorSecondary"
+            android:id="@+id/textView_no_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:layout_below="@+id/rating_info"/>
+
         <android.support.v7.widget.RecyclerView
-            android:padding="16dp"
             android:id="@+id/recyclerView_review"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/writer_info" />
+            android:layout_below="@+id/rating_info" />
 
 
         <android.support.design.widget.FloatingActionButton

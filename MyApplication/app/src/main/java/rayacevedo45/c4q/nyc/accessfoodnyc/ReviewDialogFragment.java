@@ -1,5 +1,6 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
@@ -25,40 +26,26 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 public class ReviewDialogFragment extends DialogFragment {
 
     private String objectId;
     private boolean isYelp;
     private RatingBar mRatingBar;
-    private TextView mTextViewTitle;
     private TextView mTextViewRating;
     private EditText mEditTextTitle;
     private EditText mEditTextDescription;
     private TextView mTextViewCounter;
     private View mDialogView;
-    private ImageView mImageViewRiviewDialogUserFace;
     double existingRating;
     double newRating;
     int reviewCount;
 
-    private TextView textView5star,textView4star,textView3star,textView2star,textView1star;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//        textView1star = (TextView) mDialogView.findViewById(R.id.text_1star);
-//        textView2star = (TextView) mDialogView.findViewById(R.id.text_2star);
-//        textView3star = (TextView) mDialogView.findViewById(R.id.text_3star);
-//        textView4star = (TextView) mDialogView.findViewById(R.id.text_4star);
-//        textView5star = (TextView) mDialogView.findViewById(R.id.text_5star);
-
-//        textView5star = new TextView(mDialogView.getContext());
-//        textView5star.setLayoutParams(new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT,
-//                LayoutParams.WRAP_CONTENT, 2f));
-//
-
 
         objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
         isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
@@ -69,15 +56,10 @@ public class ReviewDialogFragment extends DialogFragment {
         background.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
         mRatingBar = (RatingBar) mDialogView.findViewById(R.id.ratingBarRightPart);
-     //   mTextViewTitle = (TextView) mDialogView.findViewById(R.id.dialog_review_title);
         mTextViewRating = (TextView) mDialogView.findViewById(R.id.dialog_review_rating);
         mEditTextTitle = (EditText) mDialogView.findViewById(R.id.editText_dialog_title);
         mEditTextDescription = (EditText) mDialogView.findViewById(R.id.editText_dialog_description);
 
-       // mImageViewRiviewDialogUserFace =(ImageView) mDialogView. findViewById(R.id.review_dialog_round_pic);
-
-     //   ParseUser user = ParseUser.getCurrentUser();
-      //  Picasso.with(getActivity()).load(user.getString("profile_url")).resize(150, 150).centerCrop().into(mImageViewRiviewDialogUserFace);
 
         mTextViewCounter = (TextView) mDialogView.findViewById(R.id.textView_counter);
 
@@ -128,6 +110,8 @@ public class ReviewDialogFragment extends DialogFragment {
         });
 
     }
+
+
 
     @NonNull
     @Override
@@ -180,7 +164,12 @@ public class ReviewDialogFragment extends DialogFragment {
                                     double averageRating = Math.round(newRating * 10.0) / 10.0;
                                     parseObject.put("rating", averageRating);
                                     parseObject.put("ratingCount", reviewCount+1);
-                                    parseObject.saveInBackground();
+                                    parseObject.saveInBackground(new SaveCallback() {
+                                        @Override
+                                        public void done(ParseException e) {
+                                            getTargetFragment().onActivityResult(0, 0, null);
+                                        }
+                                    });
 
 
                                 }
