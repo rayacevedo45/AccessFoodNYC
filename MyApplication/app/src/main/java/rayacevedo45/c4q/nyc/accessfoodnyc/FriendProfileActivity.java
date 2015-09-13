@@ -235,23 +235,23 @@ public class FriendProfileActivity extends AppCompatActivity implements DialogCa
     @Override
     protected void onStart() {
         super.onStart();
-        mButtonRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentManager manager = getSupportFragmentManager();
-                RemoveDialogFragment dialog = new RemoveDialogFragment();
-                Bundle argument = new Bundle();
-                argument.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
-                dialog.setArguments(argument);
-                dialog.show(manager, "Remove Friend");
-            }
-        });
+//        mButtonRemove.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                FragmentManager manager = getSupportFragmentManager();
+//                RemoveDialogFragment dialog = new RemoveDialogFragment();
+//                Bundle argument = new Bundle();
+//                argument.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+//                dialog.setArguments(argument);
+//                dialog.show(manager, "Remove Friend");
+//            }
+//        });
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mButtonRemove.setOnClickListener(null);
+//        mButtonRemove.setOnClickListener(null);
     }
 
     @Override

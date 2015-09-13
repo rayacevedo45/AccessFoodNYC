@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="8dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal">
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -17,26 +17,50 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:gravity="left"
         android:paddingRight="16dp">
 
-        <TextView
-            android:id="@+id/textView_name_friend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:paddingTop="26dp"/>
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="64dp">
+
+            <TextView
+                android:id="@+id/textView_name_friend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:paddingTop="26dp" />
+
+            <RelativeLayout
+                android:gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/button_friend_remove"
+                android:text="remove"
+                android:layout_marginRight="10dp"
+                android:textSize="12dp"
+                android:background="@drawable/round_btn_grey"
+                android:layout_width="60dp"
+                android:layout_height="35dp"
+                android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
 
         <View
             android:layout_marginTop="28dp"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#20212121"
-            android:layout_below="@+id/textView_name_friend"
-            android:layout_alignParentBottom="true"/>
-
+            android:layout_below="@+id/layout1"
+            android:layout_alignParentBottom="true" />
 
     </RelativeLayout>
 
