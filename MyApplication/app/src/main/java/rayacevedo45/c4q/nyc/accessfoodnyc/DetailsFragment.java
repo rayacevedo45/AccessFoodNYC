@@ -194,6 +194,8 @@ public class DetailsFragment extends Fragment {
                     mTextViewVendorAddress.setText(vendor.getString("address"));
                     mSnippetText.setText(vendor.getString("description"));
 
+
+                    //dfjaslkdfj;alkdjfl;a
                     ParseRelation<ParseObject> pictures = vendor.getRelation("pictures");
                     pictures.getQuery().findInBackground(new FindCallback<ParseObject>() {
                         @Override
@@ -203,6 +205,7 @@ public class DetailsFragment extends Fragment {
                                 mPicturesAdapter = new PicturesAdapter(getActivity(), list);
                                 mRecyclerViewPictures.setAdapter(mPicturesAdapter);
                                 mRecyclerViewPictures.setVisibility(View.VISIBLE);
+                                mVendorPicImage.setVisibility(View.GONE);
 
                             } else {
                                 Picasso.with(getActivity()).load(vendor.getString("profile_url")).into(mVendorPicImage);
