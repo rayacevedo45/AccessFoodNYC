@@ -21,19 +21,28 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView_friend_profile"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_gravity="center"
-        android:paddingTop="40dp"/>
+
 
     <LinearLayout
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView_friend_profile"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp" />
 
         <TextView
             android:textSize="20sp"
@@ -41,24 +50,27 @@
             android:layout_marginRight="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black" />
 
     </LinearLayout>
+
+    <Button
+        android:id="@+id/button_friend_remove"
+        android:text="Remove"
+        android:background="@drawable/round_btn_red"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+    </LinearLayout>
+
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-
-        <Button
-            android:id="@+id/button_friend_remove"
-            android:visibility="gone"
-            android:text="Remove"
-            android:background="@drawable/round_btn_red"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"/>
 
         <TextView
             android:textColor="@color/toolbarTextColorSecondary"
@@ -78,8 +90,6 @@
         </android.support.v7.widget.RecyclerView>
 
     </LinearLayout>
-
-
 
 
 </LinearLayout>
