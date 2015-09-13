@@ -100,8 +100,6 @@ public class DetailsFragment extends Fragment {
                 bundle.putBoolean(Constants.EXTRA_KEY_IS_YELP, isYelp);
 
                 picDialog.setArguments(bundle);
-
-
                 picDialog.show(getActivity().getSupportFragmentManager(), "picD");
             }
         });
