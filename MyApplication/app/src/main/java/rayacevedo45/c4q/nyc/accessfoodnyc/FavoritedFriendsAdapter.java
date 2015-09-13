@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.parse.ParseObject;
@@ -57,4 +58,6 @@ public class FavoritedFriendsAdapter extends RecyclerView.Adapter<FavoritedFrien
             name = (TextView) itemView.findViewById(R.id.textView_details_friend_name);
         }
     }
+
+
 }

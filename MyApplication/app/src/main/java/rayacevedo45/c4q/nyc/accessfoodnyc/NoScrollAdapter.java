@@ -64,4 +64,14 @@ public class NoScrollAdapter<T> {
             mParentLayout.addView(row, i);
         }
     }
+
+    public void addFavoritedFriends(List<T> list) {
+        mList = list;
+
+        for (int i = 0; i < mList.size(); i++) {
+            final View row = mInflater.inflate(R.layout.list_item_details_friend_fav, null);
+            
+        }
+
+    }
 }

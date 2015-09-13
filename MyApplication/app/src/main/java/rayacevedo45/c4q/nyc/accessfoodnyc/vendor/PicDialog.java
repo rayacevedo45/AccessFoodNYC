@@ -11,9 +11,6 @@ import android.support.v7.app.AlertDialog;
 import rayacevedo45.c4q.nyc.accessfoodnyc.Constants;
 import rayacevedo45.c4q.nyc.accessfoodnyc.PicActivity;
 
-/**
- * Created by c4q-raynaldie on 9/1/15.
- */
 public class PicDialog extends DialogFragment {
     static final int EXTERNAL_CONTENT_URI = 0;
     Uri targetUri;
