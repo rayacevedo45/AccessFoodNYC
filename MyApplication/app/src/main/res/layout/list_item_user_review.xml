@@ -163,9 +163,56 @@
 
 
             <TextView
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"
                 android:id="@+id/user_review_how_many"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+
+            <ImageView
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:id="@+id/grade_1"
+                android:visibility="gone"
+                android:src="@drawable/ic_grade_black_18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:id="@+id/grade_2"
+                android:visibility="gone"
+                android:src="@drawable/ic_grade_black_18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:id="@+id/grade_3"
+                android:visibility="gone"
+                android:src="@drawable/ic_grade_black_18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:id="@+id/grade_4"
+                android:visibility="gone"
+                android:src="@drawable/ic_grade_black_18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:id="@+id/grade_5"
+                android:visibility="gone"
+                android:src="@drawable/ic_grade_black_18dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
 
 
             <TextView
@@ -182,8 +229,7 @@
 
 
         <LinearLayout
-            android:paddingLeft="8dp"
-            android:paddingTop="4dp"
+            android:paddingLeft="16dp"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -202,8 +248,7 @@
 
 
         <TextView
-            android:paddingTop="0dp"
-            android:padding="8dp"
+            android:paddingLeft="16dp"
             android:textColor="@color/black"
             android:id="@+id/user_review_description"
             android:layout_width="match_parent"

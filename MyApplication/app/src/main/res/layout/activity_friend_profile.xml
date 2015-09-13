@@ -37,6 +37,7 @@
 
         <Button
             android:id="@+id/button_friend_remove"
+            android:visibility="gone"
             android:text="Remove"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

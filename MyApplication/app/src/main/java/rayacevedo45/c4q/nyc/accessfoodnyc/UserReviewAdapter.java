@@ -54,6 +54,19 @@ public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.Us
         double rate = vendor.getRating();
         String rating = df.format(rate);
         holder.rating.setText(rating);
+        if (rate >= 4.5) {
+            holder.rating.setBackgroundResource(R.drawable.round_5);
+        } else if (rate >= 4.0) {
+            holder.rating.setBackgroundResource(R.drawable.round_4);
+        } else if (rate >= 3.5) {
+            holder.rating.setBackgroundResource(R.drawable.round_3);
+        } else if (rate >= 3.0) {
+            holder.rating.setBackgroundResource(R.drawable.round_2);
+        } else {
+            holder.rating.setBackgroundResource(R.drawable.round_1);
+        }
+
+
 
         String hour = vendor.getHours();
         if (!hour.equals("closed")) {
@@ -112,6 +125,27 @@ public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.Us
             Picasso.with(mContext).load(R.drawable.default_profile).into(holder.writerPicture);
         }
 
+        holder.howmany.setText(user.getString("first_name") + " " + user.getString("last_name") + " gave");
+
+        holder.grade1.setVisibility(View.GONE);
+        holder.grade2.setVisibility(View.GONE);
+        holder.grade3.setVisibility(View.GONE);
+        holder.grade4.setVisibility(View.GONE);
+        holder.grade5.setVisibility(View.GONE);
+
+        switch(review.getRating()) {
+            case 1:
+                holder.grade1.setVisibility(View.VISIBLE);
+            case 2:
+                holder.grade2.setVisibility(View.VISIBLE);
+            case 3:
+                holder.grade3.setVisibility(View.VISIBLE);
+            case 4:
+                holder.grade4.setVisibility(View.VISIBLE);
+            case 5:
+                holder.grade5.setVisibility(View.VISIBLE);
+        }
+
 
     }
 
@@ -143,6 +177,12 @@ public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.Us
         protected TextView title;
         protected TextView description;
         protected ImageView yelpLogo;
+        protected TextView howmany;
+        protected ImageView grade1;
+        protected ImageView grade2;
+        protected ImageView grade3;
+        protected ImageView grade4;
+        protected ImageView grade5;
 
         public UserReviewHolder(View itemView) {
             super(itemView);
@@ -158,6 +198,13 @@ public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.Us
             hour = (TextView) itemView.findViewById(R.id.textView_hour);
             vendorPicture = (ImageView) itemView.findViewById(R.id.imageView_vendor);
             yelpLogo = (ImageView) itemView.findViewById(R.id.yelp_logo);
+
+            howmany = (TextView) itemView.findViewById(R.id.user_review_how_many);
+            grade1 = (ImageView) itemView.findViewById(R.id.grade_1);
+            grade2 = (ImageView) itemView.findViewById(R.id.grade_2);
+            grade3 = (ImageView) itemView.findViewById(R.id.grade_3);
+            grade4 = (ImageView) itemView.findViewById(R.id.grade_4);
+            grade5 = (ImageView) itemView.findViewById(R.id.grade_5);
         }
     }
 }

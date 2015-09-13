@@ -413,20 +413,6 @@ public class DetailsFragment extends Fragment {
                                 //object exists
                                 addToFavorite(user, vendor);
 
-//                                selectedVendor = vendor;
-//                                favorites.add(selectedVendor);
-//                                user.saveInBackground(new SaveCallback() {
-//                                    @Override
-//                                    public void done(ParseException e) {
-//                                        if (e == null) {
-//                                            ParsePush.subscribeInBackground(vendor.getObjectId());
-//                                            Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
-//
-//                                        } else {
-//                                            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-//                                        }
-//                                    }
-//                                });
 
                             } else {
                                 if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
@@ -441,19 +427,6 @@ public class DetailsFragment extends Fragment {
 
                                             addToFavorite(user, selectedVendor);
 
-//                                            favorites.add(selectedVendor);
-//                                            user.saveInBackground(new SaveCallback() {
-//                                                @Override
-//                                                public void done(ParseException e) {
-//                                                    if (e == null) {
-//                                                        ParsePush.subscribeInBackground(selectedVendor.getObjectId());
-//                                                        Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
-//
-//                                                    } else {
-//                                                        Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
-//                                                    }
-//                                                }
-//                                            });
                                         }
                                     });
                                 } else {
@@ -470,14 +443,6 @@ public class DetailsFragment extends Fragment {
 
                             addToFavorite(user, vendor);
 
-//                            favorites.add(vendor);
-//                            user.saveInBackground(new SaveCallback() {
-//                                @Override
-//                                public void done(ParseException e) {
-//                                    ParsePush.subscribeInBackground(objectId);
-//                                    Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
-//                                }
-//                            });
                         }
                     });
                 }

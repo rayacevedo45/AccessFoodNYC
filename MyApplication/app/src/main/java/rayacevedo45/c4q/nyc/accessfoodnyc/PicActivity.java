@@ -154,7 +154,7 @@ public class PicActivity extends AppCompatActivity {
 
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-            Bitmap bitmap = BitmapFactory.decodeFile(imagePath, options);
+            bitmap = BitmapFactory.decodeFile(imagePath, options);
             imageView.setImageBitmap(bitmap);
 
             cursor.close();
@@ -163,7 +163,7 @@ public class PicActivity extends AppCompatActivity {
     public void save (View v){
         progressBar.setVisibility(View.VISIBLE);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         byte[] byteArray = stream.toByteArray();
 
         final ParseFile file = new ParseFile("picture.jpg", byteArray);
@@ -179,7 +179,7 @@ public class PicActivity extends AppCompatActivity {
 
 
 
-                Toast.makeText(getApplicationContext(), "uploaded", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "uploaded", Toast.LENGTH_SHORT).show();
 
                 if (isYelp){
                     final ParseObject newYelpVendor = new ParseObject("Vendor");
@@ -197,7 +197,7 @@ public class PicActivity extends AppCompatActivity {
 
                                 }
                             });
-                           // progressBar.setVisibility(View.GONE);
+                            progressBar.setVisibility(View.GONE);
                             Toast.makeText(getApplicationContext(), "uploaded1", Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -219,8 +219,8 @@ public class PicActivity extends AppCompatActivity {
                                     vendor.saveInBackground();
                                 }
                             });
-                            //progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), "uploaded2", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "uploaded", Toast.LENGTH_SHORT).show();
 
                         }
 

@@ -111,7 +111,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
 //                                Toast.makeText(getActivity(), String.valueOf(ratingsum), Toast.LENGTH_SHORT).show();
                                 double averageRating = Math.round((ratingsum / (list.size())) * 10.0) / 10.0;
 
-                                Toast.makeText(getActivity(), String.valueOf(averageRating), Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getActivity(), String.valueOf(averageRating), Toast.LENGTH_SHORT).show();
                                 parseObject.put("rating", averageRating);
                                 parseObject.put("ratingCount", list.size());
                                 parseObject.saveInBackground();

@@ -63,7 +63,7 @@
                             android:background="@drawable/rounded_corner"
                             android:textColor="@color/white"
                             android:id="@+id/maps_vendor_rating"
-                            android:text="8.0"
+                            android:text="5.0"
                             android:textSize="14dp"
                             android:layout_alignParentRight="true"
                             android:layout_width="36dp"
