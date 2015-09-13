@@ -25,15 +25,22 @@ public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.Pictur
 
     private Context mContext;
     private List<ParseObject> mList;
+    private int pixels;
 
     public PicturesAdapter(Context context) {
         mContext = context;
         mList = new ArrayList<>();
+        float dp = 250.0f;
+        float scale = mContext.getResources().getDisplayMetrics().density;
+        pixels = (int) (dp * scale + 0.5f);
     }
 
     public PicturesAdapter(Context context, List<ParseObject> list) {
         mContext = context;
         mList = list;
+        float dp = 250.0f;
+        float scale = mContext.getResources().getDisplayMetrics().density;
+        pixels = (int) (dp * scale + 0.5f);
     }
 
     @Override
@@ -49,7 +56,10 @@ public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.Pictur
         //holder.picture.setImageBitmap(bitmap);
 
         ParseObject item = mList.get(position);
-        Picasso.with(mContext).load(item.getParseFile("data").getUrl()).resize(700, 700).centerCrop().into(holder.picture);
+
+
+
+        Picasso.with(mContext).load(item.getParseFile("data").getUrl()).resize(pixels, pixels).centerCrop().into(holder.picture);
     }
 
 //    public byte[] getItem(int position) {

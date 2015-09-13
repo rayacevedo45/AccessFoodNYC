@@ -1,6 +1,6 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
-
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,9 +18,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.CountCallback;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
-import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -31,6 +31,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
@@ -44,7 +45,7 @@ public class DetailsFragment extends Fragment {
     private TextView mVendorNameText;
     private ImageView mVendorPicImage;
     private ImageView mVendorRatingImage;
-    private ImageButton add;
+    private Button add;
     private ParseObject selectedVendor;
     private ImageView yelpLogo;
     private static List <String> addList;
@@ -54,15 +55,16 @@ public class DetailsFragment extends Fragment {
     private TextView abouttv;
     private static String mId;
     private RecyclerView mRecyclerViewPictures;
-    private RecyclerView mRecyclerViewReview;
-    private ReviewAdapter mAdapter;
     private PicturesAdapter mPicturesAdapter;
     private boolean isYelp;
     private String objectId;
-    private ImageButton cb;
+    private Button cb;
 
-    private RecyclerView mRecyclerViewFriends;
-    private FavoritedFriendsAdapter mFriendsAdapter;
+    //private RecyclerView mRecyclerViewFriends;
+    //private FavoritedFriendsAdapter mFriendsAdapter;
+    private LinearLayout mParentFavoritedFriends;
+    private NoScrollAdapter<ParseUser> mFavoritedFriendsAdapter;
+
     private TextView countFavs;
     //private TextView numberOfRatings;
     private TextView ratings;
@@ -73,15 +75,16 @@ public class DetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
-        add = (ImageButton) rootView.findViewById(R.id.button_add);
-        cb = (ImageButton) rootView.findViewById(R.id.cbid);
+        add = (Button) rootView.findViewById(R.id.button_add);
+        cb = (Button) rootView.findViewById(R.id.cbid);
         yelpLogo = (ImageView) rootView.findViewById(R.id.yelp_logo);
         mRecyclerViewPictures = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_pictures);
-        mRecyclerViewFriends = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_friends_fav);
+        //mRecyclerViewFriends = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_friends_fav);
         countFavs = (TextView) rootView.findViewById(R.id.count_favs);
         //numberOfRatings = (TextView) rootView.findViewById(R.id.number_of_ratings);
         ratings = (TextView) rootView.findViewById(R.id.ratings);
         mParentLayout = (LinearLayout) rootView.findViewById(R.id.review_container);
+        mParentFavoritedFriends = (LinearLayout) rootView.findViewById(R.id.parent_favorited_friends);
 
         abouttv = (TextView) rootView.findViewById(R.id.aboutId);
 
@@ -89,6 +92,7 @@ public class DetailsFragment extends Fragment {
         isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
 
         mNoScrollAdapter = new NoScrollAdapter<>(getActivity(), mParentLayout);
+        mFavoritedFriendsAdapter = new NoScrollAdapter<>(getActivity(), mParentFavoritedFriends);
 
         cb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,11 +111,11 @@ public class DetailsFragment extends Fragment {
         });
 
 
-        LinearLayoutManager lm3 = new LinearLayoutManager(getActivity());
-        lm3.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mRecyclerViewFriends.setLayoutManager(lm3);
-        mFriendsAdapter = new FavoritedFriendsAdapter(getActivity());
-        mRecyclerViewFriends.setAdapter(mFriendsAdapter);
+//        LinearLayoutManager lm3 = new LinearLayoutManager(getActivity());
+//        lm3.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        mRecyclerViewFriends.setLayoutManager(lm3);
+//        mFriendsAdapter = new FavoritedFriendsAdapter(getActivity());
+//        mRecyclerViewFriends.setAdapter(mFriendsAdapter);
 //        RecyclerView.LayoutParams params = new    RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
 //        params.setMargins(0,0,0,0);
 
@@ -127,7 +131,7 @@ public class DetailsFragment extends Fragment {
 
 
 
-        ParseUser user = ParseUser.getCurrentUser();
+        final ParseUser user = ParseUser.getCurrentUser();
         final ParseRelation<ParseUser> relation = user.getRelation("friends");
 
         if (isYelp) {
@@ -167,10 +171,13 @@ public class DetailsFragment extends Fragment {
                                         @Override
                                         public void done(List<ParseObject> list, ParseException e) {
                                             if (list.size() != 0) {
+                                                List<ParseUser> friends = new ArrayList<ParseUser>();
                                                 for (ParseObject favorite : list) {
-                                                    ParseObject friend = favorite.getParseObject("follower");
-                                                    mFriendsAdapter.addFriend(friend);
+                                                    ParseUser friend = favorite.getParseUser("follower");
+                                                    friends.add(friend);
+                                                    //mFriendsAdapter.addFriend(friend);
                                                 }
+                                                mFavoritedFriendsAdapter.addFavoritedFriends(friends);
                                             }
                                         }
                                     });
@@ -183,7 +190,6 @@ public class DetailsFragment extends Fragment {
             });
 
         } else {
-
 
             mVendorPicImage = (ImageView) rootView.findViewById(R.id.vendor_pic);
             mVendorNameText = (TextView) rootView.findViewById(R.id.vendor_name);
@@ -213,27 +219,16 @@ public class DetailsFragment extends Fragment {
                                 p.addRule(RelativeLayout.BELOW, R.id.vendor_name);
 
                                 mSnippetText.setLayoutParams(p);
-//                                for (ParseObject item : list) {
-//                                    ParseFile file = item.getParseFile("data");
-//
-//                                    file.getDataInBackground(new GetDataCallback() {
-//                                        @Override
-//                                        public void done(byte[] bytes, ParseException e) {
-//                                            mPicturesAdapter.addPicture(bytes);
-//                                        }
-//                                    });
-//                                }
+
                             } else {
                                 abouttv.setVisibility(View.GONE);
                                 Picasso.with(getActivity()).load(vendor.getString("profile_url")).centerCrop().resize(350, 350).noFade().into(mVendorPicImage);
                             }
 
-
                         }
                     });
 
                     mSnippetText.setText(vendor.getString("description"));
-
 
                 }
             });
@@ -282,11 +277,27 @@ public class DetailsFragment extends Fragment {
                                     @Override
                                     public void done(List<ParseObject> list, ParseException e) {
                                         if (list.size() != 0) {
+                                            List<ParseUser> friends = new ArrayList<ParseUser>();
                                             for (ParseObject favorite : list) {
-                                                ParseObject friend = favorite.getParseObject("follower");
-                                                mFriendsAdapter.addFriend(friend);
+                                                ParseUser friend = favorite.getParseUser("follower");
+                                                friends.add(friend);
+                                                //mFriendsAdapter.addFriend(friend);
                                             }
+                                            mFavoritedFriendsAdapter.addFavoritedFriends(friends);
 
+                                        }
+                                    }
+                                });
+
+                                ParseQuery<ParseObject> favorites2 = ParseQuery.getQuery("Favorite");
+                                favorites2.whereEqualTo("vendor", vendor).whereEqualTo("follower", user);
+                                favorites2.getFirstInBackground(new GetCallback<ParseObject>() {
+                                    @Override
+                                    public void done(ParseObject parseObject, ParseException e) {
+                                        if (parseObject == null) {
+                                            addButtonUnfavorited();
+                                        } else {
+                                            addButtonFavorited();
                                         }
                                     }
                                 });
@@ -396,57 +407,83 @@ public class DetailsFragment extends Fragment {
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                add.setImageResource(R.drawable.favorite_white_oneeightdp);
+            public void onClick(final View v) {
+
+
                 final ParseUser user = ParseUser.getCurrentUser();
-                final ParseRelation<ParseObject> favorites = user.getRelation("favorite");
 
-                //check if the yelpID is already in parse.com or not
-                if (isYelp) {
+                String currentText = add.getText().toString();
+                if (currentText.equals("ADD TO FAVORITE")) {
 
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-                    query.whereStartsWith("yelpId", mId);
-
-                    query.getFirstInBackground(new GetCallback<ParseObject>() {
-                        public void done(final ParseObject vendor, ParseException e) {
-                            if (e == null) {
-                                //object exists
-                                addToFavorite(user, vendor);
-
-
-                            } else {
-                                if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
-                                    //object doesn't exist
-
-                                    //add yelpID as new vendor in parse.com
-                                    selectedVendor = new ParseObject("Vendor");
-                                    selectedVendor.put("yelpId", mId);
-                                    selectedVendor.saveInBackground(new SaveCallback() {
-                                        @Override
-                                        public void done(ParseException e) {
-
-                                            addToFavorite(user, selectedVendor);
-
-                                        }
-                                    });
+                    if (isYelp) {
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+                        query.whereStartsWith("yelpId", mId);
+                        query.getFirstInBackground(new GetCallback<ParseObject>() {
+                            public void done(final ParseObject vendor, ParseException e) {
+                                if (e == null) {
+                                    //object exists
+                                    addToFavorite(user, vendor);
                                 } else {
-                                    //unknown error, debug
+                                    if (e.getCode() == ParseException.OBJECT_NOT_FOUND) {
+                                        //object doesn't exist
+                                        //add yelpID as new vendor in parse.com
+                                        selectedVendor = new ParseObject("Vendor");
+                                        selectedVendor.put("yelpId", mId);
+                                        selectedVendor.saveInBackground(new SaveCallback() {
+                                            @Override
+                                            public void done(ParseException e) {
+                                                addToFavorite(user, selectedVendor);
+                                            }
+                                        });
+                                    } else {
+                                        //unknown error, debug
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+                        query.getInBackground(objectId, new GetCallback<ParseObject>() {
+                            @Override
+                            public void done(ParseObject vendor, ParseException e) {
+                                addToFavorite(user, vendor);
+                            }
+                        });
+                    }
+
                 } else {
+
                     ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
                     query.getInBackground(objectId, new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject vendor, ParseException e) {
+                            removeFromFavorite(user, vendor);
+                            
+                        }
+                    });
 
-                            addToFavorite(user, vendor);
+                }
 
+            }
+        });
+    }
+
+    private void removeFromFavorite(ParseUser user, ParseObject vendor) {
+        ParsePush.unsubscribeInBackground(vendor.getObjectId());
+        final ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
+        favorites.whereEqualTo("follower", user).whereEqualTo("vendor", vendor);
+        favorites.getFirstInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject favorite, ParseException e) {
+                if (favorite != null) {
+                    favorite.deleteInBackground(new DeleteCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            addButtonUnfavorited();
+                            Toast.makeText(getActivity(), "Removed from favorites!", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
-
             }
         });
     }
@@ -459,6 +496,7 @@ public class DetailsFragment extends Fragment {
         favorite.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+                addButtonFavorited();
                 Toast.makeText(getActivity(), "Saved!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -472,6 +510,23 @@ public class DetailsFragment extends Fragment {
                 countFavs.setText(i + "");
             }
         });
+    }
+
+    private void addButtonFavorited() {
+        add.setText("FAVORITED!");
+        add.setTextColor(getResources().getColor(R.color.white));
+        add.setBackgroundResource(R.drawable.rounded_corner);
+        add.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_white_24dp, 0, 0, 0);
+        add.setPaddingRelative(40,0,0,0);
+
+    }
+
+    private void addButtonUnfavorited() {
+        add.setText("ADD TO FAVORITE");
+        add.setTextColor(getResources().getColor(R.color.accentColor));
+        add.setBackgroundResource(R.drawable.buttons);
+        add.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_border_black_24dp, 0, 0, 0);
+        add.setPaddingRelative(40, 0, 0, 0);
     }
 }
 
