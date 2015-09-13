@@ -10,6 +10,7 @@ import android.support.v7.app.AlertDialog;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.Constants;
 import rayacevedo45.c4q.nyc.accessfoodnyc.PicActivity;
+import rayacevedo45.c4q.nyc.accessfoodnyc.R;
 
 public class PicDialog extends DialogFragment {
     static final int EXTERNAL_CONTENT_URI = 0;
@@ -19,7 +20,7 @@ public class PicDialog extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.Base_Theme_AppCompat_Light_Dialog);
         objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
         isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
 
