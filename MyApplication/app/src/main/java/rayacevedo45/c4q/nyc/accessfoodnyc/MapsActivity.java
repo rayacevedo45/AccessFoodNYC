@@ -139,16 +139,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         initializeViews();
 
-
-        //setSupportActionBar(mToolbar);
-//        mToolbar.setTitle("Maps");
-//        //mToolbar.inflateMenu(R.menu.menu_map);
-//        setSupportActionBar(mToolbar);
-
-        // this is enable to back button arrow icon
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
         mGoogleApiClient.connect();
 
     }
@@ -257,32 +247,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    private void setUpClusterer() {
-
-        // Initialize the manager with the context and the map.
-        // (Activity extends context, so we can pass 'this' in the constructor.)
-        //mClusterManager = new ClusterManager<MarkerCluster>(getApplicationContext(), mMap);
-
-        // Point the map's listeners at the listeners implemented by the cluster
-        // manager.
-        mMap.setOnCameraChangeListener(mClusterManager);
-
-
-        //mClusterManager.setRenderer(new ClusterRendring(getApplicationContext(), mMap, mClusterManager));
-
-//        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MarkerCluster>() {
-//            @Override
-//            public boolean onClusterItemClick(MarkerCluster markerCluster) {
-//
-//                String a = markerCluster.getTitle();
-//                Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
-//                return false;
-//            }
-//
-//        });
-
-
-    }
 
     protected class YelpSearchCallback implements Callback<YelpResponse> {
 
@@ -560,7 +524,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         final String today = "day" + Integer.toString(day);
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-        query.whereNear("location", point).setLimit(50).findInBackground(new FindCallback<ParseObject>() {
+        query.whereNear("location", point).whereWithinMiles("location", point, 5.0).setLimit(50).findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 for (final ParseObject vendor : list) {

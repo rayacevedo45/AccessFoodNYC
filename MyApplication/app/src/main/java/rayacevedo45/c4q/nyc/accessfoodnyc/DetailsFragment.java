@@ -61,8 +61,6 @@ public class DetailsFragment extends Fragment {
     private String objectId;
     private Button cb;
 
-    //private RecyclerView mRecyclerViewFriends;
-    //private FavoritedFriendsAdapter mFriendsAdapter;
     private LinearLayout mParentFavoritedFriends;
     private NoScrollAdapter<ParseUser> mFavoritedFriendsAdapter;
 
@@ -211,7 +209,7 @@ public class DetailsFragment extends Fragment {
                         }
                     });
 
-                   
+
                 }
             });
 
