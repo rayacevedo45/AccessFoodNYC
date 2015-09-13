@@ -137,6 +137,9 @@ public class LoginActivity extends Activity {
                             goToMapsActivity();
                         } else {
                             Profile profile = Profile.getCurrentProfile();
+                            user.put("profile_url", profile.getProfilePictureUri(300, 300).toString());
+                            user.saveInBackground();
+
                             ParseInstallation installation = ParseInstallation.getCurrentInstallation();
                             installation.put("user", user);
                             installation.put("fbId", profile.getId());

@@ -5,7 +5,6 @@ import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -19,8 +18,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.LinearLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.parse.GetCallback;
@@ -28,8 +25,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.squareup.picasso.Picasso;
-import android.widget.LinearLayout.LayoutParams;
 
 public class ReviewDialogFragment extends DialogFragment {
 
@@ -73,7 +68,7 @@ public class ReviewDialogFragment extends DialogFragment {
         LinearLayout background = (LinearLayout) mDialogView.findViewById(R.id.background_view);
         background.setBackgroundColor(getResources().getColor(android.R.color.transparent));
 
-        mRatingBar = (RatingBar) mDialogView.findViewById(R.id.ratingBar);
+        mRatingBar = (RatingBar) mDialogView.findViewById(R.id.ratingBarRightPart);
      //   mTextViewTitle = (TextView) mDialogView.findViewById(R.id.dialog_review_title);
         mTextViewRating = (TextView) mDialogView.findViewById(R.id.dialog_review_rating);
         mEditTextTitle = (EditText) mDialogView.findViewById(R.id.editText_dialog_title);
