@@ -574,6 +574,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         final String json = vendor.getString(today);
 
+
                         ParseRelation<ParseUser> friends = user.getRelation("friends");
                         friends.getQuery().findInBackground(new FindCallback<ParseUser>() {
                             @Override
