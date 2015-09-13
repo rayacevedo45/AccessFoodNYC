@@ -64,13 +64,7 @@ public class TwitterFragment extends Fragment {
 
         list = (ListView) rootView.findViewById(R.id.list);
 
-        if (isYelp) {
-
-
-
-
-
-        } else {
+        if (!isYelp) {
             ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
             findVendor.getInBackground(objectId, new GetCallback<ParseObject>() {
                 @Override
@@ -79,9 +73,8 @@ public class TwitterFragment extends Fragment {
                     new SearchOnTwitter().execute();
                 }
             });
+
         }
-
-
 
 
         //getTwitterHandle();

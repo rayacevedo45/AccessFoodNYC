@@ -1,6 +1,5 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,10 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +19,6 @@ import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParsePush;
 import com.parse.ParseQuery;
@@ -65,7 +61,6 @@ public class DetailsFragment extends Fragment {
     private NoScrollAdapter<ParseUser> mFavoritedFriendsAdapter;
 
     private TextView countFavs;
-    //private TextView numberOfRatings;
     private TextView ratings;
 
     private LinearLayout mParentLayout;
@@ -111,14 +106,9 @@ public class DetailsFragment extends Fragment {
 
         LinearLayoutManager lm2 = new LinearLayoutManager(getActivity());
         lm2.setOrientation(LinearLayoutManager.HORIZONTAL);
-        //mRecyclerViewPictures.setLayoutParams(params);
         mRecyclerViewPictures.setLayoutManager(lm2);
-       // mRecyclerViewPictures.setPadding(0,0,0,0);
-      //  mRecyclerViewPictures.fling(10,0);
         mPicturesAdapter = new PicturesAdapter(getActivity());
         mRecyclerViewPictures.setAdapter(mPicturesAdapter);
-
-
 
         final ParseUser user = ParseUser.getCurrentUser();
         final ParseRelation<ParseUser> relation = user.getRelation("friends");
@@ -144,11 +134,7 @@ public class DetailsFragment extends Fragment {
                                         @Override
                                         public void done(List<ParseObject> list, ParseException e) {
                                             if (list.size() != 0) {
-
                                                 mNoScrollAdapter.addReviews(list);
-
-//                                                mAdapter = new ReviewAdapter(getActivity(), list);
-//                                                mRecyclerViewReview.setAdapter(mAdapter);
                                             }
                                         }
                                     });
@@ -442,7 +428,7 @@ public class DetailsFragment extends Fragment {
     }
 
     private void addButtonUnfavorited() {
-        add.setText("ADD TO FAVORITE");
+        add.setText("FAVORITE");
         add.setTextColor(getResources().getColor(R.color.accentColor));
         add.setBackgroundResource(R.drawable.buttons);
         add.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_favorite_border_black_24dp, 0, 0, 0);
