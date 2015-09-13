@@ -91,7 +91,7 @@
 
             <Button
                 android:textSize="14dp"
-                android:text="add to Favorite"
+                android:text="Favorite"
                 android:textColor="@color/accentColor"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
