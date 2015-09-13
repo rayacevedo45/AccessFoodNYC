@@ -46,6 +46,18 @@ public class NoScrollAdapter<T> {
             TextView reviewer = (TextView) row.findViewById(R.id.textView_review_name);
             TextView date = (TextView) row.findViewById(R.id.textView_review_date);
 
+            ImageView grade1 = (ImageView) row.findViewById(R.id.grade_1);
+            ImageView grade2 = (ImageView) row.findViewById(R.id.grade_2);
+            ImageView grade3 = (ImageView) row.findViewById(R.id.grade_3);
+            ImageView grade4 = (ImageView) row.findViewById(R.id.grade_4);
+            ImageView grade5 = (ImageView) row.findViewById(R.id.grade_5);
+
+            grade1.setVisibility(View.GONE);
+            grade2.setVisibility(View.GONE);
+            grade3.setVisibility(View.GONE);
+            grade4.setVisibility(View.GONE);
+            grade5.setVisibility(View.GONE);
+
             try {
                 Picasso.with(mContext).load(writer.getString("profile_url")).into(picture);
             } catch (Exception e) {
@@ -60,6 +72,20 @@ public class NoScrollAdapter<T> {
 
             title.setText(review.getString("title"));
             description.setText(review.getString("description"));
+
+            int rating = review.getInt("rating");
+            switch (rating) {
+                case 1:
+                    grade1.setVisibility(View.VISIBLE);
+                case 2:
+                    grade2.setVisibility(View.VISIBLE);
+                case 3:
+                    grade3.setVisibility(View.VISIBLE);
+                case 4:
+                    grade4.setVisibility(View.VISIBLE);
+                case 5:
+                    grade5.setVisibility(View.VISIBLE);
+            }
 
             mParentLayout.addView(row, i);
         }
