@@ -1,11 +1,13 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,6 +51,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
     private Context mContext;
     private List<Vendor> mList;
     private ParseGeoPoint mPoint;
+
 
     public VendorListAdapter(Context context, ParseGeoPoint point) {
         mContext = context;
@@ -119,9 +122,11 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         holder.address.setText(vendor.getAddress());
 
         if (vendor.isLiked()) {
-            holder.like.setText("favorited!");
+            holder.like.setImageResource(R.drawable.ic_favorite_white_24dp);
+            int color = Color.parseColor("#ff0000");
+            holder.like.setColorFilter(color);
         } else {
-            holder.like.setText("favorite");
+            holder.like.setVisibility(View.GONE);
         }
 
         double rate = vendor.getRating();
@@ -192,46 +197,46 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.yelpLogo.setVisibility(View.GONE);
         }
 
-        holder.like.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if (holder.like.getText().toString().equalsIgnoreCase("favorite")) {
-                    holder.like.setText("Favorited!");
-
-                    if (vendor.isYelp()) {
-
-                        final ParseObject newVendor = new ParseObject("Vendor");
-                        newVendor.put("yelpId", vendor.getId());
-                        newVendor.saveInBackground(new SaveCallback() {
-                            @Override
-                            public void done(ParseException e) {
-                                addToLikedList(newVendor);
-                            }
-                        });
-                    } else {
-                        ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
-                        findVendor.getInBackground(vendor.getId(), new GetCallback<ParseObject>() {
-                            @Override
-                            public void done(ParseObject parseObject, ParseException e) {
-                                addToLikedList(parseObject);
-                            }
-                        });
-                    }
-
-                } else {
-                    holder.like.setText("Favorite");
-                    ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
-                    findVendor.getInBackground(vendor.getId(), new GetCallback<ParseObject>() {
-                        @Override
-                        public void done(ParseObject parseObject, ParseException e) {
-                            removeFromLikedList(parseObject);
-                        }
-                    });
-
-                }
-                return true;
-            }
-        });
+//        holder.like.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                if (holder.like.getText().toString().equalsIgnoreCase("favorite")) {
+//                    holder.like.setText("Favorited!");
+//
+//                    if (vendor.isYelp()) {
+//
+//                        final ParseObject newVendor = new ParseObject("Vendor");
+//                        newVendor.put("yelpId", vendor.getId());
+//                        newVendor.saveInBackground(new SaveCallback() {
+//                            @Override
+//                            public void done(ParseException e) {
+//                                addToLikedList(newVendor);
+//                            }
+//                        });
+//                    } else {
+//                        ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
+//                        findVendor.getInBackground(vendor.getId(), new GetCallback<ParseObject>() {
+//                            @Override
+//                            public void done(ParseObject parseObject, ParseException e) {
+//                                addToLikedList(parseObject);
+//                            }
+//                        });
+//                    }
+//
+//                } else {
+//                    holder.like.setText("Favorite");
+//                    ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
+//                    findVendor.getInBackground(vendor.getId(), new GetCallback<ParseObject>() {
+//                        @Override
+//                        public void done(ParseObject parseObject, ParseException e) {
+//                            removeFromLikedList(parseObject);
+//                        }
+//                    });
+//
+//                }
+//                return true;
+//            }
+//        });
 
         int size = vendor.getFriends().size();
         if (size == 0) {
@@ -326,7 +331,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         protected ImageView friend4;
         protected ImageView friend5;
         protected TextView more;
-        protected Button like;
+        protected ImageButton like;
 
         public VendorViewHolder(View itemView) {
             super(itemView);
@@ -338,7 +343,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             rating = (TextView) itemView.findViewById(R.id.maps_vendor_rating);
             icon = (ImageView) itemView.findViewById(R.id.schedule_icon);
             distance = (TextView) itemView.findViewById(R.id.maps_distance);
-            like = (Button) itemView.findViewById(R.id.vendor_like);
+            like = (ImageButton) itemView.findViewById(R.id.vendor_like);
 
             friend1 = (ImageView) itemView.findViewById(R.id.friend1);
             friend2 = (ImageView) itemView.findViewById(R.id.friend2);
