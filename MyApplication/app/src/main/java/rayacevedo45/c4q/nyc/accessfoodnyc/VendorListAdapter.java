@@ -146,7 +146,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         Picasso.with(mContext).load(vendor.getPicture()).into(holder.thumbnail);
 
         String hour = vendor.getHours();
-        if (!hour.equals("closed")) {
+        if (!hour.equals("closed") && hour.length() != 0) {
             try {
                 JSONObject info = new JSONObject(hour);
                 String opening = info.getString("openAt");
@@ -175,8 +175,11 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             } catch (JSONException e1) {
                 e1.printStackTrace();
             }
-        } else {
+        } else if (hour.equals("closed")) {
             holder.hour.setText("Closed today");
+        } else if (hour.length() == 0) {
+            holder.icon.setVisibility(View.GONE);
+            holder.hour.setVisibility(View.GONE);
         }
 
         if (vendor.isYelp()) {
