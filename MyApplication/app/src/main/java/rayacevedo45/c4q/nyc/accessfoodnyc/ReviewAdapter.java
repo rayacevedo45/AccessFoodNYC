@@ -12,6 +12,8 @@ import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -48,8 +50,11 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHold
 
         holder.name.setText(user.getString("first_name") + " " + user.getString("last_name"));
 
-        Date uploadDate = review.getCreatedAt();
-        holder.date.setText(uploadDate.getMonth() + "/" + uploadDate.getDay() + "/" + uploadDate.getYear());
+
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        String dates = dateFormat.format(review.getCreatedAt());
+        holder.date.setText(dates);
+
 
         holder.title.setText(review.getString("title"));
         holder.description.setText(review.getString("description"));

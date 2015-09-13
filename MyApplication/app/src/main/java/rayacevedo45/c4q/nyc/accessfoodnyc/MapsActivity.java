@@ -261,25 +261,25 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Initialize the manager with the context and the map.
         // (Activity extends context, so we can pass 'this' in the constructor.)
-        mClusterManager = new ClusterManager<MarkerCluster>(getApplicationContext(), mMap);
+        //mClusterManager = new ClusterManager<MarkerCluster>(getApplicationContext(), mMap);
 
         // Point the map's listeners at the listeners implemented by the cluster
         // manager.
         mMap.setOnCameraChangeListener(mClusterManager);
 
 
-        mClusterManager.setRenderer(new ClusterRendring(getApplicationContext(), mMap, mClusterManager));
+        //mClusterManager.setRenderer(new ClusterRendring(getApplicationContext(), mMap, mClusterManager));
 
-        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MarkerCluster>() {
-            @Override
-            public boolean onClusterItemClick(MarkerCluster markerCluster) {
-
-                String a = markerCluster.getTitle();
-                Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
-                return false;
-            }
-
-        });
+//        mClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<MarkerCluster>() {
+//            @Override
+//            public boolean onClusterItemClick(MarkerCluster markerCluster) {
+//
+//                String a = markerCluster.getTitle();
+//                Toast.makeText(getApplicationContext(), a, Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+//
+//        });
 
 
     }
@@ -574,6 +574,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                         final String json = vendor.getString(today);
 
+
                         ParseRelation<ParseUser> friends = user.getRelation("friends");
                         friends.getQuery().findInBackground(new FindCallback<ParseUser>() {
                             @Override
@@ -592,35 +593,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                             @Override
                                             public void done(final ParseObject parseObject, ParseException e) {
 
-                                                HashMap<String, Object> params = new HashMap<String, Object>();
-                                                params.put("vendor", vendor);
-                                                ParseCloud.callFunctionInBackground("averageRatings", params, new FunctionCallback<Float>() {
-                                                    @Override
-                                                    public void done(Float rate, ParseException e) {
-
-                                                        if (rate == null) {
-                                                            rate = 4.0f;
-                                                        }
-                                                        Vendor truck;
-                                                        if (parseObject == null) {
-                                                            truck = new Vendor.Builder(vendor.getObjectId())
-                                                                    .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
-                                                                    .isYelp(false)
-                                                                    .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
-                                                                    .setPicture(vendor.getString("profile_url")).setRating(rate)
-                                                                    .isLiked(false).build();
-                                                        } else {
-                                                            truck = new Vendor.Builder(vendor.getObjectId())
-                                                                    .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
-                                                                    .isYelp(false)
-                                                                    .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
-                                                                    .setPicture(vendor.getString("profile_url")).setRating(rate)
-                                                                    .isLiked(true).build();
-                                                        }
-                                                        mAdapter.addVendor(truck);
-
-                                                    }
-                                                });
+                                                Vendor truck;
+                                                if (parseObject == null) {
+                                                    truck = new Vendor.Builder(vendor.getObjectId())
+                                                            .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
+                                                            .isYelp(false)
+                                                            .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
+                                                            .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
+                                                            .isLiked(false).build();
+                                                } else {
+                                                    truck = new Vendor.Builder(vendor.getObjectId())
+                                                            .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
+                                                            .isYelp(false)
+                                                            .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
+                                                            .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
+                                                            .isLiked(true).build();
+                                                }
+                                                mAdapter.addVendor(truck);
 
 
                                             }

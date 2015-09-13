@@ -53,6 +53,7 @@
 
         <Button
             android:id="@+id/button_friend_remove"
+            android:visibility="gone"
             android:text="Remove"
             android:background="@drawable/round_btn_red"
             android:layout_width="wrap_content"

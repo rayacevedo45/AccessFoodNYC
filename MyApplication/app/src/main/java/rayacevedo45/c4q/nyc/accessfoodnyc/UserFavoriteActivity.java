@@ -55,7 +55,7 @@ public class UserFavoriteActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_user_favorite);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(user.getString("first_name") + " " + user.getString("last_name") + "'s Likes");
+        getSupportActionBar().setTitle(user.getString("first_name") + " " + user.getString("last_name") + "'s Favorites");
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         final String today = "day" + Integer.toString(day);
