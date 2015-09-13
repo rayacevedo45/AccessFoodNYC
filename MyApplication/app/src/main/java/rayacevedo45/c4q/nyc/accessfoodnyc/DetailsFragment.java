@@ -42,17 +42,18 @@ import rayacevedo45.c4q.nyc.accessfoodnyc.vendor.PicDialog;
 public class DetailsFragment extends Fragment {
 
     private static final String TAG = DetailsFragment.class.getName();
+
+
     private TextView mVendorNameText;
+    private TextView mTextViewVendorAddress;
+    private TextView mSnippetText;
+
     private ImageView mVendorPicImage;
-    private ImageView mVendorRatingImage;
     private Button add;
     private ParseObject selectedVendor;
     private ImageView yelpLogo;
     private static List <String> addList;
-    private static String mCategories;
-    private TextView mPhoneText;
-    private TextView mSnippetText;
-    private TextView abouttv;
+
     private static String mId;
     private RecyclerView mRecyclerViewPictures;
     private PicturesAdapter mPicturesAdapter;
@@ -77,16 +78,20 @@ public class DetailsFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
         add = (Button) rootView.findViewById(R.id.button_add);
         cb = (Button) rootView.findViewById(R.id.cbid);
+
         yelpLogo = (ImageView) rootView.findViewById(R.id.yelp_logo);
+        mVendorNameText = (TextView) rootView.findViewById(R.id.vendor_name);
+        mVendorPicImage = (ImageView) rootView.findViewById(R.id.vendor_pic);
+        mSnippetText = (TextView) rootView.findViewById(R.id.snippet_text);
+        mTextViewVendorAddress = (TextView) rootView.findViewById(R.id.vendor_address);
+
+
         mRecyclerViewPictures = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_pictures);
-        //mRecyclerViewFriends = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_friends_fav);
         countFavs = (TextView) rootView.findViewById(R.id.count_favs);
         //numberOfRatings = (TextView) rootView.findViewById(R.id.number_of_ratings);
         ratings = (TextView) rootView.findViewById(R.id.ratings);
         mParentLayout = (LinearLayout) rootView.findViewById(R.id.review_container);
         mParentFavoritedFriends = (LinearLayout) rootView.findViewById(R.id.parent_favorited_friends);
-
-        abouttv = (TextView) rootView.findViewById(R.id.aboutId);
 
         objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
         isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
@@ -98,27 +103,13 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 PicDialog picDialog = new PicDialog();
-
                 Bundle bundle = new Bundle();
                 bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
                 bundle.putBoolean(Constants.EXTRA_KEY_IS_YELP, isYelp);
-
                 picDialog.setArguments(bundle);
-
-
                 picDialog.show(getActivity().getSupportFragmentManager(), "picD");
             }
         });
-
-
-//        LinearLayoutManager lm3 = new LinearLayoutManager(getActivity());
-//        lm3.setOrientation(LinearLayoutManager.HORIZONTAL);
-//        mRecyclerViewFriends.setLayoutManager(lm3);
-//        mFriendsAdapter = new FavoritedFriendsAdapter(getActivity());
-//        mRecyclerViewFriends.setAdapter(mFriendsAdapter);
-//        RecyclerView.LayoutParams params = new    RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
-//        params.setMargins(0,0,0,0);
-
 
         LinearLayoutManager lm2 = new LinearLayoutManager(getActivity());
         lm2.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -191,10 +182,6 @@ public class DetailsFragment extends Fragment {
 
         } else {
 
-            mVendorPicImage = (ImageView) rootView.findViewById(R.id.vendor_pic);
-            mVendorNameText = (TextView) rootView.findViewById(R.id.vendor_name);
-            mSnippetText = (TextView) rootView.findViewById(R.id.snippet_text);
-
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
                 @Override
@@ -202,6 +189,10 @@ public class DetailsFragment extends Fragment {
 
                     getCountFavs(vendor);
                     setRatings(vendor.getDouble("rating"));
+
+                    mVendorNameText.setText(vendor.getString("name"));
+                    mTextViewVendorAddress.setText(vendor.getString("address"));
+                    mSnippetText.setText(vendor.getString("description"));
 
                     ParseRelation<ParseObject> pictures = vendor.getRelation("pictures");
                     pictures.getQuery().findInBackground(new FindCallback<ParseObject>() {
@@ -211,24 +202,16 @@ public class DetailsFragment extends Fragment {
                             if (list.size() != 0) {
                                 mPicturesAdapter = new PicturesAdapter(getActivity(), list);
                                 mRecyclerViewPictures.setAdapter(mPicturesAdapter);
-                                mVendorPicImage.setVisibility(View.GONE);
                                 mRecyclerViewPictures.setVisibility(View.VISIBLE);
 
-                                RelativeLayout.LayoutParams p = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-                                        ViewGroup.LayoutParams.WRAP_CONTENT);
-                                p.addRule(RelativeLayout.BELOW, R.id.vendor_name);
-
-                                mSnippetText.setLayoutParams(p);
-
                             } else {
-                                abouttv.setVisibility(View.GONE);
-                                Picasso.with(getActivity()).load(vendor.getString("profile_url")).centerCrop().resize(350, 350).noFade().into(mVendorPicImage);
+                                Picasso.with(getActivity()).load(vendor.getString("profile_url")).into(mVendorPicImage);
                             }
 
                         }
                     });
 
-                    mSnippetText.setText(vendor.getString("description"));
+
 
                 }
             });
@@ -242,16 +225,6 @@ public class DetailsFragment extends Fragment {
                         @Override
                         public void done(final ParseObject vendor, ParseException e) {
 
-//                            ParseQuery<ParseObject> reviews = ParseQuery.getQuery("Review");
-//                            reviews.whereEqualTo("vendor", vendor).countInBackground(new CountCallback() {
-//                                @Override
-//                                public void done(int i, ParseException e) {
-//                                    if (i != 0) {
-//                                        numberOfRatings.setText("  " + i);
-//                                    }
-//                                }
-//                            });
-
                             if (list.size() != 0) {
                                 ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Review");
                                 query1.include("writer");
@@ -260,15 +233,10 @@ public class DetailsFragment extends Fragment {
                                     @Override
                                     public void done(List<ParseObject> list, ParseException e) {
                                         if (list.size() != 0) {
-
                                             mNoScrollAdapter.addReviews(list);
-//                                            mAdapter = new ReviewAdapter(getActivity(), list);
-//                                            mRecyclerViewReview.setAdapter(mAdapter);
                                         }
                                     }
                                 });
-
-
 
                                 ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
                                 favorites.include("follower");
@@ -303,11 +271,8 @@ public class DetailsFragment extends Fragment {
                                 });
                             }
 
-
                         }
                     });
-
-
 
                 }
             });
@@ -318,48 +283,20 @@ public class DetailsFragment extends Fragment {
     }
 
     public void onYelpData(Business business) {
-
-        Log.d(TAG, "inside onYelpData.");
-        mVendorNameText = (TextView)getActivity().findViewById(R.id.vendor_name);
         mVendorNameText.setText(business.getName());
-
-        mVendorNameText = (TextView)getActivity().findViewById(R.id.category);
-        catListIterator(business);
-        mVendorNameText.setText(mCategories);
-
-        mVendorPicImage = (ImageView)getActivity().findViewById(R.id.vendor_pic);
+        mVendorPicImage.setVisibility(View.VISIBLE);
         String businessImgUrl = (business.getImageUrl());
-        Picasso.with(getActivity()).load(businessImgUrl).centerCrop().resize(350, 350).noFade().into(mVendorPicImage);
-
-        mVendorRatingImage = (ImageView)getActivity().findViewById(R.id.vendor_rating);
-        String vendorRatingUrlLarge = business.getRatingImgUrlLarge();
-        Picasso.with(getActivity()).load(vendorRatingUrlLarge).into(mVendorRatingImage);
-
-//        mVendorRatingNum = (TextView)getActivity().findViewById(R.id.rating_num);
-//        mVendorRatingNum.setText(String.valueOf(business.getRating()));
-
-        addressGenerator(business);
-        LinearLayout linearLayout = (LinearLayout)getActivity().findViewById(R.id.address);
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        for( int i = 0; i < addList.size(); i++ )
-        {
-            TextView textView = new TextView(getActivity());
-            textView.setText(addList.get(i));
-            linearLayout.addView(textView);
+        Picasso.with(getActivity()).load(businessImgUrl).into(mVendorPicImage);
+        List<String> address = addressGenerator(business);
+        if (address.size() >= 2) {
+            mTextViewVendorAddress.append(address.get(0) + ", " + address.get(1));
+        } else if (address.size() == 1) {
+            mTextViewVendorAddress.append(address.get(0));
         }
-
-        mPhoneText = (TextView)getActivity().findViewById(R.id.phone);
-        mPhoneText.setText(business.getDisplayPhone());
-
         mSnippetText = (TextView)getActivity().findViewById(R.id.snippet_text);
-        mPhoneText.setText(business.getSnippetText());
-
         mId = business.getId();
-
         //numberOfRatings.setText(" " + business.getReviewCount());
-
         setRatings(business.getRating());
-
     }
 
     public void setRatings(Double rating) {
@@ -377,20 +314,6 @@ public class DetailsFragment extends Fragment {
         }
     }
 
-    public static String catListIterator (Business business){
-        List<List<String>> catListOfLists = business.getCategories();
-        int i = 0;
-        List<String> catList = null;
-        mCategories = "";
-
-        while (i < catListOfLists.size()) {
-            catList = catListOfLists.get(i);
-            mCategories= mCategories + " " + (catList.get(0));
-            i++;
-        }
-
-        return mCategories;
-    }
 
     public static List<String> addressGenerator(Business business){
 

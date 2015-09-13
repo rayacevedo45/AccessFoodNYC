@@ -75,16 +75,16 @@ public class NoScrollAdapter<T> {
 
             int rating = review.getInt("rating");
             switch (rating) {
-                case 1:
-                    grade1.setVisibility(View.VISIBLE);
-                case 2:
-                    grade2.setVisibility(View.VISIBLE);
-                case 3:
-                    grade3.setVisibility(View.VISIBLE);
-                case 4:
-                    grade4.setVisibility(View.VISIBLE);
                 case 5:
                     grade5.setVisibility(View.VISIBLE);
+                case 4:
+                    grade4.setVisibility(View.VISIBLE);
+                case 3:
+                    grade3.setVisibility(View.VISIBLE);
+                case 2:
+                    grade2.setVisibility(View.VISIBLE);
+                case 1:
+                    grade1.setVisibility(View.VISIBLE);
             }
 
             mParentLayout.addView(row, i);

@@ -14,135 +14,60 @@
 
 
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerView_details_pictures"
-                android:layout_height="250dp"
-                android:layout_width="match_parent"
-                android:layout_alignParentTop="true"
-                android:visibility="gone">
-            </android.support.v7.widget.RecyclerView>
 
-        <TextView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_details_pictures"
+            android:layout_height="250dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="About"
-            android:textSize="24dp"
-            android:textColor="@color/orange"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:id="@+id/aboutId"
+            android:layout_alignParentTop="true"
             android:visibility="gone"/>
 
+        <ImageView
+            android:padding="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/yelp_logo"
+            android:src="@drawable/yelp_logo"
+            android:layout_gravity="right"
+            android:visibility="gone"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/vendor_pic"
+            android:layout_width="200dp"
+            android:visibility="gone"
+            android:layout_gravity="center_horizontal"
+            android:layout_height="200dp" />
+
+        <TextView
+            android:paddingTop="16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/vendor_name"
+            android:textSize="25dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#303030" />
 
 
+        <TextView
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="4dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/vendor_address"
+            android:textSize="15dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="#303030" />
 
-        <RelativeLayout
+
+        <TextView
+            android:padding="16dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:clickable="true">
+            android:id="@+id/snippet_text"
+            android:textSize="15dp"
+            android:textColor="#303030"/>
 
-
-
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/vendor_pic"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/yelp_logo"
-                android:layout_toRightOf="@id/vendor_pic"
-                android:src="@drawable/yelp_logo"
-                android:layout_marginTop="40dp"
-                android:visibility="gone"/>
-
-
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/vendor_name"
-                android:textSize="25dp"
-                android:text=""
-                android:layout_below="@+id/vendor_pic"
-                android:layout_centerHorizontal="true"
-                android:textColor="#303030"
-                />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/category"
-                android:textSize="15dp"
-                android:text=""
-                android:layout_below="@+id/vendor_name"
-                android:layout_centerHorizontal="true"
-                android:textColor="#303030" />
-
-            <ImageView
-                android:layout_width="200dp"
-                android:layout_height="30dp"
-                android:id="@+id/vendor_rating"
-                android:layout_alignTop="@+id/rating_num"
-                android:layout_centerHorizontal="true" />
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/rating_num"
-                android:textSize="15dp"
-                android:layout_toRightOf="@id/vendor_rating"
-                android:layout_below="@+id/category"
-                android:textColor="#303030" />
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/address"
-                android:layout_below="@+id/vendor_rating"
-                android:orientation="vertical"
-                android:layout_centerHorizontal="true"
-                android:gravity = "center">
-
-            </LinearLayout>
-
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/phone"
-                android:textSize="15dp"
-                android:layout_below="@+id/address"
-                android:layout_centerHorizontal="true"
-                android:textColor="#303030" />
-
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/snippet_text"
-                android:textSize="15dp"
-                android:layout_below="@+id/phone"
-                android:layout_centerHorizontal="true"
-                android:textColor="#303030"
-                android:gravity = "center"
-                android:scrollbars = "vertical"/>
-
-
-        </RelativeLayout>
 
         <LinearLayout
             android:padding="16dp"

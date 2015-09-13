@@ -134,16 +134,16 @@ public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.Us
         holder.grade5.setVisibility(View.GONE);
 
         switch(review.getRating()) {
-            case 1:
-                holder.grade1.setVisibility(View.VISIBLE);
-            case 2:
-                holder.grade2.setVisibility(View.VISIBLE);
-            case 3:
-                holder.grade3.setVisibility(View.VISIBLE);
-            case 4:
-                holder.grade4.setVisibility(View.VISIBLE);
             case 5:
                 holder.grade5.setVisibility(View.VISIBLE);
+            case 4:
+                holder.grade4.setVisibility(View.VISIBLE);
+            case 3:
+                holder.grade3.setVisibility(View.VISIBLE);
+            case 2:
+                holder.grade2.setVisibility(View.VISIBLE);
+            case 1:
+                holder.grade1.setVisibility(View.VISIBLE);
         }
 
 
