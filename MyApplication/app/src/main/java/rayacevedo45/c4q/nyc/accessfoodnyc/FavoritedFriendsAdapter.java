@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -17,14 +18,14 @@ import java.util.List;
 public class FavoritedFriendsAdapter extends RecyclerView.Adapter<FavoritedFriendsAdapter.FriendsHolder> {
 
     private Context mContext;
-    private List<ParseObject> mList;
+    private List<ParseUser> mList;
 
     public FavoritedFriendsAdapter(Context context) {
         mContext = context;
         mList = new ArrayList<>();
     }
 
-    public void addFriend(ParseObject friend) {
+    public void addFriend(ParseUser friend) {
         mList.add(friend);
         notifyItemInserted(mList.size() - 1);
         notifyItemChanged(mList.size() - 1);
@@ -38,7 +39,7 @@ public class FavoritedFriendsAdapter extends RecyclerView.Adapter<FavoritedFrien
 
     @Override
     public void onBindViewHolder(FriendsHolder holder, int position) {
-        ParseObject friend = mList.get(position);
+        ParseUser friend = mList.get(position);
         holder.name.setText(friend.getString("first_name") + " " + friend.getString("last_name"));
         Picasso.with(mContext).load(friend.getString("profile_url")).into(holder.picture);
     }

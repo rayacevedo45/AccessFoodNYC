@@ -70,7 +70,16 @@ public class NoScrollAdapter<T> {
 
         for (int i = 0; i < mList.size(); i++) {
             final View row = mInflater.inflate(R.layout.list_item_details_friend_fav, null);
-            
+
+            ParseUser friend = (ParseUser) mList.get(i);
+
+            ImageView picture = (ImageView) row.findViewById(R.id.details_friend_fav);
+            TextView name = (TextView) row.findViewById(R.id.textView_details_friend_name);
+
+            name.setText(friend.getString("first_name") + " " + friend.getString("last_name"));
+            Picasso.with(mContext).load(friend.getString("profile_url")).into(picture);
+
+            mParentLayout.addView(row, i);
         }
 
     }

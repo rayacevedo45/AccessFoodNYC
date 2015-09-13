@@ -31,6 +31,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import rayacevedo45.c4q.nyc.accessfoodnyc.api.yelp.models.Business;
@@ -59,8 +60,11 @@ public class DetailsFragment extends Fragment {
     private String objectId;
     private Button cb;
 
-    private RecyclerView mRecyclerViewFriends;
-    private FavoritedFriendsAdapter mFriendsAdapter;
+    //private RecyclerView mRecyclerViewFriends;
+    //private FavoritedFriendsAdapter mFriendsAdapter;
+    private LinearLayout mParentFavoritedFriends;
+    private NoScrollAdapter<ParseUser> mFavoritedFriendsAdapter;
+
     private TextView countFavs;
     //private TextView numberOfRatings;
     private TextView ratings;
@@ -75,11 +79,12 @@ public class DetailsFragment extends Fragment {
         cb = (Button) rootView.findViewById(R.id.cbid);
         yelpLogo = (ImageView) rootView.findViewById(R.id.yelp_logo);
         mRecyclerViewPictures = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_pictures);
-        mRecyclerViewFriends = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_friends_fav);
+        //mRecyclerViewFriends = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_friends_fav);
         countFavs = (TextView) rootView.findViewById(R.id.count_favs);
         //numberOfRatings = (TextView) rootView.findViewById(R.id.number_of_ratings);
         ratings = (TextView) rootView.findViewById(R.id.ratings);
         mParentLayout = (LinearLayout) rootView.findViewById(R.id.review_container);
+        mParentFavoritedFriends = (LinearLayout) rootView.findViewById(R.id.parent_favorited_friends);
 
         abouttv = (TextView) rootView.findViewById(R.id.aboutId);
 
@@ -87,6 +92,7 @@ public class DetailsFragment extends Fragment {
         isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
 
         mNoScrollAdapter = new NoScrollAdapter<>(getActivity(), mParentLayout);
+        mFavoritedFriendsAdapter = new NoScrollAdapter<>(getActivity(), mParentFavoritedFriends);
 
         cb.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,11 +111,11 @@ public class DetailsFragment extends Fragment {
         });
 
 
-        LinearLayoutManager lm3 = new LinearLayoutManager(getActivity());
-        lm3.setOrientation(LinearLayoutManager.HORIZONTAL);
-        mRecyclerViewFriends.setLayoutManager(lm3);
-        mFriendsAdapter = new FavoritedFriendsAdapter(getActivity());
-        mRecyclerViewFriends.setAdapter(mFriendsAdapter);
+//        LinearLayoutManager lm3 = new LinearLayoutManager(getActivity());
+//        lm3.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        mRecyclerViewFriends.setLayoutManager(lm3);
+//        mFriendsAdapter = new FavoritedFriendsAdapter(getActivity());
+//        mRecyclerViewFriends.setAdapter(mFriendsAdapter);
 //        RecyclerView.LayoutParams params = new    RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT);
 //        params.setMargins(0,0,0,0);
 
@@ -165,10 +171,13 @@ public class DetailsFragment extends Fragment {
                                         @Override
                                         public void done(List<ParseObject> list, ParseException e) {
                                             if (list.size() != 0) {
+                                                List<ParseUser> friends = new ArrayList<ParseUser>();
                                                 for (ParseObject favorite : list) {
-                                                    ParseObject friend = favorite.getParseObject("follower");
-                                                    mFriendsAdapter.addFriend(friend);
+                                                    ParseUser friend = favorite.getParseUser("follower");
+                                                    friends.add(friend);
+                                                    //mFriendsAdapter.addFriend(friend);
                                                 }
+                                                mFavoritedFriendsAdapter.addFavoritedFriends(friends);
                                             }
                                         }
                                     });
@@ -268,10 +277,13 @@ public class DetailsFragment extends Fragment {
                                     @Override
                                     public void done(List<ParseObject> list, ParseException e) {
                                         if (list.size() != 0) {
+                                            List<ParseUser> friends = new ArrayList<ParseUser>();
                                             for (ParseObject favorite : list) {
-                                                ParseObject friend = favorite.getParseObject("follower");
-                                                mFriendsAdapter.addFriend(friend);
+                                                ParseUser friend = favorite.getParseUser("follower");
+                                                friends.add(friend);
+                                                //mFriendsAdapter.addFriend(friend);
                                             }
+                                            mFavoritedFriendsAdapter.addFavoritedFriends(friends);
 
                                         }
                                     }
