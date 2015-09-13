@@ -61,8 +61,6 @@ public class DetailsFragment extends Fragment {
     private String objectId;
     private Button cb;
 
-    //private RecyclerView mRecyclerViewFriends;
-    //private FavoritedFriendsAdapter mFriendsAdapter;
     private LinearLayout mParentFavoritedFriends;
     private NoScrollAdapter<ParseUser> mFavoritedFriendsAdapter;
 
@@ -194,23 +192,22 @@ public class DetailsFragment extends Fragment {
                     mTextViewVendorAddress.setText(vendor.getString("address"));
                     mSnippetText.setText(vendor.getString("description"));
 
-                    ParseRelation<ParseObject> pictures = vendor.getRelation("pictures");
-                    pictures.getQuery().findInBackground(new FindCallback<ParseObject>() {
+
+                    ParseQuery<ParseObject> pictures = ParseQuery.getQuery("Picture");
+                    pictures.whereEqualTo("vendor", vendor).findInBackground(new FindCallback<ParseObject>() {
                         @Override
                         public void done(List<ParseObject> list, ParseException e) {
-
                             if (list.size() != 0) {
                                 mPicturesAdapter = new PicturesAdapter(getActivity(), list);
                                 mRecyclerViewPictures.setAdapter(mPicturesAdapter);
                                 mRecyclerViewPictures.setVisibility(View.VISIBLE);
+                                mVendorPicImage.setVisibility(View.GONE);
 
                             } else {
                                 Picasso.with(getActivity()).load(vendor.getString("profile_url")).into(mVendorPicImage);
                             }
-
                         }
                     });
-
 
 
                 }

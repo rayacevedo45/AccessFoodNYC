@@ -179,12 +179,9 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
                     mCurrentDetailsFragment.setArguments(bundle);
                     return mCurrentDetailsFragment;
                 case 1:
-//                    fragment = new ReviewsFragment();
-//                    Bundle bundle = new Bundle();
-//                    twitterHandle = getTwitterHandle();
-//                    bundle.putString("Twitter Handle", twitterHandle);
-//                    fragment.setArguments(bundle);
-                    return new TwitterFragment();
+                    fragment = new TwitterFragment();
+                    fragment.setArguments(bundle);
+                    return fragment;
                 case 2:
                     fragment = new ReviewsFragment();
                     fragment.setArguments(bundle);

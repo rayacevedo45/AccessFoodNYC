@@ -42,12 +42,18 @@ public class TwitterFragment extends Fragment {
     private String twitterHandle;
 //    public String twitterHandle = "smorgasburg";
 
+    private String objectId;
+    private boolean isYelp;
+
     private ParseObject selectedVendor;
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        objectId = getArguments().getString(Constants.EXTRA_KEY_OBJECT_ID);
+        isYelp = getArguments().getBoolean(Constants.EXTRA_KEY_IS_YELP);
     }
 
     @Override
@@ -58,7 +64,27 @@ public class TwitterFragment extends Fragment {
 
         list = (ListView) rootView.findViewById(R.id.list);
 
-        getTwitterHandle();
+        if (isYelp) {
+
+
+
+
+
+        } else {
+            ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
+            findVendor.getInBackground(objectId, new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject vendor, ParseException e) {
+                    twitterHandle = vendor.getString("twitter");
+                    new SearchOnTwitter().execute();
+                }
+            });
+        }
+
+
+
+
+        //getTwitterHandle();
 
 //        twitterHandle  = getArguments().getString("Twitter Handle");
 

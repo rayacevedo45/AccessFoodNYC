@@ -198,7 +198,7 @@ public class PicActivity extends AppCompatActivity {
                                 }
                             });
                             progressBar.setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), "uploaded1", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "uploaded", Toast.LENGTH_SHORT).show();
                         }
                     });
 

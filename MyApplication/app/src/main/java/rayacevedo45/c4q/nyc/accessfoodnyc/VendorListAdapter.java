@@ -122,6 +122,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
         holder.address.setText(vendor.getAddress());
 
         if (vendor.isLiked()) {
+            holder.like.setVisibility(View.VISIBLE);
             holder.like.setImageResource(R.drawable.ic_favorite_white_24dp);
             int color = Color.parseColor("#ff0000");
             holder.like.setColorFilter(color);
@@ -197,46 +198,6 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.yelpLogo.setVisibility(View.GONE);
         }
 
-//        holder.like.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                if (holder.like.getText().toString().equalsIgnoreCase("favorite")) {
-//                    holder.like.setText("Favorited!");
-//
-//                    if (vendor.isYelp()) {
-//
-//                        final ParseObject newVendor = new ParseObject("Vendor");
-//                        newVendor.put("yelpId", vendor.getId());
-//                        newVendor.saveInBackground(new SaveCallback() {
-//                            @Override
-//                            public void done(ParseException e) {
-//                                addToLikedList(newVendor);
-//                            }
-//                        });
-//                    } else {
-//                        ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
-//                        findVendor.getInBackground(vendor.getId(), new GetCallback<ParseObject>() {
-//                            @Override
-//                            public void done(ParseObject parseObject, ParseException e) {
-//                                addToLikedList(parseObject);
-//                            }
-//                        });
-//                    }
-//
-//                } else {
-//                    holder.like.setText("Favorite");
-//                    ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
-//                    findVendor.getInBackground(vendor.getId(), new GetCallback<ParseObject>() {
-//                        @Override
-//                        public void done(ParseObject parseObject, ParseException e) {
-//                            removeFromLikedList(parseObject);
-//                        }
-//                    });
-//
-//                }
-//                return true;
-//            }
-//        });
 
         int size = vendor.getFriends().size();
         if (size == 0) {
