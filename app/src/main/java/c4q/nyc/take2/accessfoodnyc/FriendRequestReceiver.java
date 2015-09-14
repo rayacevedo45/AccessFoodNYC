@@ -33,8 +33,6 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
         }
     }
 
-
-
     @Override
     protected Notification getNotification(Context context, Intent intent) {
         JSONObject pushData = this.getPushData(intent);
@@ -66,7 +64,7 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                 String objectId = pushData.optString(Constants.EXTRA_KEY_OBJECT_ID, "");
                 acceptIntent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
                 acceptIntent.setPackage(packageName);
-                PendingIntent accept = PendingIntent.getActivity(context, Constants.REQUEST_CODE_FRIEND_ACCEPT, acceptIntent, PendingIntent.FLAG_ONE_SHOT);
+                PendingIntent accept = PendingIntent.getActivity(context, Constants.REQUEST_CODE_FRIEND_ACCEPT, acceptIntent, PendingIntent.FLAG_CANCEL_CURRENT);
                 parseBuilder.addAction(R.drawable.ic_done_black_24dp, "Accept", accept);
                 parseBuilder.addAction(R.drawable.ic_clear_black_18dp, "Decline", pDeleteIntent);
                 final ParseUser ore = ParseUser.getCurrentUser();
@@ -108,11 +106,9 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                     }
                 });
 
-
             }
 
             if (pushData.has("removeId")) {
-
                 String objectId = pushData.optString("removeId", "");
                 final ParseUser me = ParseUser.getCurrentUser();
                 final ParseRelation<ParseUser> relation = me.getRelation("friends");
@@ -126,10 +122,8 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                         me.saveInBackground();
                     }
                 });
-
                 return null;
             }
-
             parseBuilder.setAutoCancel(true);
             return parseBuilder.build();
         } else {

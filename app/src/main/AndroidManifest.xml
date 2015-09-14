@@ -21,7 +21,7 @@
         android:name="c4q.nyc.take2.accessfoodnyc.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
-    <uses-permission android:name="rayacevedo45.c4q.nyc.accessfoodnyc.permission.C2D_MESSAGE" />
+    <uses-permission android:name="c4q.nyc.take2.accessfoodnyc.permission.C2D_MESSAGE" />
 
     <application
         android:name="c4q.nyc.take2.accessfoodnyc.ParseApplication"
@@ -114,7 +114,7 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
 
-                <category android:name="rayacevedo45.c4q.nyc.accessfoodnyc" />
+                <category android:name="c4q.nyc.take2.accessfoodnyc" />
             </intent-filter>
         </receiver>
 
