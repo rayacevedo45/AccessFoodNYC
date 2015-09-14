@@ -20,6 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.UserReviewHolder> {
 
@@ -111,7 +112,7 @@ public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.Us
         holder.title.setText(review.getTitle());
         holder.description.setText(review.getDescription());
 
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.US);
         String date = dateFormat.format(review.getDate());
         holder.date.setText(date);
 
