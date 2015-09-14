@@ -2,10 +2,12 @@ package c4q.nyc.take2.accessfoodnyc;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -42,10 +44,18 @@ public class FriendProfileActivity extends AppCompatActivity implements DialogCa
     private RecyclerView mRecyclerView;
     private VendorListAdapter mAdapter;
 
+    private Toolbar mToolbar;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_profile);
+
+        mToolbar = (Toolbar) findViewById(R.id.toolbar_friend_profile);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         if (getIntent() != null) {
             objectId = getIntent().getStringExtra(Constants.EXTRA_KEY_OBJECT_ID);

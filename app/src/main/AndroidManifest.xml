@@ -47,23 +47,30 @@
         <activity
             android:name="c4q.nyc.take2.accessfoodnyc.accounts.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/LoginTheme"></activity>
+            android:theme="@style/LoginTheme"/>
+
         <activity
             android:name="c4q.nyc.take2.accessfoodnyc.VendorInfoActivity"
             android:parentActivityName="c4q.nyc.take2.accessfoodnyc.MapsActivity"
-            android:theme="@style/MapsTheme"></activity>
-        <activity android:name="c4q.nyc.take2.accessfoodnyc.ProfileActivity"></activity>
+            android:theme="@style/MapsTheme"/>
+
+        <activity android:name="c4q.nyc.take2.accessfoodnyc.ProfileActivity"/>
+
         <activity
             android:name="c4q.nyc.take2.accessfoodnyc.FindFriendsActivity"
             android:label="Find Friends"
-            android:parentActivityName="c4q.nyc.take2.accessfoodnyc.ProfileActivity"></activity>
+            android:parentActivityName="c4q.nyc.take2.accessfoodnyc.ProfileActivity"/>
+
         <activity
             android:name="c4q.nyc.take2.accessfoodnyc.FriendsActivity"
             android:label="Friends"
-            android:parentActivityName="c4q.nyc.take2.accessfoodnyc.ProfileActivity"></activity>
+            android:parentActivityName="c4q.nyc.take2.accessfoodnyc.ProfileActivity"/>
+
         <activity
             android:name="c4q.nyc.take2.accessfoodnyc.FriendProfileActivity"
-            android:label="Profile"></activity>
+            android:label="Profile"
+            android:parentActivityName=".FriendsActivity"/>
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
