@@ -20,7 +20,7 @@
             android:name="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            class="rayacevedo45.c4q.nyc.accessfoodnyc.AdvancedMapFragment"/>
+            class="c4q.nyc.take2.accessfoodnyc.AdvancedMapFragment"/>
 
 
         <com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager
