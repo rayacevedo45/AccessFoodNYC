@@ -114,7 +114,7 @@ public class ReviewDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.Base_Theme_AppCompat_Light_Dialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.Theme_AppCompat_Light_Dialog_Alert);
         builder.setView(mDialogView)
                 .setPositiveButton("Submit", new DialogInterface.OnClickListener() {
                     @Override

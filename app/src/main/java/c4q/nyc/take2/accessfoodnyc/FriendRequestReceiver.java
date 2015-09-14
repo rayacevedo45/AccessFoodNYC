@@ -37,7 +37,7 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
     protected Notification getNotification(Context context, Intent intent) {
         JSONObject pushData = this.getPushData(intent);
         if(pushData != null && (pushData.has("alert") || pushData.has("title"))) {
-            String title = pushData.optString("title", "Friend Request");
+            String title = pushData.optString("title", "Access Food NYC");
             String alert = pushData.optString("alert", "Notification received.");
             String tickerText = String.format(Locale.getDefault(), "%s: %s", new Object[]{title, alert});
             Bundle extras = intent.getExtras();

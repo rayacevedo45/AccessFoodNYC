@@ -319,7 +319,7 @@ public class DetailsFragment extends Fragment {
                 final ParseUser user = ParseUser.getCurrentUser();
 
                 String currentText = add.getText().toString();
-                if (currentText.equals("ADD TO FAVORITE")) {
+                if (currentText.equals("FAVORITE")) {
 
                     if (isYelp) {
                         ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");

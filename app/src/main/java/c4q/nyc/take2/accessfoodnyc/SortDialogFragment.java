@@ -15,7 +15,7 @@ public class SortDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.Base_Theme_AppCompat_Light_Dialog);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.Theme_AppCompat_Light_Dialog_Alert);
         builder.setTitle("Sort by")
                 .setItems(R.array.sort_option, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
