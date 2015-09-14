@@ -1,10 +1,12 @@
 package rayacevedo45.c4q.nyc.accessfoodnyc;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -128,6 +130,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         isMarkerClicked = false;
 
+        checkLocationStatus();
         buildGoogleApiClient();
         createLocationRequest();
 
@@ -353,7 +356,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return mClusterManager;
     }
 
-        @Override
+    @Override
     protected void onStart() {
         super.onStart();
     }
@@ -382,11 +385,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void setUpListener(boolean isResumed) {
         if (isResumed) {
             mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-                   goToVendorInfoAcvitity(position);
-                }
-            })
+                        @Override
+                        public void onItemClick(View view, int position) {
+                            goToVendorInfoAcvitity(position);
+                        }
+                    })
             );
             mRecyclerViewList.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
                         @Override
@@ -713,5 +716,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onUpdateMapAfterUserInterection() {
         mButtonSearchThisArea.setVisibility(View.VISIBLE);
+    }
+
+    public void checkLocationStatus() {
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        boolean isLocationOn = false;
+
+        try {
+            isLocationOn = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        } catch (Exception ex) {
+
+        }
+
+        if (!isLocationOn) {
+            LocationDialogFragment dialog = new LocationDialogFragment();
+            dialog.show(getSupportFragmentManager(), "Location");
+        }
     }
 }

@@ -9,7 +9,7 @@ android {
     buildToolsVersion "22.0.1"
 
     defaultConfig {
-        applicationId "c4q.nyc.take2.accessfoodnyc"
+        applicationId "rayacevedo45.c4q.nyc.accessfoodnyc"
         minSdkVersion 17
         targetSdkVersion 22
         versionCode 1
