@@ -344,9 +344,8 @@
         </LinearLayout>
 
         <TextView
-            android:layout_marginTop="8dp"
-            android:visibility="gone"
-            android:textSize="20sp"
+            android:layout_marginTop="50dp"
+            android:textSize="20dp"
             android:textColor="@color/toolbarTextColorSecondary"
             android:id="@+id/textView_no_review"
             android:layout_width="match_parent"

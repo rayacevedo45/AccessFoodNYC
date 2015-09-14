@@ -94,7 +94,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                             public void done(List<ParseObject> reviews, ParseException e) {
                                 if (reviews.size() == 0) {
                                     ratingInto.setVisibility(View.GONE);
-                                    mTextViewNoReview.setText("No reviews yet :( \nWhy don't you write one?");
+                                    mTextViewNoReview.setText("No reviews yet. \nWhy don't you write one?");
                                     mTextViewNoReview.setVisibility(View.VISIBLE);
                                 } else {
                                     mAdapter = new ReviewAdapter(getActivity(), reviews);
@@ -103,6 +103,10 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                                 }
                             }
                         });
+                    } else {
+                        ratingInto.setVisibility(View.GONE);
+                        mTextViewNoReview.setText("No reviews yet. \nWhy don't you write one?");
+                        mTextViewNoReview.setVisibility(View.VISIBLE);
                     }
                 }
             });
@@ -117,7 +121,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                         public void done(List<ParseObject> reviews, ParseException e) {
                             if (reviews.size() == 0) {
                                 ratingInto.setVisibility(View.GONE);
-                                mTextViewNoReview.setText("No reviews yet :( \nWhy don't you write one?");
+                                mTextViewNoReview.setText("No reviews yet. \nWhy don't you write one?");
                                 mTextViewNoReview.setVisibility(View.VISIBLE);
                             } else {
                                 calculateReviews(parseObject, reviews);
