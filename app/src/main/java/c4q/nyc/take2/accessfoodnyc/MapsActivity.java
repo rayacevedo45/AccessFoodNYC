@@ -84,18 +84,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private boolean mRequestingLocationUpdates;
     private String mLastUpdateTime;
 
-    private CollapsingToolbarLayout mToolbarLayout;
-    private FloatingActionButton mButtonFilter;
-
     private RecyclerViewPager mRecyclerView;
     private VendorListAdapter mAdapter;
-
-    private List<ParseObject> mVendorList;
-    private List<Business> mYelpList;
     public static String businessId;
-
-    private static String latLngForSearch = "40.740949, -73.932157";
-    private static LatLng lastLatLng;
 
     public static ParseApplication sApplication;
 
@@ -148,23 +139,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mRecyclerView = (RecyclerViewPager) findViewById(R.id.recyclerView_grid);
         mRecyclerViewList = (RecyclerView) findViewById(R.id.recyclerView_list);
         mButtonSearchThisArea = (Button) findViewById(R.id.search_this_area);
-        //mButtonSearchThisArea.setBackgroundColor(R.color.accentColor);
         mButtonSearchThisArea.setBackgroundColor(Color.argb(125, 3, 169, 244));
-        //mRecyclerView.setHasFixedSize(true);
-        //mRecyclerViewList.setHasFixedSize(true);
 
         LinearLayoutManager layout = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.HORIZONTAL,false);
-        //GridLayoutManager gm = new GridLayoutManager(getApplicationContext(), 1, GridLayoutManager.HORIZONTAL, false);
         LinearLayoutManager lm = new LinearLayoutManager(this);
         lm.setOrientation(LinearLayoutManager.VERTICAL);
 
         mRecyclerView.setLayoutManager(layout);
-
         mRecyclerViewList.setLayoutManager(lm);
-
-//        mAdapter = new VendorListAdapter(getApplicationContext());
-//        mRecyclerView.setAdapter(mAdapter);
-//        mRecyclerViewList.setAdapter(mAdapter);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -190,7 +172,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         break;
 
                 }
-
 
             }
 

@@ -35,6 +35,10 @@ public class CouponsAdapter extends RecyclerView.Adapter<CouponsAdapter.CouponVi
         });
     }
 
+    public ParseObject getItem(int position) {
+        return mList.get(position);
+    }
+
     @Override
     public CouponViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View row = LayoutInflater.from(mContext).inflate(R.layout.list_item_coupon, parent, false);
@@ -46,8 +50,23 @@ public class CouponsAdapter extends RecyclerView.Adapter<CouponsAdapter.CouponVi
         ParseObject coupon = mList.get(position);
         ParseObject vendor = coupon.getParseObject("vendor");
         Picasso.with(mContext).load(vendor.getString("profile_url")).into(holder.picture);
-        holder.name.setText(vendor.getString("name"));
+
+        double rate = vendor.getDouble("rating");
         holder.rating.setText(vendor.getDouble("rating") + "");
+        if (rate >= 4.5) {
+            holder.rating.setBackgroundResource(R.drawable.round_5);
+        } else if (rate >= 4.0) {
+            holder.rating.setBackgroundResource(R.drawable.round_4);
+        } else if (rate >= 3.5) {
+            holder.rating.setBackgroundResource(R.drawable.round_3);
+        } else if (rate >= 3.0) {
+            holder.rating.setBackgroundResource(R.drawable.round_2);
+        } else {
+            holder.rating.setBackgroundResource(R.drawable.round_1);
+        }
+
+
+        holder.name.setText(vendor.getString("name"));
         holder.address.setText(vendor.getString("address"));
 
         String type = coupon.getString("type");
