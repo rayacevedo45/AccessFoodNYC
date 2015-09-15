@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
@@ -24,7 +25,7 @@ import java.util.List;
 
 import c4q.nyc.take2.accessfoodnyc.accounts.LoginActivity;
 
-public class CouponsActivity extends AppCompatActivity {
+public class CouponsActivity extends AppCompatActivity implements DialogCallback {
 
     private RecyclerView mRecyclerView;
     private Toolbar mToolbar;
@@ -39,14 +40,16 @@ public class CouponsActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_coupons);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         LinearLayoutManager lm = new LinearLayoutManager(this);
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(lm);
 
+        refresh();
+    }
+
+    private void refresh() {
         ParseUser user = ParseUser.getCurrentUser();
         final Date today = Calendar.getInstance().getTime();
-
         ParseQuery<ParseObject> coupons = ParseQuery.getQuery("Coupon");
         coupons.include("vendor");
         coupons.whereEqualTo("customer", user).findInBackground(new FindCallback<ParseObject>() {
@@ -67,6 +70,19 @@ public class CouponsActivity extends AppCompatActivity {
                 }
             }
         });
+
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        String objectId = mAdapter.getItem(position).getObjectId();
+                        Bundle argument = new Bundle();
+                        argument.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                        RedeemDialogFragment dialog = new RedeemDialogFragment();
+                        dialog.setArguments(argument);
+                        dialog.show(getSupportFragmentManager(), "Redeem");
+                    }
+                })
+        );
     }
 
     @Override
@@ -98,5 +114,10 @@ public class CouponsActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    @Override
+    public void dialogClicked(int which) {
+        refresh();
     }
 }
