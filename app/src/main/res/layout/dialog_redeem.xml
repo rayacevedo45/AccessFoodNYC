@@ -37,7 +37,7 @@
             android:textSize="62dp"
             android:text="20%"
             android:textStyle="bold"
-            android:textColor="@color/white"
+            android:textColor="@color/primaryColorDark"
             android:background="@drawable/circle_coupon"
             android:layout_gravity="center_horizontal"
             android:layout_width="150dp"

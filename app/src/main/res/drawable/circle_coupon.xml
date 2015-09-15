@@ -8,8 +8,8 @@
     <solid android:color="@color/white" />
 
     <gradient
-        android:startColor="@color/accentColor"
-        android:endColor="@color/accentColor"/>
+        android:startColor="@color/white"
+        android:endColor="@color/white"/>
 
     <padding
         android:left="1dp"
