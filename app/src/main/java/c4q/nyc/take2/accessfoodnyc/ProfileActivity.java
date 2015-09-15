@@ -353,6 +353,10 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.action_logout:
                 logOut();
                 break;
+            case R.id.action_coupons:
+                Intent coupon = new Intent(getApplicationContext(), CouponsActivity.class);
+                startActivity(coupon);
+                break;
             case R.id.action_settings:
                 break;
         }
