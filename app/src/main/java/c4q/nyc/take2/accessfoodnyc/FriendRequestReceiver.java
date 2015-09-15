@@ -136,8 +136,8 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                 String expiration = pushData.optString("expiration", "");
                 String year = expiration.substring(4);
                 String month = expiration.substring(0,2);
-                String day = expiration.substring(1,4);
-                final Date date = new Date(Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(day), 23, 59, 59);
+                String day = expiration.substring(2,4);
+                final Date date = new Date(Integer.valueOf(year)-1900, Integer.valueOf(month)-1, Integer.valueOf(day), 23, 59, 59);
 
                 ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
                 findVendor.getInBackground(objectId, new GetCallback<ParseObject>() {
