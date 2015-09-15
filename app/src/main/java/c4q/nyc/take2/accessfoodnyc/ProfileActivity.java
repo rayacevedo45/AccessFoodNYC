@@ -73,7 +73,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         String name = me.getString("first_name") + " " + me.getString("last_name");
-
         getSupportActionBar().setTitle(name + "'s Profile");
         mToolbarLayout.setTitle(name + "'s Profile");
         mToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
@@ -215,7 +214,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setUpListeners(true);
 
         ParseUser me = ParseUser.getCurrentUser();
-
         ParseRelation<ParseUser> friendRelation = me.getRelation("friends");
         friendRelation.getQuery().countInBackground(new CountCallback() {
             @Override
@@ -296,41 +294,6 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-
-    //    public class SearchAllYelpTask extends AsyncTask<List<ParseObject>, Void, List<Business>> {
-//        @Override
-//        protected List<Business> doInBackground(List<ParseObject>... params) {
-//
-//            //final List<Business> result = new ArrayList<>();
-//            List<ParseObject> vendors = params[0];
-//            for (ParseObject vendor : vendors) {
-//                String yelpId = vendor.getString("yelpId");
-//                YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
-//                yelpBizService.searchBusiness(yelpId, new Callback<Business>() {
-//                    @Override
-//                    public void success(Business business, Response response) {
-//                        result.add(business);
-//                    }
-//
-//                    @Override
-//                    public void failure(RetrofitError error) {
-//                        LinearLayout layout;
-//
-//                    }
-//                });
-//
-//            }
-//            int size = result.size();
-//            return result;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(List<Business> businesses) {
-//            mAdapter = new VendorListAdapter(getApplicationContext(), businesses, mOurVendorList);
-//            mRecyclerView.setAdapter(mAdapter);
-//
-//        }
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
