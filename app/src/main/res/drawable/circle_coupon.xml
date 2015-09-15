@@ -3,15 +3,18 @@
 
     <stroke
         android:width="3dp"
-        android:color="@color/toolbarTextColorSecondary" />
+        android:color="@color/primaryColorDark" />
 
     <solid android:color="@color/white" />
+
+    <gradient
+        android:startColor="@color/accentColor"
+        android:endColor="@color/accentColor"/>
 
     <padding
         android:left="1dp"
         android:right="1dp"
         android:top="1dp" />
-
     <corners android:radius="100dp" />
 
 </shape>
