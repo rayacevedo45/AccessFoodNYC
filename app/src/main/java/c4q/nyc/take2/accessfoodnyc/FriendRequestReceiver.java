@@ -10,6 +10,7 @@ import android.support.v7.app.NotificationCompat;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParsePushBroadcastReceiver;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -18,6 +19,7 @@ import com.parse.ParseUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
@@ -124,6 +126,39 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                 });
                 return null;
             }
+
+            if (pushData.has("type")) {
+                String objectId = pushData.optString("vendor", "");
+                final ParseUser me = ParseUser.getCurrentUser();
+
+                final String type = pushData.optString("type", "");
+                final String amount = pushData.optString("amount", "");
+                String expiration = pushData.optString("expiration", "");
+                String year = expiration.substring(4);
+                String month = expiration.substring(0,2);
+                String day = expiration.substring(1,4);
+                final Date date = new Date(Integer.valueOf(year), Integer.valueOf(month), Integer.valueOf(day));
+
+                ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
+                findVendor.getInBackground(objectId, new GetCallback<ParseObject>() {
+                    @Override
+                    public void done(ParseObject vendor, ParseException e) {
+                        if (e == null) {
+                            ParseObject coupon = new ParseObject("Coupon");
+                            coupon.put("vendor", vendor);
+                            coupon.put("customer", me);
+                            coupon.put("type", type);
+                            coupon.put("amount", amount);
+                            coupon.put("expiration", date);
+                            coupon.saveInBackground();
+                        }
+                    }
+                });
+
+
+            }
+
+
             parseBuilder.setAutoCancel(true);
             return parseBuilder.build();
         } else {
