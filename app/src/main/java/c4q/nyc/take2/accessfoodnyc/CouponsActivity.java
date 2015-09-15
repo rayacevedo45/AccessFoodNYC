@@ -56,7 +56,7 @@ public class CouponsActivity extends AppCompatActivity {
                     List<ParseObject> allCoupons = new ArrayList<ParseObject>();
                     for (ParseObject coupon : list) {
                         Date expiration = coupon.getDate("expiration");
-                        if (expiration.after(today)) {
+                        if (expiration.before(today)) {
                             coupon.deleteInBackground();
                         } else {
                             allCoupons.add(coupon);
