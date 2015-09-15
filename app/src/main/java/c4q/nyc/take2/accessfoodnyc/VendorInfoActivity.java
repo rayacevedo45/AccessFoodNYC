@@ -37,34 +37,11 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
     // Tab titles
     private static final String[] TABS = { "Details", "Twitter", "Reviews" };
 
-    public static ParseApplication sApplication;
-
     private DetailsFragment mCurrentDetailsFragment;
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide fragments for each of the
-     * three primary sections of the app. We use a {@link FragmentPagerAdapter}
-     * derivative, which will keep every loaded fragment in memory. If this becomes too memory
-     * intensive, it may be best to switch to a {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    ViewPagerAdapter mViewPagerAdapter;
-
-    /**
-     * The {@link ViewPager} that will display the three primary sections of the app, one at a
-     * time.
-     */
-
-    ActionBar actionBar;
-
-    // Tab titles
-//    private String[] tabs = { "Details", "Twitter", "Reviews" };
-    String vendorName;
-
     private ViewPager mViewPager;
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
     private boolean isYelp;
-
     private String objectId;
 
 
