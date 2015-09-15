@@ -36,7 +36,7 @@ public class RemoveDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new AlertDialog.Builder(getActivity())
+        return new AlertDialog.Builder(getActivity(), R.style.Theme_AppCompat_Light_Dialog_Alert)
                 .setTitle("Remove Friend")
                 .setMessage("Are you sure you want to remove this friend?")
                 .setPositiveButton("Remove", new DialogInterface.OnClickListener() {
