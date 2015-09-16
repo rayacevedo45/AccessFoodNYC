@@ -1,5 +1,6 @@
 package c4q.nyc.take2.accessfoodnyc;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.parse.FindCallback;
 import com.parse.FunctionCallback;
@@ -124,6 +126,23 @@ public class UserReviewActivity extends AppCompatActivity {
                 }
             }
         });
+
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Vendor vendor = mAdapter.getItem(position).getVendor();
+                        String objectId = vendor.getId();
+                        Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
+                        intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                        if (vendor.isYelp()) {
+                            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
+                        } else {
+                            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
+                        }
+                        startActivity(intent);
+                    }
+                })
+        );
 
     }
 

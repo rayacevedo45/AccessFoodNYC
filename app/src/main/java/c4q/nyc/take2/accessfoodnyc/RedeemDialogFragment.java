@@ -17,6 +17,11 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class RedeemDialogFragment extends DialogFragment {
 
     private TextView mTextViewAmount;
@@ -56,7 +61,10 @@ public class RedeemDialogFragment extends DialogFragment {
                         public void done(ParseObject vendor, ParseException e) {
                             mTextViewAddress.setText(vendor.getString("address"));
                             mTextViewName.setText(vendor.getString("name"));
-                            mTextViewExpiration.setText(coupon.getDate("expiration").toString());
+
+                            Date expiration = coupon.getDate("expiration");
+                            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
+                            mTextViewExpiration.setText("Expiration Date : " + dateFormat.format(expiration));
                             String type = coupon.getString("type");
                             String price = coupon.getString("amount");
                             if (type.equals("%")) {

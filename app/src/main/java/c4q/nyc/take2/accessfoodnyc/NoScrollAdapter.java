@@ -2,6 +2,7 @@ package c4q.nyc.take2.accessfoodnyc;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -94,7 +95,17 @@ public class NoScrollAdapter<T> {
         mList = list;
 
         for (int i = 0; i < mList.size(); i++) {
+            final int position = i;
             final View row = mInflater.inflate(R.layout.list_item_details_friend_fav, null);
+            row.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String objectId = ((ParseObject) mList.get(position)).getObjectId();
+                    Intent intent = new Intent(mContext, FriendProfileActivity.class);
+                    intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                    mContext.startActivity(intent);
+                }
+            });
 
             ParseUser friend = (ParseUser) mList.get(i);
 

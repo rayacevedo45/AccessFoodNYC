@@ -128,7 +128,7 @@
         </activity>
         <activity
             android:name=".PicActivity"
-            android:label="@string/title_activity_pic" />
+            android:label="@string/title_activity_pic"/>
         <activity
             android:name=".CouponsActivity"
             android:label="@string/title_activity_coupons"

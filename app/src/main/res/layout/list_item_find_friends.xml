@@ -13,7 +13,9 @@
             android:layout_height="64dp" />
 
     <LinearLayout
-        android:padding="16dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="match_parent">
@@ -29,9 +31,9 @@
                 android:layout_gravity="center_vertical">
 
                 <TextView
-                    android:paddingLeft="16dp"
-                    android:textSize="20dp"
-                    android:textColor="@color/black"
+                    android:paddingLeft="8dp"
+                    android:textSize="18dp"
+                    android:textColor="@color/toolbarTextColorSecondary"
                     android:id="@+id/name_friend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -47,7 +49,10 @@
                 android:gravity="right|center_vertical">
 
                 <Button
-                    android:padding="8dp"
+                    android:textColor="@color/white"
+                    android:text="add"
+                    android:textSize="16dp"
+                    android:paddingLeft="8dp"
                     android:drawableLeft="@drawable/ic_person_add_white_24dp"
                     android:id="@+id/button_request"
                     android:layout_width="wrap_content"

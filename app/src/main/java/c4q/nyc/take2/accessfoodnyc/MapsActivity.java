@@ -97,7 +97,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private RecyclerView mRecyclerViewList;
     private boolean isListed = false;
-    private boolean isFetched;
+    private boolean isLocationOn;
     public HashMap<Marker, Integer> markerHashMap;
     private Integer previous;
     private boolean isMarkerClicked;
@@ -109,7 +109,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.i("MapsActivity", "it creates!!!!!!!!!");
         setContentView(R.layout.activity_maps);
         isListed = false;
-        isFetched = false;
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(true);
@@ -121,9 +120,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         isMarkerClicked = false;
 
-        checkLocationStatus();
-        buildGoogleApiClient();
-        createLocationRequest();
+        if (checkLocationStatus()) {
+            buildGoogleApiClient();
+            createLocationRequest();
+            mGoogleApiClient.connect();
+        }
+
 
         final SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -131,7 +133,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         initializeViews();
 
-        mGoogleApiClient.connect();
+
 
     }
 
@@ -396,14 +398,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         setUpListener(false);
         // Logs 'app deactivate' App Event.
         AppEventsLogger.deactivateApp(this);
-        Log.i("MapsActivity", "it pauses!!!!!!!");
     }
 
     @Override
     protected void onStop() {
-        mGoogleApiClient.disconnect();
+        try {
+            mGoogleApiClient.disconnect();
+        } catch (NullPointerException e) {
+
+        }
         super.onStop();
-        Log.i("MapsActivity", "it stops!!!!!!!");
     }
 
 
@@ -450,7 +454,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 break;
             case R.id.action_sort:
-                sort();
+                if (checkLocationStatus()) {
+                    sort();
+                }
                 break;
         }
 
@@ -468,7 +474,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onConnected(Bundle bundle) {
-        Log.i("MapsActivity", "Connected to Map!!!!!!!!");
         LatLng defaultLatLng = new LatLng(Constants.DEFAULT_LATITUDE, Constants.DEFAULT_LONGITUDE);
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(defaultLatLng));
@@ -568,28 +573,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         });
                     }
 
-
-//                    ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
-//                    reviewQuery.whereEqualTo("vendor", vendor).findInBackground(new FindCallback<ParseObject>() {
-//                        @Override
-//                        public void done(List<ParseObject> list, ParseException e) {
-//                            if (list.size() == 0) {
-//
-//                            } else {
-//                                double ratingsum = 0;
-//                                for (final ParseObject review : list) {
-//                                    ratingsum += (Integer) review.get("rating");
-//                                }
-////                                Toast.makeText(getActivity(), String.valueOf(ratingsum), Toast.LENGTH_SHORT).show();
-//                                double averageRating = Math.round((ratingsum / (list.size())) * 10.0) / 10.0;
-//
-//                                //Toast.makeText(getApplicationContext(), String.valueOf(averageRating), Toast.LENGTH_SHORT).show();
-//                                vendor.put("rating", averageRating);
-//                                vendor.saveInBackground();
-//                            }
-//                        }
-//                    });
-
                 }
 
             }
@@ -686,10 +669,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void dialogClicked(int which) {
         switch (which) {
             case 0:
-                mAdapter.sortByDistance();
+                if (mAdapter != null) {
+                    mAdapter.sortByDistance();
+                }
                 break;
             case 1:
-                mAdapter.sortByRating();
+                if (mAdapter != null) {
+                    mAdapter.sortByRating();
+                }
                 break;
         }
     }
@@ -699,9 +686,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mButtonSearchThisArea.setVisibility(View.VISIBLE);
     }
 
-    public void checkLocationStatus() {
+    public boolean checkLocationStatus() {
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        boolean isLocationOn = false;
+        isLocationOn = false;
 
         try {
             isLocationOn = lm.isProviderEnabled(LocationManager.GPS_PROVIDER);
@@ -712,6 +699,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (!isLocationOn) {
             LocationDialogFragment dialog = new LocationDialogFragment();
             dialog.show(getSupportFragmentManager(), "Location");
+            return false;
+        } else {
+            return true;
         }
     }
 }

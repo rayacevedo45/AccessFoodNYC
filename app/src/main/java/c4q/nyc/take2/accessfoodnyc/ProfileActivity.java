@@ -136,6 +136,24 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mAdapter = new UserReviewAdapter(getApplicationContext());
         mRecyclerView.setAdapter(mAdapter);
 
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Vendor vendor = mAdapter.getItem(position).getVendor();
+                        String objectId = vendor.getId();
+                        Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
+                        intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                        if (vendor.isYelp()) {
+                            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
+                        } else {
+                            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
+                        }
+                        startActivity(intent);
+                    }
+                })
+        );
+
+
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         final String today = "day" + Integer.toString(day);
@@ -226,7 +244,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         favorites.whereEqualTo("follower", me).findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
-                mTextViewFavorite.setText(list.size() + "");
+                if (list.size() == 0) {
+                    mTextViewFavorite.setText("0");
+                } else {
+                    mTextViewFavorite.setText(list.size() + "");
+                }
+
             }
         });
 
