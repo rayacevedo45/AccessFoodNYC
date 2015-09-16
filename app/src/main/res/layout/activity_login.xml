@@ -129,6 +129,51 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--<android.support.design.widget.TextInputLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+
+        <ImageView
+            android:id="@+id/name_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:src="@drawable/person"
+            android:visibility="gone"/>
+
+        <EditText
+            android:id="@+id/first"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="First Name"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:textColorHint="@color/accentColor"
+            android:layout_weight="1"/>
+
+        <EditText
+            android:id="@+id/last"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name"
+            android:visibility="gone"
+            android:textColor="@color/black"
+            android:textColorHint="@color/accentColor"
+            android:layout_weight="1"/>
+
+        <!--</android.support.design.widget.TextInputLayout>-->
+
+    </LinearLayout>
+
+
+
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp">
 

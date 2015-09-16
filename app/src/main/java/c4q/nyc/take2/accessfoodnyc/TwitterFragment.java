@@ -111,7 +111,7 @@ public class TwitterFragment extends Fragment {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            dialog = ProgressDialog.show(getActivity(), "", "searching tweets");
+            //dialog = ProgressDialog.show(getActivity(), "", "searching tweets");
         }
 
         @Override
@@ -164,11 +164,11 @@ public class TwitterFragment extends Fragment {
         @Override
         protected void onPostExecute(ArrayList<String> tweetList) {
 
-            dialog.dismiss();
+            //dialog.dismiss();
             if (tweetList !=null) {
                 list.setAdapter(new TweetAdapter(getActivity(), tweetList, tweetPics));
             } else {
-                Toast.makeText(getActivity(), "Error while searching tweets", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "Error while searching tweets", Toast.LENGTH_LONG).show();
             }
         }
     }

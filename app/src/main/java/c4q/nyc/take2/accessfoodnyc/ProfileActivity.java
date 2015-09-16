@@ -125,7 +125,12 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         mTextViewFriends = (TextView) findViewById(R.id.profile_number_friends);
         mTextViewReviews = (TextView) findViewById(R.id.profile_number_reviews);
 
-        Picasso.with(getApplicationContext()).load(me.getString("profile_url")).into(mImageViewProfile);
+        String profile = me.getString("profile_url");
+        if (profile.length() == 0 || profile.isEmpty()) {
+            Picasso.with(getApplicationContext()).load(R.drawable.default_profile).into(mImageViewProfile);
+        } else {
+            Picasso.with(getApplicationContext()).load(profile).into(mImageViewProfile);
+        }
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_profile_favorite);
         //mRecyclerView.setHasFixedSize(true);

@@ -40,20 +40,19 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewHold
         ParseObject review = mList.get(position);
 
         ParseUser user = review.getParseUser("writer");
-        try {
-            Picasso.with(mContext).load(user.getString("profile_url")).resize(200, 200).centerCrop().into(holder.picture);
-        } catch (Exception e) {
-            Picasso.with(mContext).load(R.drawable.default_profile).resize(200, 200).centerCrop().into(holder.picture);
+        String profile = user.getString("profile_url");
+        if (profile.length() == 0 || profile.isEmpty()) {
+            Picasso.with(mContext).load(R.drawable.default_profile).into(holder.picture);
+        } else {
+            Picasso.with(mContext).load(profile).into(holder.picture);
         }
 
 
         holder.name.setText(user.getString("first_name") + " " + user.getString("last_name"));
 
-
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
         String dates = dateFormat.format(review.getCreatedAt());
         holder.date.setText(dates);
-
 
         holder.title.setText(review.getString("title"));
         holder.description.setText(review.getString("description"));

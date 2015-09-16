@@ -58,8 +58,9 @@ public class LoginActivity extends Activity {
     protected ParseApplication app;
 
     private LoginButton mButtonFacebookLogin;
-    private AccessTokenTracker mAccessTokenTracker;
-    private AccessToken mAccessToken;
+    private ImageView nameIcon;
+    private EditText first;
+    private EditText last;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,9 @@ public class LoginActivity extends Activity {
         continueButton = (Button) findViewById(R.id.ContinueButtonID);
         layout = (LinearLayout) findViewById(R.id.layoutID);
         mButtonFacebookLogin = (LoginButton) findViewById(R.id.login_button);
+        nameIcon = (ImageView) findViewById(R.id.name_icon);
+        first = (EditText) findViewById(R.id.first);
+        last = (EditText) findViewById(R.id.last);
 
 
 
@@ -201,15 +205,14 @@ public class LoginActivity extends Activity {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String username = usernameEditText2.getText().toString();
-                String password = passwordEditText2.getText().toString();
-                String email = emailField.getText().toString();
+                String username = usernameEditText2.getText().toString().trim();
+                String password = passwordEditText2.getText().toString().trim();
+                String email = emailField.getText().toString().trim();
+                String firstName = first.getText().toString().trim();
+                String lastName = last.getText().toString().trim();
 
-                username = username.trim();
-                password = password.trim();
-                email = email.trim();
 
-                if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
+                if (username.isEmpty() || password.isEmpty() || email.isEmpty() || firstName.isEmpty() || lastName.isEmpty()) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                     builder.setMessage(R.string.signup_error_message)
                             .setTitle(R.string.signup_error_title)
@@ -224,6 +227,8 @@ public class LoginActivity extends Activity {
                     newUser.setUsername(username);
                     newUser.setPassword(password);
                     newUser.setEmail(email);
+                    newUser.put("first_name", firstName);
+                    newUser.put("last_name", lastName);
                     newUser.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {
@@ -316,6 +321,9 @@ public class LoginActivity extends Activity {
         username2image.setVisibility(View.VISIBLE);
         passwordimage2.setVisibility(View.VISIBLE);
         emailimage.setVisibility(View.VISIBLE);
+        first.setVisibility(View.VISIBLE);
+        last.setVisibility(View.VISIBLE);
+        nameIcon.setVisibility(View.VISIBLE);
 
     }
 
@@ -336,6 +344,9 @@ public class LoginActivity extends Activity {
         backButton.setVisibility(View.GONE);
         continueButton.setVisibility(View.GONE);
         layout.setVisibility(View.VISIBLE);
+        first.setVisibility(View.GONE);
+        last.setVisibility(View.GONE);
+        nameIcon.setVisibility(View.GONE);
     }
 
     @Override

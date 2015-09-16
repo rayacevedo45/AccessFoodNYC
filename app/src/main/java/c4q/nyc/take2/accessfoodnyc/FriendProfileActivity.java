@@ -107,8 +107,13 @@ public class FriendProfileActivity extends AppCompatActivity implements DialogCa
                 mToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
                 mToolbarLayout.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
-                Picasso.with(getApplicationContext()).load(user.getString("profile_url")).into(mImageView);
 
+                String profile = user.getString("profile_url");
+                if (profile.length() == 0 || profile.isEmpty()) {
+                    Picasso.with(getApplicationContext()).load(R.drawable.default_profile).into(mImageView);
+                } else {
+                    Picasso.with(getApplicationContext()).load(profile).into(mImageView);
+                }
 
                 ParseRelation<ParseUser> friendRelation = user.getRelation("friends");
                 friendRelation.getQuery().countInBackground(new CountCallback() {
