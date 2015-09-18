@@ -114,11 +114,10 @@ public class NoScrollAdapter<T> {
 
             name.setText(friend.getString("first_name") + " " + friend.getString("last_name"));
 
-            String profile = friend.getString("profile_url");
-            if (profile.length() == 0 || profile.isEmpty()) {
+            try {
+                Picasso.with(mContext).load(friend.getString("profile_url")).into(picture);
+            } catch (NullPointerException e) {
                 Picasso.with(mContext).load(R.drawable.default_profile).into(picture);
-            } else {
-                Picasso.with(mContext).load(profile).into(picture);
             }
 
             mParentLayout.addView(row, i);
