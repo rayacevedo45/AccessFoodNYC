@@ -240,12 +240,13 @@
 
         <LinearLayout
             android:paddingTop="8dp"
-            android:paddingLeft="16dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
+                android:id="@+id/here"
+                android:paddingLeft="16dp"
                 android:textSize="20dp"
                 android:textColor="@color/black"
                 android:text="Here is what your friends say"
