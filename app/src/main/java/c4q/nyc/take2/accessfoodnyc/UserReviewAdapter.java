@@ -117,10 +117,11 @@ public class UserReviewAdapter extends RecyclerView.Adapter<UserReviewAdapter.Us
         holder.date.setText(date);
 
         ParseUser user = ParseUser.getCurrentUser();
-        try {
-            Picasso.with(mContext).load(user.getString("profile_url")).into(holder.writerPicture);
-        } catch (Exception e) {
+        String profile = user.getString("profile_url");
+        if (profile.length() == 0 || profile.isEmpty()) {
             Picasso.with(mContext).load(R.drawable.default_profile).into(holder.writerPicture);
+        } else {
+            Picasso.with(mContext).load(profile).into(holder.writerPicture);
         }
 
         holder.howmany.setText(user.getString("first_name") + " " + user.getString("last_name") + " gave");

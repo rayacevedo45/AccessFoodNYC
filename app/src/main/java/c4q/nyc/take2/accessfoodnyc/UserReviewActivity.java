@@ -1,5 +1,6 @@
 package c4q.nyc.take2.accessfoodnyc;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,7 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.parse.FindCallback;
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
@@ -20,6 +24,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import c4q.nyc.take2.accessfoodnyc.accounts.LoginActivity;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.models.Business;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.service.ServiceGenerator;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.service.YelpBusinessSearchService;
@@ -125,6 +130,23 @@ public class UserReviewActivity extends AppCompatActivity {
             }
         });
 
+        mRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Vendor vendor = mAdapter.getItem(position).getVendor();
+                        String objectId = vendor.getId();
+                        Intent intent = new Intent(getApplicationContext(), VendorInfoActivity.class);
+                        intent.putExtra(Constants.EXTRA_KEY_OBJECT_ID, objectId);
+                        if (vendor.isYelp()) {
+                            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, true);
+                        } else {
+                            intent.putExtra(Constants.EXTRA_KEY_IS_YELP, false);
+                        }
+                        startActivity(intent);
+                    }
+                })
+        );
+
     }
 
     @Override
@@ -142,10 +164,21 @@ public class UserReviewActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_logout) {
+            logOut();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void logOut() {
+        LoginManager.getInstance().logOut();
+        ParseUser.logOut();
+        Toast.makeText(getApplicationContext(), "Successfully logged out!", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

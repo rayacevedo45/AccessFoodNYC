@@ -66,6 +66,8 @@ public class DetailsFragment extends Fragment {
     private LinearLayout mParentLayout;
     private NoScrollAdapter<ParseObject> mNoScrollAdapter;
 
+    private TextView here;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
@@ -77,6 +79,7 @@ public class DetailsFragment extends Fragment {
         mVendorPicImage = (ImageView) rootView.findViewById(R.id.vendor_pic);
         mSnippetText = (TextView) rootView.findViewById(R.id.snippet_text);
         mTextViewVendorAddress = (TextView) rootView.findViewById(R.id.vendor_address);
+        here = (TextView) rootView.findViewById(R.id.here);
 
 
         mRecyclerViewPictures = (RecyclerView) rootView.findViewById(R.id.recyclerView_details_pictures);
@@ -134,7 +137,10 @@ public class DetailsFragment extends Fragment {
                                         @Override
                                         public void done(List<ParseObject> list, ParseException e) {
                                             if (list.size() != 0) {
+                                                here.setVisibility(View.VISIBLE);
                                                 mNoScrollAdapter.addReviews(list);
+                                            } else {
+                                                here.setVisibility(View.GONE);
                                             }
                                         }
                                     });
@@ -216,7 +222,10 @@ public class DetailsFragment extends Fragment {
                                     @Override
                                     public void done(List<ParseObject> list, ParseException e) {
                                         if (list.size() != 0) {
+                                            here.setVisibility(View.VISIBLE);
                                             mNoScrollAdapter.addReviews(list);
+                                        } else {
+                                            here.setVisibility(View.GONE);
                                         }
                                     }
                                 });

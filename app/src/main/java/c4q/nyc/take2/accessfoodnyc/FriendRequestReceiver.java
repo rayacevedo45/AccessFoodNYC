@@ -53,7 +53,7 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
             Intent deleteIntent = new Intent("com.parse.push.intent.DELETE");
             deleteIntent.putExtras(extras);
             deleteIntent.setPackage(packageName);
-            PendingIntent pContentIntent = PendingIntent.getBroadcast(context, contentIntentRequestCode, contentIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pContentIntent = PendingIntent.getBroadcast(context, contentIntentRequestCode, contentIntent, PendingIntent.FLAG_CANCEL_CURRENT);
             PendingIntent pDeleteIntent = PendingIntent.getBroadcast(context, deleteIntentRequestCode, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             NotificationCompat.Builder parseBuilder = new NotificationCompat.Builder(context);
             parseBuilder.setContentTitle(title).setContentText(alert).setTicker(tickerText).setSmallIcon(this.getSmallIconId(context, intent)).setLargeIcon(this.getLargeIcon(context, intent)).setContentIntent(pContentIntent).setDeleteIntent(pDeleteIntent).setAutoCancel(true).setDefaults(-1);
@@ -83,6 +83,7 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
             }
 
             if (pushData.has("accepted")) {
+
                 String objectId = pushData.optString("accepted", "");
                 final ParseUser me = ParseUser.getCurrentUser();
                 final ParseRelation<ParseUser> relation = me.getRelation("friends");
@@ -128,6 +129,12 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
             }
 
             if (pushData.has("type")) {
+
+                Intent couponIntent = new Intent(context, CouponsActivity.class);
+                couponIntent.setPackage(packageName);
+                pContentIntent = PendingIntent.getActivity(context, Constants.REQUEST_CODE_FRIEND_ACCEPT, couponIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                parseBuilder.setContentIntent(pContentIntent);
+
                 String objectId = pushData.optString("vendor", "");
                 final ParseUser me = ParseUser.getCurrentUser();
 

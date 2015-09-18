@@ -46,8 +46,6 @@ public class PicActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +123,12 @@ public class PicActivity extends AppCompatActivity {
         Intent choosePictureIntent = new Intent(Intent.ACTION_PICK,
                 android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(choosePictureIntent, Constants.FLAG_GALLERY);
+    }
+
+    private void addPictureToGallery(Uri uri) {
+        Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+        mediaScanIntent.setData(uri);
+        this.sendBroadcast(mediaScanIntent);
     }
 
     @Override
