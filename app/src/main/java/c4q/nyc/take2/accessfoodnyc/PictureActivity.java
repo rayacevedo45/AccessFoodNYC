@@ -34,7 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class PicActivity extends AppCompatActivity {
+public class PictureActivity extends AppCompatActivity {
     private Uri imageUri;
     private ImageView imageView;
     private Bitmap bitmap;

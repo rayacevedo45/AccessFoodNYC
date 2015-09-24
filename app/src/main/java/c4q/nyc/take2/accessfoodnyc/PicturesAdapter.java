@@ -13,9 +13,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Luke on 9/5/2015.
- */
 public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.PicturesHolder> {
 
     private Context mContext;

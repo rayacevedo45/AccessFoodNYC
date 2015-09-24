@@ -127,7 +127,7 @@
                 android:value="c4q.nyc.take2.accessfoodnyc.ProfileActivity" />
         </activity>
         <activity
-            android:name=".PicActivity"
+            android:name=".PictureActivity"
             android:label="@string/title_activity_pic"/>
         <activity
             android:name=".CouponsActivity"
