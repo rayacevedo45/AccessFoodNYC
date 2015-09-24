@@ -17,10 +17,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-/**
- * Created by Hoshiko on 8/14/15.
- */
-
 public class CollectionVendorActivity extends FragmentActivity {
 
     /**
