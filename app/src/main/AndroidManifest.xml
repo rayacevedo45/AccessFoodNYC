@@ -43,7 +43,7 @@
             android:theme="@style/MapsTheme" >
         </activity>
         <activity
-            android:name=".accounts.LoginActivity"
+            android:name=".LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/LoginTheme" />
         <activity

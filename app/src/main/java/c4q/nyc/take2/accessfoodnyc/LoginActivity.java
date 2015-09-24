@@ -1,4 +1,4 @@
-package c4q.nyc.take2.accessfoodnyc.accounts;
+package c4q.nyc.take2.accessfoodnyc;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -14,8 +14,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
@@ -29,11 +27,6 @@ import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
 import java.util.Arrays;
-
-import c4q.nyc.take2.accessfoodnyc.MapsActivity;
-import c4q.nyc.take2.accessfoodnyc.ParseApplication;
-import c4q.nyc.take2.accessfoodnyc.ProfileActivity;
-import c4q.nyc.take2.accessfoodnyc.R;
 
 public class LoginActivity extends Activity {
 

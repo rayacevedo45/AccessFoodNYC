@@ -20,9 +20,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.parse.ParseUser;
 
-import c4q.nyc.take2.accessfoodnyc.accounts.LoginActivity;
-import c4q.nyc.take2.accessfoodnyc.vendor.GifView;
-
 public class SplashActivity extends Activity {
     ImageView accessIM, foodIM, NYCim;
     GifView gifView;

@@ -23,8 +23,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import c4q.nyc.take2.accessfoodnyc.accounts.LoginActivity;
-
 public class CouponsActivity extends AppCompatActivity implements DialogCallback {
 
     private RecyclerView mRecyclerView;

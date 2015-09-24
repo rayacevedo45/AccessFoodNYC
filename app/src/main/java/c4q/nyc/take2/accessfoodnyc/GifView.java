@@ -1,4 +1,4 @@
-package c4q.nyc.take2.accessfoodnyc.vendor;
+package c4q.nyc.take2.accessfoodnyc;
 
 import android.content.Context;
 import android.graphics.Canvas;

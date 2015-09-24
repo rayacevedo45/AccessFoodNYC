@@ -8,8 +8,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -57,7 +55,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
-import c4q.nyc.take2.accessfoodnyc.accounts.LoginActivity;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.models.Business;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.models.Coordinate;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.models.YelpResponse;
