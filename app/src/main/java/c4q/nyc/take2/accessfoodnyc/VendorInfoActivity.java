@@ -23,7 +23,6 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import c4q.nyc.take2.accessfoodnyc.accounts.LoginActivity;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.models.Business;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.service.ServiceGenerator;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.service.YelpBusinessSearchService;

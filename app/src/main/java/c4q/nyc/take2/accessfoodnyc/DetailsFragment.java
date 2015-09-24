@@ -31,7 +31,6 @@ import java.util.List;
 
 import c4q.nyc.take2.accessfoodnyc.api.yelp.models.Business;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.models.Location;
-import c4q.nyc.take2.accessfoodnyc.vendor.PicDialog;
 
 public class DetailsFragment extends Fragment {
 
@@ -356,7 +355,7 @@ public class DetailsFragment extends Fragment {
     }
 
     private void takePicture() {
-        PicDialog picDialog = new PicDialog();
+        PictureDialogFragment picDialog = new PictureDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString(Constants.EXTRA_KEY_OBJECT_ID, objectId);
         bundle.putBoolean(Constants.EXTRA_KEY_IS_YELP, isYelp);

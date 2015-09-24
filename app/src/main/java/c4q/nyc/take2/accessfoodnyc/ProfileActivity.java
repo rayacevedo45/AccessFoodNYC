@@ -35,7 +35,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import c4q.nyc.take2.accessfoodnyc.accounts.LoginActivity;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.models.Business;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.service.ServiceGenerator;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.service.YelpBusinessSearchService;

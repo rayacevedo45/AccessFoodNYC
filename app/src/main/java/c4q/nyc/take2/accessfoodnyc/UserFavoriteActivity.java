@@ -23,7 +23,6 @@ import com.parse.ParseUser;
 import java.util.Calendar;
 import java.util.List;
 
-import c4q.nyc.take2.accessfoodnyc.accounts.LoginActivity;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.models.Business;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.models.Coordinate;
 import c4q.nyc.take2.accessfoodnyc.api.yelp.service.ServiceGenerator;

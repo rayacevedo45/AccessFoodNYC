@@ -1,4 +1,4 @@
-package c4q.nyc.take2.accessfoodnyc.vendor;
+package c4q.nyc.take2.accessfoodnyc;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -12,7 +12,7 @@ import c4q.nyc.take2.accessfoodnyc.Constants;
 import c4q.nyc.take2.accessfoodnyc.PictureActivity;
 import c4q.nyc.take2.accessfoodnyc.R;
 
-public class PicDialog extends DialogFragment {
+public class PictureDialogFragment extends DialogFragment {
     static final int EXTERNAL_CONTENT_URI = 0;
     Uri targetUri;
     private String objectId;
