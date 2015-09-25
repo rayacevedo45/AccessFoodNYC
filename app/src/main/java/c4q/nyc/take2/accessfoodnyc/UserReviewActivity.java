@@ -45,7 +45,7 @@ public class UserReviewActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         ParseUser user = ParseUser.getCurrentUser();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(user.getString("first_name") + " " + user.getString("last_name") + "'s Reviews");
+        getSupportActionBar().setTitle(user.getString(Constants.FIRST_NAME) + " " + user.getString(Constants.LAST_NAME) + "'s Reviews");
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_user_reviews);
         mRecyclerView.setHasFixedSize(true);
@@ -72,7 +72,7 @@ public class UserReviewActivity extends AppCompatActivity {
                     if (vendor.getParseGeoPoint("location") == null) {
 
                         YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
-                        yelpBizService.searchBusiness(vendor.getString("yelpId"), new Callback<Business>() {
+                        yelpBizService.searchBusiness(vendor.getString(Constants.YELP_ID), new Callback<Business>() {
                             @Override
                             public void success(Business business, Response response) {
                                 Vendor truck = new Vendor.Builder(business.getId())
@@ -107,7 +107,7 @@ public class UserReviewActivity extends AppCompatActivity {
                                 }
                                 Vendor truck = new Vendor.Builder(vendor.getObjectId())
                                         .setRating(rate)
-                                        .setPicture(vendor.getString("profile_url"))
+                                        .setPicture(vendor.getString(Constants.PARSE_COLUMN_PROFILE))
                                         .setAddress(vendor.getString("address"))
                                         .setHours(vendor.getString(today))
                                         .isYelp(false).setName(vendor.getString("name")).build();

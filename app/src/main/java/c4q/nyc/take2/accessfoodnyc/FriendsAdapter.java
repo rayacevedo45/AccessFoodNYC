@@ -47,8 +47,8 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.FriendsV
 
         ParseObject item = mList.get(position);
 
-        Picasso.with(mContext).load(item.getString("profile_url")).resize(200, 200).centerCrop().into(holder.picture);
-        holder.friendName.setText(item.getString("first_name") + " " + item.getString("last_name"));
+        Picasso.with(mContext).load(item.getString(Constants.PARSE_COLUMN_PROFILE)).resize(200, 200).centerCrop().into(holder.picture);
+        holder.friendName.setText(item.getString(Constants.FIRST_NAME) + " " + item.getString(Constants.LAST_NAME));
     }
 
     @Override

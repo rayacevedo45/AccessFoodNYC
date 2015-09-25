@@ -39,8 +39,8 @@ public class FavoritedFriendsAdapter extends RecyclerView.Adapter<FavoritedFrien
     @Override
     public void onBindViewHolder(FriendsHolder holder, int position) {
         ParseUser friend = mList.get(position);
-        holder.name.setText(friend.getString("first_name") + " " + friend.getString("last_name"));
-        Picasso.with(mContext).load(friend.getString("profile_url")).into(holder.picture);
+        holder.name.setText(friend.getString(Constants.FIRST_NAME) + " " + friend.getString(Constants.LAST_NAME));
+        Picasso.with(mContext).load(friend.getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.picture);
     }
 
     @Override

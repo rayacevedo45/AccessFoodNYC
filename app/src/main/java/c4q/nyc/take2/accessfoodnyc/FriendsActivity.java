@@ -49,7 +49,7 @@ public class FriendsActivity extends AppCompatActivity {
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setTitle(user.getString("first_name") + " " + user.getString("last_name"));
+        mToolbar.setTitle(user.getString(Constants.FIRST_NAME) + " " + user.getString(Constants.LAST_NAME));
 
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView_friends);
@@ -72,8 +72,8 @@ public class FriendsActivity extends AppCompatActivity {
                         Button accept = (Button) row.findViewById(R.id.button_pending_accept);
                         Button decline = (Button) row.findViewById(R.id.button_pending_decline);
 
-                        final String friendName = pending.getString("first_name") + " " + pending.getString("last_name");
-                        Picasso.with(getApplicationContext()).load(pending.getString("profile_url")).into(picture);
+                        final String friendName = pending.getString(Constants.FIRST_NAME) + " " + pending.getString(Constants.LAST_NAME);
+                        Picasso.with(getApplicationContext()).load(pending.getString(Constants.PARSE_COLUMN_PROFILE)).into(picture);
                         name.setText(friendName);
                         accept.setOnClickListener(new View.OnClickListener() {
                             @Override

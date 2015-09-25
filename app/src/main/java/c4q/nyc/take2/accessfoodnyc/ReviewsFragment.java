@@ -82,7 +82,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
         final ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
         if (isYelp) {
 
-            query.whereEqualTo("yelpId", objectId).findInBackground(new FindCallback<ParseObject>() {
+            query.whereEqualTo(Constants.YELP_ID, objectId).findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
                     if (list.size() != 0) {
@@ -183,7 +183,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
         final FragmentManager manager = getActivity().getSupportFragmentManager();
         if (isYelp) {
             ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
-            query.whereEqualTo("yelpId", objectId).findInBackground(new FindCallback<ParseObject>() {
+            query.whereEqualTo(Constants.YELP_ID, objectId).findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {
                     ReviewDialogFragment dialog = new ReviewDialogFragment();

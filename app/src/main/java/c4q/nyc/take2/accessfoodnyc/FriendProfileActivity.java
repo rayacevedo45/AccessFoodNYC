@@ -98,7 +98,7 @@ public class FriendProfileActivity extends AppCompatActivity implements DialogCa
             @Override
             public void done(final ParseUser user, ParseException e) {
 
-                String name = user.getString("first_name") + " " + user.getString("last_name");
+                String name = user.getString(Constants.FIRST_NAME) + " " + user.getString(Constants.LAST_NAME);
                 getSupportActionBar().setTitle(name + "'s Profile");
                 mToolbarLayout.setTitle(name + "'s Profile");
                 mToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
@@ -106,7 +106,7 @@ public class FriendProfileActivity extends AppCompatActivity implements DialogCa
 
 
                 try {
-                    Picasso.with(getApplicationContext()).load(user.getString("profile_url")).into(mImageView);
+                    Picasso.with(getApplicationContext()).load(user.getString(Constants.PARSE_COLUMN_PROFILE)).into(mImageView);
                 } catch (NullPointerException e3) {
                     Picasso.with(getApplicationContext()).load(R.drawable.default_profile).into(mImageView);
                 }
@@ -134,7 +134,7 @@ public class FriendProfileActivity extends AppCompatActivity implements DialogCa
 
                 ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
                 favorites.include(Constants.VENDOR);
-                favorites.whereEqualTo("follower", user).findInBackground(new FindCallback<ParseObject>() {
+                favorites.whereEqualTo(Constants.PARSE_COLUMN_FOLLOWER, user).findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> list, ParseException e) {
                         mTextViewFavorite.setText(list.size() + "");
@@ -149,13 +149,13 @@ public class FriendProfileActivity extends AppCompatActivity implements DialogCa
                                     public void done(List<ParseUser> list, ParseException e) {
 
                                         ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
-                                        favorites.include("follower");
-                                        favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("follower", list);
+                                        favorites.include(Constants.PARSE_COLUMN_FOLLOWER);
+                                        favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn(Constants.PARSE_COLUMN_FOLLOWER, list);
                                         favorites.findInBackground(new FindCallback<ParseObject>() {
                                             @Override
                                             public void done(final List<ParseObject> list, ParseException e) {
                                                 YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
-                                                yelpBizService.searchBusiness(vendor.getString("yelpId"), new Callback<Business>() {
+                                                yelpBizService.searchBusiness(vendor.getString(Constants.YELP_ID), new Callback<Business>() {
                                                     @Override
                                                     public void success(Business business, Response response) {
                                                         Coordinate coordinate = business.getLocation().getCoordinate();
@@ -188,8 +188,8 @@ public class FriendProfileActivity extends AppCompatActivity implements DialogCa
                                     public void done(List<ParseUser> friends, ParseException e) {
 
                                         ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
-                                        favorites.include("follower");
-                                        favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("follower", friends);
+                                        favorites.include(Constants.PARSE_COLUMN_FOLLOWER);
+                                        favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn(Constants.PARSE_COLUMN_FOLLOWER, friends);
                                         favorites.findInBackground(new FindCallback<ParseObject>() {
                                             @Override
                                             public void done(final List<ParseObject> list, ParseException e) {
@@ -198,7 +198,7 @@ public class FriendProfileActivity extends AppCompatActivity implements DialogCa
                                                         .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
                                                         .isYelp(false)
                                                         .setFriends(list).setLocation(vendor.getParseGeoPoint("location")).setHours(json)
-                                                        .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
+                                                        .setPicture(vendor.getString(Constants.PARSE_COLUMN_PROFILE)).setRating(vendor.getDouble("rating"))
                                                         .isLiked(true).build();
                                                 mAdapter.addVendor(truck);
 

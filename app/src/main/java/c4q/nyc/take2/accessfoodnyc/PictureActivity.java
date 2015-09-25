@@ -186,8 +186,8 @@ public class PictureActivity extends AppCompatActivity {
                 //Toast.makeText(getApplicationContext(), "uploaded", Toast.LENGTH_SHORT).show();
 
                 if (isYelp){
-                    final ParseObject newYelpVendor = new ParseObject("Vendor");
-                    newYelpVendor.put("yelpId", objectId);
+                    final ParseObject newYelpVendor = new ParseObject(Constants.PARSE_CLASS_VENDOR);
+                    newYelpVendor.put(Constants.YELP_ID, objectId);
                     newYelpVendor.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
@@ -210,7 +210,7 @@ public class PictureActivity extends AppCompatActivity {
                 }
                 else {
 
-                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
                     query.getInBackground(objectId, new GetCallback<ParseObject>() {
                         @Override
                         public void done(final ParseObject vendor, ParseException e) {

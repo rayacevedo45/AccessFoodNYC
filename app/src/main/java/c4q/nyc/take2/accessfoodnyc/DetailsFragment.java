@@ -113,7 +113,7 @@ public class DetailsFragment extends Fragment {
 
             yelpLogo.setVisibility(View.VISIBLE);
             ParseQuery<ParseObject> findVendor = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
-            findVendor.whereEqualTo("yelpId", objectId).getFirstInBackground(new GetCallback<ParseObject>() {
+            findVendor.whereEqualTo(Constants.YELP_ID, objectId).getFirstInBackground(new GetCallback<ParseObject>() {
                 @Override
                 public void done(final ParseObject vendor, ParseException e) {
                     if (vendor != null) {
@@ -125,7 +125,7 @@ public class DetailsFragment extends Fragment {
                                 if (list.size() != 0) {
                                     ParseQuery<ParseObject> query1 = ParseQuery.getQuery(Constants.PARSE_CLASS_REVIEW);
                                     query1.include("writer");
-                                    query1.whereEqualTo("vendor", vendor).whereContainedIn("writer", list);
+                                    query1.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("writer", list);
                                     query1.findInBackground(new FindCallback<ParseObject>() {
                                         @Override
                                         public void done(List<ParseObject> list, ParseException e) {
@@ -171,7 +171,7 @@ public class DetailsFragment extends Fragment {
                                 mVendorPicImage.setVisibility(View.GONE);
 
                             } else {
-                                Picasso.with(getActivity()).load(vendor.getString("profile_url")).into(mVendorPicImage);
+                                Picasso.with(getActivity()).load(vendor.getString(Constants.PARSE_COLUMN_PROFILE)).into(mVendorPicImage);
                             }
                         }
                     });
@@ -208,7 +208,7 @@ public class DetailsFragment extends Fragment {
                                 addFavoritedFriends(vendor, list);
 
                                 ParseQuery<ParseObject> favorites2 = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
-                                favorites2.whereEqualTo(Constants.VENDOR, vendor).whereEqualTo("follower", user);
+                                favorites2.whereEqualTo(Constants.VENDOR, vendor).whereEqualTo(Constants.PARSE_COLUMN_FOLLOWER, user);
                                 favorites2.getFirstInBackground(new GetCallback<ParseObject>() {
                                     @Override
                                     public void done(ParseObject parseObject, ParseException e) {
@@ -232,15 +232,15 @@ public class DetailsFragment extends Fragment {
 
     private void addFavoritedFriends(ParseObject vendor, List<ParseUser> list) {
         ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
-        favorites.include("follower");
-        favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("follower", list);
+        favorites.include(Constants.PARSE_COLUMN_FOLLOWER);
+        favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn(Constants.PARSE_COLUMN_FOLLOWER, list);
         favorites.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (list.size() != 0) {
                     List<ParseUser> friends = new ArrayList<ParseUser>();
                     for (ParseObject favorite : list) {
-                        ParseUser friend = favorite.getParseUser("follower");
+                        ParseUser friend = favorite.getParseUser(Constants.PARSE_COLUMN_FOLLOWER);
                         friends.add(friend);
                     }
                     mFavoritedFriendsAdapter.addFavoritedFriends(friends);
@@ -298,7 +298,7 @@ public class DetailsFragment extends Fragment {
 
                     if (isYelp) {
                         ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
-                        query.whereStartsWith("yelpId", mId);
+                        query.whereStartsWith(Constants.YELP_ID, mId);
                         query.getFirstInBackground(new GetCallback<ParseObject>() {
                             public void done(final ParseObject vendor, ParseException e) {
                                 if (e == null) {
@@ -309,7 +309,7 @@ public class DetailsFragment extends Fragment {
                                         //object doesn't exist
                                         //add yelpID as new vendor in parse.com
                                         selectedVendor = new ParseObject(Constants.PARSE_CLASS_VENDOR);
-                                        selectedVendor.put("yelpId", mId);
+                                        selectedVendor.put(Constants.YELP_ID, mId);
                                         selectedVendor.saveInBackground(new SaveCallback() {
                                             @Override
                                             public void done(ParseException e) {
@@ -366,7 +366,7 @@ public class DetailsFragment extends Fragment {
     private void removeFromFavorite(ParseUser user, ParseObject vendor) {
         ParsePush.unsubscribeInBackground(vendor.getObjectId());
         final ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
-        favorites.whereEqualTo("follower", user).whereEqualTo("vendor", vendor);
+        favorites.whereEqualTo(Constants.PARSE_COLUMN_FOLLOWER, user).whereEqualTo(Constants.VENDOR, vendor);
         favorites.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject favorite, ParseException e) {
@@ -386,8 +386,8 @@ public class DetailsFragment extends Fragment {
     private void addToFavorite(ParseUser user, ParseObject vendor) {
         ParsePush.subscribeInBackground(vendor.getObjectId());
         ParseObject favorite = new ParseObject(Constants.PARSE_CLASS_FAVORITE);
-        favorite.put("follower", user);
-        favorite.put("vendor", vendor);
+        favorite.put(Constants.PARSE_COLUMN_FOLLOWER, user);
+        favorite.put(Constants.VENDOR, vendor);
         favorite.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -399,7 +399,7 @@ public class DetailsFragment extends Fragment {
 
     private void getCountFavs(ParseObject vendor) {
         ParseQuery<ParseObject> fav = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
-        fav.whereEqualTo("vendor", vendor).countInBackground(new CountCallback() {
+        fav.whereEqualTo(Constants.VENDOR, vendor).countInBackground(new CountCallback() {
             @Override
             public void done(int i, ParseException e) {
                 countFavs.setText(i + "");

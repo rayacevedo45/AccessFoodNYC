@@ -101,7 +101,7 @@ public class FindFriendsAdapter extends RecyclerView.Adapter<FindFriendsAdapter.
                 public void onClick(View v) {
 
                     final ParseUser user = ParseUser.getCurrentUser();
-                    String name = user.get("first_name") + " " + user.get("last_name");
+                    String name = user.get(Constants.FIRST_NAME) + " " + user.get(Constants.LAST_NAME);
                     try {
                         JSONObject data = new JSONObject("{\"alert\": \"" + name + " wants to be your friend!" + "\"," +
                                 "\"profile_url\": \"" + friend.getThumbnailUrl() + "\"," +

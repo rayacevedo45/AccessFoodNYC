@@ -118,9 +118,9 @@ public class LoginActivity extends Activity {
                             Log.d("MyApp", "Uh oh. The user cancelled the Facebook login.");
                         } else if (user.isNew()) {
                             Profile profile = Profile.getCurrentProfile();
-                            user.put("first_name", profile.getFirstName());
-                            user.put("last_name", profile.getLastName());
-                            user.put("profile_url", profile.getProfilePictureUri(300, 300).toString());
+                            user.put(Constants.FIRST_NAME, profile.getFirstName());
+                            user.put(Constants.LAST_NAME, profile.getLastName());
+                            user.put(Constants.PARSE_COLUMN_PROFILE, profile.getProfilePictureUri(300, 300).toString());
                             user.put("fbId", profile.getId());
                             user.saveInBackground();
 
@@ -134,7 +134,7 @@ public class LoginActivity extends Activity {
                             goToMapsActivity();
                         } else {
                             Profile profile = Profile.getCurrentProfile();
-                            user.put("profile_url", profile.getProfilePictureUri(300, 300).toString());
+                            user.put(Constants.PARSE_COLUMN_PROFILE, profile.getProfilePictureUri(300, 300).toString());
                             user.saveInBackground();
 
                             ParseInstallation installation = ParseInstallation.getCurrentInstallation();
@@ -220,8 +220,8 @@ public class LoginActivity extends Activity {
                     newUser.setUsername(username);
                     newUser.setPassword(password);
                     newUser.setEmail(email);
-                    newUser.put("first_name", firstName);
-                    newUser.put("last_name", lastName);
+                    newUser.put(Constants.FIRST_NAME, firstName);
+                    newUser.put(Constants.LAST_NAME, lastName);
                     newUser.signUpInBackground(new SignUpCallback() {
                         @Override
                         public void done(ParseException e) {

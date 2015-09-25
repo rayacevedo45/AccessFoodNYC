@@ -243,7 +243,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             final ParseUser user = ParseUser.getCurrentUser();
             for (final Business business : yelpRawList) {
                 ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
-                query.whereEqualTo("yelpId", business.getId());
+                query.whereEqualTo(Constants.YELP_ID, business.getId());
                 query.getFirstInBackground(new GetCallback<ParseObject>() {
                     @Override
                     public void done(final ParseObject vendor, ParseException e) {
@@ -277,8 +277,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     public void done(List<ParseUser> list, ParseException e) {
 
                                         ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
-                                        favorites.include("follower");
-                                        favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("follower", list);
+                                        favorites.include(Constants.PARSE_COLUMN_FOLLOWER);
+                                        favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn(Constants.PARSE_COLUMN_FOLLOWER, list);
                                         favorites.findInBackground(new FindCallback<ParseObject>() {
                                             @Override
                                             public void done(List<ParseObject> list, ParseException e) {
@@ -524,13 +524,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             @Override
                             public void done(List<ParseUser> friends, ParseException e) {
                                 ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
-                                favorites.include("follower");
-                                favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("follower", friends);
+                                favorites.include(Constants.PARSE_COLUMN_FOLLOWER);
+                                favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn(Constants.PARSE_COLUMN_FOLLOWER, friends);
                                 favorites.findInBackground(new FindCallback<ParseObject>() {
                                     @Override
                                     public void done(final List<ParseObject> list, ParseException e) {
                                         ParseQuery<ParseObject> fav = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
-                                        fav.whereEqualTo("follower", user).whereEqualTo(Constants.VENDOR, vendor);
+                                        fav.whereEqualTo(Constants.PARSE_COLUMN_FOLLOWER, user).whereEqualTo(Constants.VENDOR, vendor);
                                         fav.getFirstInBackground(new GetCallback<ParseObject>() {
                                             @Override
                                             public void done(final ParseObject parseObject, ParseException e) {
@@ -540,14 +540,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                                             .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
                                                             .isYelp(false)
                                                             .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
-                                                            .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
+                                                            .setPicture(vendor.getString(Constants.PARSE_COLUMN_PROFILE)).setRating(vendor.getDouble("rating"))
                                                             .isLiked(false).build();
                                                 } else {
                                                     truck = new Vendor.Builder(vendor.getObjectId())
                                                             .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
                                                             .isYelp(false)
                                                             .setFriends(list).setLocation(vendorLocation).setHours(json).setMarker(marker)
-                                                            .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
+                                                            .setPicture(vendor.getString(Constants.PARSE_COLUMN_PROFILE)).setRating(vendor.getDouble("rating"))
                                                             .isLiked(true).build();
                                                 }
                                                 mAdapter.addVendor(truck);

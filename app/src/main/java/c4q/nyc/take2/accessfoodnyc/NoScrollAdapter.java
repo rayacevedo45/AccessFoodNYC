@@ -59,12 +59,12 @@ public class NoScrollAdapter<T> {
             grade5.setVisibility(View.GONE);
 
             try {
-                Picasso.with(mContext).load(writer.getString("profile_url")).into(picture);
+                Picasso.with(mContext).load(writer.getString(Constants.PARSE_COLUMN_PROFILE)).into(picture);
             } catch (Exception e) {
                 Picasso.with(mContext).load(R.drawable.default_profile).into(picture);
             }
 
-            reviewer.setText(writer.getString("first_name") + " " + writer.getString("last_name"));
+            reviewer.setText(writer.getString(Constants.FIRST_NAME) + " " + writer.getString(Constants.LAST_NAME));
 
             DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
             String dates = dateFormat.format(review.getCreatedAt());
@@ -112,10 +112,10 @@ public class NoScrollAdapter<T> {
             ImageView picture = (ImageView) row.findViewById(R.id.details_friend_fav);
             TextView name = (TextView) row.findViewById(R.id.textView_details_friend_name);
 
-            name.setText(friend.getString("first_name") + " " + friend.getString("last_name"));
+            name.setText(friend.getString(Constants.FIRST_NAME) + " " + friend.getString(Constants.LAST_NAME));
 
             try {
-                Picasso.with(mContext).load(friend.getString("profile_url")).into(picture);
+                Picasso.with(mContext).load(friend.getString(Constants.PARSE_COLUMN_PROFILE)).into(picture);
             } catch (NullPointerException e) {
                 Picasso.with(mContext).load(R.drawable.default_profile).into(picture);
             }
