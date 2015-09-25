@@ -79,7 +79,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void refresh() {
-        final ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+        final ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
         if (isYelp) {
 
             query.whereEqualTo("yelpId", objectId).findInBackground(new FindCallback<ParseObject>() {
@@ -87,9 +87,9 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
                 public void done(List<ParseObject> list, ParseException e) {
                     if (list.size() != 0) {
                         final ParseObject vendor = list.get(0);
-                        ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
+                        ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery(Constants.PARSE_CLASS_REVIEW);
                         reviewQuery.include("writer");
-                        reviewQuery.whereEqualTo("vendor", vendor).findInBackground(new FindCallback<ParseObject>() {
+                        reviewQuery.whereEqualTo(Constants.VENDOR, vendor).findInBackground(new FindCallback<ParseObject>() {
                             @Override
                             public void done(List<ParseObject> reviews, ParseException e) {
                                 if (reviews.size() == 0) {
@@ -114,9 +114,9 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
                 @Override
                 public void done(final ParseObject parseObject, ParseException e) {
-                    ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
+                    ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery(Constants.PARSE_CLASS_REVIEW);
                     reviewQuery.include("writer");
-                    reviewQuery.whereEqualTo("vendor", parseObject).findInBackground(new FindCallback<ParseObject>() {
+                    reviewQuery.whereEqualTo(Constants.VENDOR, parseObject).findInBackground(new FindCallback<ParseObject>() {
                         @Override
                         public void done(List<ParseObject> reviews, ParseException e) {
                             if (reviews.size() == 0) {
@@ -182,7 +182,7 @@ public class ReviewsFragment extends Fragment implements View.OnClickListener {
     private void writeReview() {
         final FragmentManager manager = getActivity().getSupportFragmentManager();
         if (isYelp) {
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
             query.whereEqualTo("yelpId", objectId).findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> list, ParseException e) {

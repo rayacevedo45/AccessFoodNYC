@@ -55,7 +55,7 @@ public class RedeemDialogFragment extends DialogFragment {
             @Override
             public void done(final ParseObject coupon, ParseException e) {
                 if (e == null) {
-                    ParseObject vendor = coupon.getParseObject("vendor");
+                    ParseObject vendor = coupon.getParseObject(Constants.VENDOR);
                     vendor.fetchInBackground(new GetCallback<ParseObject>() {
                         @Override
                         public void done(ParseObject vendor, ParseException e) {

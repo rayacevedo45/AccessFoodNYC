@@ -136,7 +136,7 @@ public class ReviewDialogFragment extends DialogFragment {
                                     review.put("description", description);
                                     review.put("rating", rating);
                                     review.put("writer", ParseUser.getCurrentUser());
-                                    review.put("vendor", parseObject);
+                                    review.put(Constants.VENDOR, parseObject);
                                     review.saveInBackground();
                                 }
                             });
@@ -153,7 +153,7 @@ public class ReviewDialogFragment extends DialogFragment {
                                     review.put("description", description);
                                     review.put("rating", rating);
                                     review.put("writer", ParseUser.getCurrentUser());
-                                    review.put("vendor", parseObject);
+                                    review.put(Constants.VENDOR, parseObject);
                                     review.saveInBackground();
 
                                     existingRating = parseObject.getDouble("rating");

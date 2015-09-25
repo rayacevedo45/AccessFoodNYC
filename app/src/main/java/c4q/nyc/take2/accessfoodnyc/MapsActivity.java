@@ -242,7 +242,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             final ParseUser user = ParseUser.getCurrentUser();
             for (final Business business : yelpRawList) {
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+                ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
                 query.whereEqualTo("yelpId", business.getId());
                 query.getFirstInBackground(new GetCallback<ParseObject>() {
                     @Override
@@ -276,9 +276,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                     @Override
                                     public void done(List<ParseUser> list, ParseException e) {
 
-                                        ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
+                                        ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
                                         favorites.include("follower");
-                                        favorites.whereEqualTo("vendor", vendor).whereContainedIn("follower", list);
+                                        favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("follower", list);
                                         favorites.findInBackground(new FindCallback<ParseObject>() {
                                             @Override
                                             public void done(List<ParseObject> list, ParseException e) {
@@ -507,40 +507,33 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         final String today = "day" + Integer.toString(day);
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
         query.whereNear("location", point).whereWithinMiles("location", point, 5.0).setLimit(50).findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 for (final ParseObject vendor : list) {
                     if (vendor.getString("name") != null) {
-
                         final ParseGeoPoint vendorLocation = vendor.getParseGeoPoint("location");
                         LatLng position = new LatLng(vendorLocation.getLatitude(), vendorLocation.getLongitude());
                         final Marker marker = mMap.addMarker(new MarkerOptions().position(position).title(vendor.getString("name")));
                         marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.food_truck_red));
                         //markerHashMap.put(marker, vendor.getObjectId());
-
                         final String json = vendor.getString(today);
-
-
                         ParseRelation<ParseUser> friends = user.getRelation("friends");
                         friends.getQuery().findInBackground(new FindCallback<ParseUser>() {
                             @Override
                             public void done(List<ParseUser> friends, ParseException e) {
-
-                                ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
+                                ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
                                 favorites.include("follower");
-                                favorites.whereEqualTo("vendor", vendor).whereContainedIn("follower", friends);
+                                favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("follower", friends);
                                 favorites.findInBackground(new FindCallback<ParseObject>() {
                                     @Override
                                     public void done(final List<ParseObject> list, ParseException e) {
-
-                                        ParseQuery<ParseObject> fav = ParseQuery.getQuery("Favorite");
-                                        fav.whereEqualTo("follower", user).whereEqualTo("vendor", vendor);
+                                        ParseQuery<ParseObject> fav = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
+                                        fav.whereEqualTo("follower", user).whereEqualTo(Constants.VENDOR, vendor);
                                         fav.getFirstInBackground(new GetCallback<ParseObject>() {
                                             @Override
                                             public void done(final ParseObject parseObject, ParseException e) {
-
                                                 Vendor truck;
                                                 if (parseObject == null) {
                                                     truck = new Vendor.Builder(vendor.getObjectId())
@@ -558,20 +551,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                                             .isLiked(true).build();
                                                 }
                                                 mAdapter.addVendor(truck);
-
-
                                             }
                                         });
-
                                     }
                                 });
-
                             }
                         });
                     }
-
                 }
-
             }
         });
 

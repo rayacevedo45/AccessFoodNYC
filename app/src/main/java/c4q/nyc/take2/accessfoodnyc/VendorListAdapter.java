@@ -252,11 +252,11 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.friend2.setVisibility(View.VISIBLE);
             holder.friend1.setVisibility(View.VISIBLE);
             holder.more.setVisibility(View.VISIBLE);
-            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
-            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
-            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser("follower").getString("profile_url")).into(holder.friend3);
-            Picasso.with(mContext).load(vendor.getFriends().get(3).getParseUser("follower").getString("profile_url")).into(holder.friend4);
-            Picasso.with(mContext).load(vendor.getFriends().get(4).getParseUser("follower").getString("profile_url")).into(holder.friend5);
+            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString("profile_url")).into(holder.friend1);
+            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString("profile_url")).into(holder.friend2);
+            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString("profile_url")).into(holder.friend3);
+            Picasso.with(mContext).load(vendor.getFriends().get(3).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString("profile_url")).into(holder.friend4);
+            Picasso.with(mContext).load(vendor.getFriends().get(4).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString("profile_url")).into(holder.friend5);
             holder.more.setText("+" + (size-5));
         }
 
@@ -308,9 +308,9 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
     private void addToLikedList(ParseObject vendor) {
         ParseUser user = ParseUser.getCurrentUser();
         ParsePush.subscribeInBackground(vendor.getObjectId());
-        ParseObject favorite = new ParseObject("Favorite");
-        favorite.put("follower", user);
-        favorite.put("vendor", vendor);
+        ParseObject favorite = new ParseObject(Constants.PARSE_CLASS_FAVORITE);
+        favorite.put(Constants.PARSE_COLUMN_FOLLOWER, user);
+        favorite.put(Constants.VENDOR, vendor);
         favorite.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -321,8 +321,8 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
 
     private void removeFromLikedList(ParseObject vendor) {
         ParseUser user = ParseUser.getCurrentUser();
-        ParseQuery<ParseObject> find = ParseQuery.getQuery("Favorite");
-        find.whereEqualTo("vendor", vendor).whereEqualTo("follower", user);
+        ParseQuery<ParseObject> find = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
+        find.whereEqualTo(Constants.VENDOR, vendor).whereEqualTo(Constants.PARSE_COLUMN_FOLLOWER, user);
         find.getFirstInBackground(new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject favorite, ParseException e) {

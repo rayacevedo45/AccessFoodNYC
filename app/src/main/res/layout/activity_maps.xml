@@ -45,7 +45,7 @@
             android:textAllCaps="false"
             android:layout_margin="12dp"
             android:visibility="gone"
-            android:text="search this area"
+            android:text="@string/search"
             android:capitalize="none"
             android:id="@+id/search_this_area"
             android:layout_width="wrap_content"

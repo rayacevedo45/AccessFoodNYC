@@ -11,9 +11,17 @@ public class Constants {
     public static final String NAME = "name";
     public static final String VENDOR = "vendor";
     public static final String YELP_ID = "yelpId";
+    public static final String PARSE_COLUMN_FOLLOWER = "follower";
 
     public static final int FLAG_CAMERA = 1;
     public static final int FLAG_GALLERY = 2;
     public static final String EXTRA_PICTIRE = "picture";
+
+    public static final String PARSE_CLASS_VENDOR = "Vendor";
+    public static final String PARSE_CLASS_PICTURE = "Picture";
+    public static final String PARSE_CLASS_REVIEW = "Review";
+    public static final String PARSE_CLASS_USER = "_User";
+    public static final String PARSE_CLASS_COUPON = "Coupon";
+    public static final String PARSE_CLASS_FAVORITE = "Favorite";
 
 }

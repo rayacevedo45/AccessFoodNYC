@@ -65,13 +65,13 @@ public class UserFavoriteActivity extends AppCompatActivity {
         mAdapter = new VendorListAdapter(getApplicationContext(), point);
         mRecyclerView.setAdapter(mAdapter);
 
-        ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
-        favorites.include("vendor");
+        ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
+        favorites.include(Constants.VENDOR);
         favorites.whereEqualTo("follower", user).findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 for (ParseObject favorite : list) {
-                    final ParseObject vendor = favorite.getParseObject("vendor");
+                    final ParseObject vendor = favorite.getParseObject(Constants.VENDOR);
 
                     if (vendor.getParseGeoPoint("location") == null) {
 
@@ -80,9 +80,9 @@ public class UserFavoriteActivity extends AppCompatActivity {
                             @Override
                             public void done(List<ParseUser> list, ParseException e) {
 
-                                ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
+                                ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
                                 favorites.include("follower");
-                                favorites.whereEqualTo("vendor", vendor).whereContainedIn("follower", list);
+                                favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("follower", list);
                                 favorites.findInBackground(new FindCallback<ParseObject>() {
                                     @Override
                                     public void done(final List<ParseObject> list, ParseException e) {
@@ -119,9 +119,9 @@ public class UserFavoriteActivity extends AppCompatActivity {
                             @Override
                             public void done(List<ParseUser> friends, ParseException e) {
 
-                                ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
+                                ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
                                 favorites.include("follower");
-                                favorites.whereEqualTo("vendor", vendor).whereContainedIn("follower", friends);
+                                favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("follower", friends);
                                 favorites.findInBackground(new FindCallback<ParseObject>() {
                                     @Override
                                     public void done(final List<ParseObject> list, ParseException e) {

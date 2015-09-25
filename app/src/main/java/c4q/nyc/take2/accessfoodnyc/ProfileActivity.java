@@ -81,7 +81,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
             final ParseRelation<ParseUser> relation = me.getRelation("friends");
 
-            ParseQuery<ParseUser> query = ParseQuery.getQuery("_User");
+            ParseQuery<ParseUser> query = ParseQuery.getQuery(Constants.PARSE_CLASS_USER);
             query.whereEqualTo(Constants.EXTRA_KEY_OBJECT_ID, objectId);
             query.findInBackground(new FindCallback<ParseUser>() {
                 @Override
@@ -163,8 +163,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         final String today = "day" + Integer.toString(day);
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Review");
-        query.include("vendor");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_REVIEW);
+        query.include(Constants.VENDOR);
         query.whereEqualTo("writer", me).findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
@@ -177,7 +177,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 });
                 for (final ParseObject review : list) {
 
-                    ParseObject vendor = review.getParseObject("vendor");
+                    ParseObject vendor = review.getParseObject(Constants.VENDOR);
                     if (vendor.getParseGeoPoint("location") == null) {
 
                         YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
@@ -245,7 +245,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
+        ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
         favorites.whereEqualTo("follower", me).findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
@@ -259,7 +259,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         });
 
 
-        ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery("Review");
+        ParseQuery<ParseObject> reviewQuery = ParseQuery.getQuery(Constants.PARSE_CLASS_REVIEW);
         reviewQuery.whereEqualTo("writer", me).countInBackground(new CountCallback() {
             @Override
             public void done(int i, ParseException e) {
