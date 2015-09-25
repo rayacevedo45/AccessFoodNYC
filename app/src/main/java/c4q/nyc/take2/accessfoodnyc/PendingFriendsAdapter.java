@@ -40,9 +40,9 @@ public class PendingFriendsAdapter extends RecyclerView.Adapter<PendingFriendsAd
     public void onBindViewHolder(PendingFriendsHolder holder, int position) {
         final ParseUser user = mList.get(position);
 
-        final String friendName = user.getString("first_name") + " " + user.getString("last_name");
+        final String friendName = user.getString(Constants.FIRST_NAME) + " " + user.getString(Constants.LAST_NAME);
         holder.name.setText(friendName);
-        Picasso.with(mContext).load(user.getString("profile_url")).into(holder.picture);
+        Picasso.with(mContext).load(user.getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.picture);
         holder.accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

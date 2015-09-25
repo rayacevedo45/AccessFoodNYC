@@ -202,7 +202,7 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.friend2.setVisibility(View.GONE);
             holder.friend1.setVisibility(View.VISIBLE);
             holder.more.setVisibility(View.GONE);
-            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
+            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend1);
         } else if (size == 2) {
             holder.friend5.setVisibility(View.GONE);
             holder.friend4.setVisibility(View.GONE);
@@ -210,8 +210,8 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.friend2.setVisibility(View.VISIBLE);
             holder.friend1.setVisibility(View.VISIBLE);
             holder.more.setVisibility(View.GONE);
-            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
-            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
+            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend1);
+            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend2);
         } else if (size == 3) {
             holder.friend5.setVisibility(View.GONE);
             holder.friend4.setVisibility(View.GONE);
@@ -219,9 +219,9 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.friend2.setVisibility(View.VISIBLE);
             holder.friend1.setVisibility(View.VISIBLE);
             holder.more.setVisibility(View.GONE);
-            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
-            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
-            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser("follower").getString("profile_url")).into(holder.friend3);
+            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend1);
+            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend2);
+            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend3);
         } else if (size == 4) {
             holder.friend5.setVisibility(View.GONE);
             holder.friend4.setVisibility(View.VISIBLE);
@@ -229,10 +229,10 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.friend2.setVisibility(View.VISIBLE);
             holder.friend1.setVisibility(View.VISIBLE);
             holder.more.setVisibility(View.GONE);
-            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
-            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
-            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser("follower").getString("profile_url")).into(holder.friend3);
-            Picasso.with(mContext).load(vendor.getFriends().get(3).getParseUser("follower").getString("profile_url")).into(holder.friend4);
+            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend1);
+            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend2);
+            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend3);
+            Picasso.with(mContext).load(vendor.getFriends().get(3).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend4);
         } else if (size == 5) {
             holder.friend5.setVisibility(View.VISIBLE);
             holder.friend4.setVisibility(View.VISIBLE);
@@ -240,11 +240,11 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.friend2.setVisibility(View.VISIBLE);
             holder.friend1.setVisibility(View.VISIBLE);
             holder.more.setVisibility(View.GONE);
-            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser("follower").getString("profile_url")).into(holder.friend1);
-            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser("follower").getString("profile_url")).into(holder.friend2);
-            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser("follower").getString("profile_url")).into(holder.friend3);
-            Picasso.with(mContext).load(vendor.getFriends().get(3).getParseUser("follower").getString("profile_url")).into(holder.friend4);
-            Picasso.with(mContext).load(vendor.getFriends().get(4).getParseUser("follower").getString("profile_url")).into(holder.friend5);
+            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend1);
+            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend2);
+            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend3);
+            Picasso.with(mContext).load(vendor.getFriends().get(3).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend4);
+            Picasso.with(mContext).load(vendor.getFriends().get(4).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend5);
         } else {
             holder.friend5.setVisibility(View.VISIBLE);
             holder.friend4.setVisibility(View.VISIBLE);
@@ -252,11 +252,11 @@ public class VendorListAdapter extends RecyclerView.Adapter<VendorListAdapter.Ve
             holder.friend2.setVisibility(View.VISIBLE);
             holder.friend1.setVisibility(View.VISIBLE);
             holder.more.setVisibility(View.VISIBLE);
-            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString("profile_url")).into(holder.friend1);
-            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString("profile_url")).into(holder.friend2);
-            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString("profile_url")).into(holder.friend3);
-            Picasso.with(mContext).load(vendor.getFriends().get(3).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString("profile_url")).into(holder.friend4);
-            Picasso.with(mContext).load(vendor.getFriends().get(4).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString("profile_url")).into(holder.friend5);
+            Picasso.with(mContext).load(vendor.getFriends().get(0).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend1);
+            Picasso.with(mContext).load(vendor.getFriends().get(1).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend2);
+            Picasso.with(mContext).load(vendor.getFriends().get(2).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend3);
+            Picasso.with(mContext).load(vendor.getFriends().get(3).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend4);
+            Picasso.with(mContext).load(vendor.getFriends().get(4).getParseUser(Constants.PARSE_COLUMN_FOLLOWER).getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.friend5);
             holder.more.setText("+" + (size-5));
         }
 

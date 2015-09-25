@@ -127,8 +127,8 @@ public class ReviewDialogFragment extends DialogFragment {
 
 
                         if (isYelp) {
-                            ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
-                            query.whereEqualTo("yelpId", objectId).getFirstInBackground(new GetCallback<ParseObject>() {
+                            ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
+                            query.whereEqualTo(Constants.YELP_ID, objectId).getFirstInBackground(new GetCallback<ParseObject>() {
                                 @Override
                                 public void done(ParseObject parseObject, ParseException e) {
                                     ParseObject review = new ParseObject("Review");
@@ -143,7 +143,7 @@ public class ReviewDialogFragment extends DialogFragment {
                         } else {
 
 
-                            ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+                            ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
                             query.getInBackground(objectId, new GetCallback<ParseObject>() {
                                 @Override
                                 public void done(ParseObject parseObject, ParseException e) {

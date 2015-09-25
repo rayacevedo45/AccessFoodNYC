@@ -83,7 +83,7 @@ public class VendorInfoActivity extends AppCompatActivity implements ActionBar.T
             setupViewPager(mViewPager);
             mViewPager.setOffscreenPageLimit(3);
             mTabLayout.setupWithViewPager(mViewPager);
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
             query.getInBackground(objectId, new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject parseObject, ParseException e) {

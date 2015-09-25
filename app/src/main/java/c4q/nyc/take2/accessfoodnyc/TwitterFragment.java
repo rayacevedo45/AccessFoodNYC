@@ -30,7 +30,7 @@ import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterFragment extends Fragment {
 
-//    ParseObject vendor = new ParseObject("Vendor");
+//    ParseObject vendor = new ParseObject(Constants.PARSE_CLASS_VENDOR);
     ImageView menuImage;
 //    String menuPicUrlStr;
 
@@ -64,7 +64,7 @@ public class TwitterFragment extends Fragment {
         list = (ListView) rootView.findViewById(R.id.list);
 
         if (!isYelp) {
-            ParseQuery<ParseObject> findVendor = ParseQuery.getQuery("Vendor");
+            ParseQuery<ParseObject> findVendor = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
             findVendor.getInBackground(objectId, new GetCallback<ParseObject>() {
                 @Override
                 public void done(ParseObject vendor, ParseException e) {
@@ -177,7 +177,7 @@ public class TwitterFragment extends Fragment {
     protected void getTwitterHandle(){
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
-        query.whereEqualTo("yelpId", MapsActivity.businessId);
+        query.whereEqualTo(Constants.YELP_ID, MapsActivity.businessId);
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
                 if (e == null) {

@@ -48,8 +48,8 @@ public class CouponsAdapter extends RecyclerView.Adapter<CouponsAdapter.CouponVi
     @Override
     public void onBindViewHolder(CouponViewHolder holder, int position) {
         ParseObject coupon = mList.get(position);
-        ParseObject vendor = coupon.getParseObject("vendor");
-        Picasso.with(mContext).load(vendor.getString("profile_url")).into(holder.picture);
+        ParseObject vendor = coupon.getParseObject(Constants.VENDOR);
+        Picasso.with(mContext).load(vendor.getString(Constants.PARSE_COLUMN_PROFILE)).into(holder.picture);
 
         double rate = vendor.getDouble("rating");
         holder.rating.setText(vendor.getDouble("rating") + "");

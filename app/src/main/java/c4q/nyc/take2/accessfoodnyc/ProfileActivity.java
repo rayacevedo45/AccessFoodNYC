@@ -71,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
-        String name = me.getString("first_name") + " " + me.getString("last_name");
+        String name = me.getString(Constants.FIRST_NAME) + " " + me.getString(Constants.LAST_NAME);
         getSupportActionBar().setTitle(name + "'s Profile");
         mToolbarLayout.setTitle(name + "'s Profile");
         mToolbarLayout.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
@@ -95,7 +95,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     me.saveInBackground();
 
                     ParseUser user = ParseUser.getCurrentUser();
-                    String name = user.get("first_name") + " " + user.get("last_name");
+                    String name = user.get(Constants.FIRST_NAME) + " " + user.get(Constants.LAST_NAME);
                     try {
                         JSONObject data = new JSONObject("{\"alert\": \"" + name + " accepted your friend request!" + "\"," +
                                 "\"accepted\": \"" + user.getObjectId() + "\"}");
@@ -126,7 +126,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
 
 
         try {
-            Picasso.with(getApplicationContext()).load(me.getString("profile_url")).into(mImageViewProfile);
+            Picasso.with(getApplicationContext()).load(me.getString(Constants.PARSE_COLUMN_PROFILE)).into(mImageViewProfile);
         } catch (NullPointerException e) {
             Picasso.with(getApplicationContext()).load(R.drawable.default_profile).into(mImageViewProfile);
         }
@@ -181,7 +181,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     if (vendor.getParseGeoPoint("location") == null) {
 
                         YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
-                        yelpBizService.searchBusiness(vendor.getString("yelpId"), new Callback<Business>() {
+                        yelpBizService.searchBusiness(vendor.getString(Constants.YELP_ID), new Callback<Business>() {
                             @Override
                             public void success(Business business, Response response) {
                                 Vendor truck = new Vendor.Builder(business.getId())
@@ -207,7 +207,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                     } else {
                         Vendor truck = new Vendor.Builder(vendor.getObjectId())
                                 .setRating(vendor.getDouble("rating"))
-                                .setPicture(vendor.getString("profile_url"))
+                                .setPicture(vendor.getString(Constants.PARSE_COLUMN_PROFILE))
                                 .setAddress(vendor.getString("address"))
                                 .setHours(vendor.getString(today))
                                 .isYelp(false).setName(vendor.getString("name")).build();
@@ -246,7 +246,7 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         });
 
         ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
-        favorites.whereEqualTo("follower", me).findInBackground(new FindCallback<ParseObject>() {
+        favorites.whereEqualTo(Constants.PARSE_COLUMN_FOLLOWER, me).findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if (list.size() == 0) {

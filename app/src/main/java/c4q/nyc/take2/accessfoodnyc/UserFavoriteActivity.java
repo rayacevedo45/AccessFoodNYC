@@ -48,7 +48,7 @@ public class UserFavoriteActivity extends AppCompatActivity {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_user_favorite);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(user.getString("first_name") + " " + user.getString("last_name") + "'s Favorites");
+        getSupportActionBar().setTitle(user.getString(Constants.FIRST_NAME) + " " + user.getString(Constants.LAST_NAME) + "'s Favorites");
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         final String today = "day" + Integer.toString(day);
@@ -67,7 +67,7 @@ public class UserFavoriteActivity extends AppCompatActivity {
 
         ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
         favorites.include(Constants.VENDOR);
-        favorites.whereEqualTo("follower", user).findInBackground(new FindCallback<ParseObject>() {
+        favorites.whereEqualTo(Constants.PARSE_COLUMN_FOLLOWER, user).findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 for (ParseObject favorite : list) {
@@ -81,13 +81,13 @@ public class UserFavoriteActivity extends AppCompatActivity {
                             public void done(List<ParseUser> list, ParseException e) {
 
                                 ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
-                                favorites.include("follower");
-                                favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("follower", list);
+                                favorites.include(Constants.PARSE_COLUMN_FOLLOWER);
+                                favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn(Constants.PARSE_COLUMN_FOLLOWER, list);
                                 favorites.findInBackground(new FindCallback<ParseObject>() {
                                     @Override
                                     public void done(final List<ParseObject> list, ParseException e) {
                                         YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
-                                        yelpBizService.searchBusiness(vendor.getString("yelpId"), new Callback<Business>() {
+                                        yelpBizService.searchBusiness(vendor.getString(Constants.YELP_ID), new Callback<Business>() {
                                             @Override
                                             public void success(Business business, Response response) {
                                                 Coordinate coordinate = business.getLocation().getCoordinate();
@@ -120,8 +120,8 @@ public class UserFavoriteActivity extends AppCompatActivity {
                             public void done(List<ParseUser> friends, ParseException e) {
 
                                 ParseQuery<ParseObject> favorites = ParseQuery.getQuery(Constants.PARSE_CLASS_FAVORITE);
-                                favorites.include("follower");
-                                favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("follower", friends);
+                                favorites.include(Constants.PARSE_COLUMN_FOLLOWER);
+                                favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn(Constants.PARSE_COLUMN_FOLLOWER, friends);
                                 favorites.findInBackground(new FindCallback<ParseObject>() {
                                     @Override
                                     public void done(final List<ParseObject> list, ParseException e) {
@@ -130,7 +130,7 @@ public class UserFavoriteActivity extends AppCompatActivity {
                                                 .setName(vendor.getString("name")).setAddress(vendor.getString("address"))
                                                 .isYelp(false)
                                                 .setFriends(list).setLocation(vendor.getParseGeoPoint("location")).setHours(json)
-                                                .setPicture(vendor.getString("profile_url")).setRating(vendor.getDouble("rating"))
+                                                .setPicture(vendor.getString(Constants.PARSE_COLUMN_PROFILE)).setRating(vendor.getDouble("rating"))
                                                 .isLiked(true).build();
                                         mAdapter.addVendor(truck);
 
