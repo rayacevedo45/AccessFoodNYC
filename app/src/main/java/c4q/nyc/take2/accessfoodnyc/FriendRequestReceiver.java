@@ -135,7 +135,7 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                 pContentIntent = PendingIntent.getActivity(context, Constants.REQUEST_CODE_FRIEND_ACCEPT, couponIntent, PendingIntent.FLAG_CANCEL_CURRENT);
                 parseBuilder.setContentIntent(pContentIntent);
 
-                String objectId = pushData.optString("vendor", "");
+                String objectId = pushData.optString(Constants.VENDOR, "");
                 final ParseUser me = ParseUser.getCurrentUser();
 
                 final String type = pushData.optString("type", "");
@@ -152,7 +152,7 @@ public class FriendRequestReceiver extends ParsePushBroadcastReceiver {
                     public void done(ParseObject vendor, ParseException e) {
                         if (e == null) {
                             ParseObject coupon = new ParseObject("Coupon");
-                            coupon.put("vendor", vendor);
+                            coupon.put(Constants.VENDOR, vendor);
                             coupon.put("customer", me);
                             coupon.put("type", type);
                             coupon.put("amount", amount);

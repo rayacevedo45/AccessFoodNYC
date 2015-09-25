@@ -111,7 +111,7 @@ public class FindFriendsActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Can't find friends. Please connect your account with facebook", Toast.LENGTH_SHORT).show();
         }
 
-      
+
 
     }
 }

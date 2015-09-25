@@ -176,7 +176,7 @@ public class TwitterFragment extends Fragment {
 
     protected void getTwitterHandle(){
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Vendor");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
         query.whereEqualTo("yelpId", MapsActivity.businessId);
         query.getFirstInBackground(new GetCallback<ParseObject>() {
             public void done(ParseObject object, ParseException e) {
@@ -186,7 +186,7 @@ public class TwitterFragment extends Fragment {
                     twitterHandle = twitterName;
                     new SearchOnTwitter().execute();
                 } else {
-                    Log.d("vendor", "twitterhandle request failed.");
+                    Log.d(Constants.VENDOR, "twitterhandle request failed.");
                 }
             }
         });

@@ -191,7 +191,7 @@ public class PictureActivity extends AppCompatActivity {
                     newYelpVendor.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            picture.put("vendor", newYelpVendor);
+                            picture.put(Constants.VENDOR, newYelpVendor);
                             picture.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {
@@ -214,7 +214,7 @@ public class PictureActivity extends AppCompatActivity {
                     query.getInBackground(objectId, new GetCallback<ParseObject>() {
                         @Override
                         public void done(final ParseObject vendor, ParseException e) {
-                            picture.put("vendor", vendor);
+                            picture.put(Constants.VENDOR, vendor);
                             picture.saveInBackground(new SaveCallback() {
                                 @Override
                                 public void done(ParseException e) {

@@ -81,7 +81,7 @@
                 android:paddingRight="16dp"
                 android:drawableLeft="@drawable/ic_camera_alt_black_24dp"
                 android:textColor="@color/accentColor"
-                android:text="Post a pic"
+                android:text="@string/post_pic"
                 android:layout_marginRight="6dp"
                 android:id="@+id/cbid"
                 android:layout_weight="1"
@@ -210,22 +210,11 @@
 
                     </LinearLayout>
 
-                    <!--<android.support.v7.widget.RecyclerView-->
-                    <!--android:paddingTop="16dp"-->
-                    <!--android:paddingBottom="16dp"-->
-                    <!--android:id="@+id/recyclerView_details_friends_fav"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="135dp"/>-->
-
-
 
                 </LinearLayout>
 
 
             </HorizontalScrollView>
-
-
-
 
             <View
                 android:layout_width="fill_parent"
@@ -234,8 +223,6 @@
 
 
         </LinearLayout>
-
-
 
 
         <LinearLayout
@@ -249,13 +236,9 @@
                 android:paddingLeft="16dp"
                 android:textSize="20dp"
                 android:textColor="@color/black"
-                android:text="Here is what your friends say"
+                android:text="@string/friends_review_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-
-
-
-
 
             <LinearLayout
                 android:layout_marginTop="16dp"

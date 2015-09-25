@@ -60,15 +60,15 @@ public class UserReviewActivity extends AppCompatActivity {
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         final String today = "day" + Integer.toString(day);
 
-        ParseQuery<ParseObject> query = ParseQuery.getQuery("Review");
-        query.include("vendor");
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_REVIEW);
+        query.include(Constants.VENDOR);
         query.whereEqualTo("writer", user).findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
 
                 for (final ParseObject review : list) {
 
-                    final ParseObject vendor = review.getParseObject("vendor");
+                    final ParseObject vendor = review.getParseObject(Constants.VENDOR);
                     if (vendor.getParseGeoPoint("location") == null) {
 
                         YelpBusinessSearchService yelpBizService = ServiceGenerator.createYelpBusinessSearchService();
@@ -98,7 +98,7 @@ public class UserReviewActivity extends AppCompatActivity {
                     } else {
 
                         HashMap<String, Object> params = new HashMap<String, Object>();
-                        params.put("vendor", vendor);
+                        params.put(Constants.VENDOR, vendor);
                         ParseCloud.callFunctionInBackground("averageRatings", params, new FunctionCallback<Float>() {
                             @Override
                             public void done(Float rate, ParseException e) {

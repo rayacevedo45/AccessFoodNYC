@@ -48,4 +48,12 @@
     <string name="title_activity_user_favorite">Favorite</string>
     <string name="title_activity_pic">PicActivity</string>
     <string name="title_activity_coupons">Coupons</string>
+    <string name="search">search this area</string>
+    <string name="last_name">Last Name</string>
+    <string name="first_name">First Name</string>
+    <string name="friends">Friends</string>
+    <string name="reviews">Reviews</string>
+    <string name="favorites">Favorites</string>
+    <string name="post_pic">Post a pic</string>
+    <string name="friends_review_title">Here is what your friends say</string>
 </resources>

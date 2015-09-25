@@ -48,8 +48,8 @@ public class CouponsActivity extends AppCompatActivity implements DialogCallback
     private void refresh() {
         ParseUser user = ParseUser.getCurrentUser();
         final Date today = Calendar.getInstance().getTime();
-        ParseQuery<ParseObject> coupons = ParseQuery.getQuery("Coupon");
-        coupons.include("vendor");
+        ParseQuery<ParseObject> coupons = ParseQuery.getQuery(Constants.PARSE_CLASS_COUPON);
+        coupons.include(Constants.VENDOR);
         coupons.whereEqualTo("customer", user).findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {

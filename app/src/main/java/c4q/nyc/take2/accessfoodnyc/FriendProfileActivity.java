@@ -133,13 +133,13 @@ public class FriendProfileActivity extends AppCompatActivity implements DialogCa
                 mRecyclerView.setAdapter(mAdapter);
 
                 ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
-                favorites.include("vendor");
+                favorites.include(Constants.VENDOR);
                 favorites.whereEqualTo("follower", user).findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> list, ParseException e) {
                         mTextViewFavorite.setText(list.size() + "");
                         for (ParseObject favorite : list) {
-                            final ParseObject vendor = favorite.getParseObject("vendor");
+                            final ParseObject vendor = favorite.getParseObject(Constants.VENDOR);
 
                             if (vendor.getParseGeoPoint("location") == null) {
 
@@ -150,7 +150,7 @@ public class FriendProfileActivity extends AppCompatActivity implements DialogCa
 
                                         ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
                                         favorites.include("follower");
-                                        favorites.whereEqualTo("vendor", vendor).whereContainedIn("follower", list);
+                                        favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("follower", list);
                                         favorites.findInBackground(new FindCallback<ParseObject>() {
                                             @Override
                                             public void done(final List<ParseObject> list, ParseException e) {
@@ -189,7 +189,7 @@ public class FriendProfileActivity extends AppCompatActivity implements DialogCa
 
                                         ParseQuery<ParseObject> favorites = ParseQuery.getQuery("Favorite");
                                         favorites.include("follower");
-                                        favorites.whereEqualTo("vendor", vendor).whereContainedIn("follower", friends);
+                                        favorites.whereEqualTo(Constants.VENDOR, vendor).whereContainedIn("follower", friends);
                                         favorites.findInBackground(new FindCallback<ParseObject>() {
                                             @Override
                                             public void done(final List<ParseObject> list, ParseException e) {
