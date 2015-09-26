@@ -166,9 +166,13 @@ public class PictureActivity extends AppCompatActivity {
     }
     public void save (View v){
         progressBar.setVisibility(View.VISIBLE);
+        progressBar.setIndeterminate(false);
+        progressBar.setMax(4);
+        progressBar.setProgress(0);
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, stream);
         byte[] byteArray = stream.toByteArray();
+        progressBar.setProgress(1);
 
         final ParseFile file = new ParseFile("picture.jpg", byteArray);
 
@@ -181,13 +185,14 @@ public class PictureActivity extends AppCompatActivity {
                 picture.put("uploader", ParseUser.getCurrentUser());
                 //picture.saveInBackground();
 
-
+                progressBar.setProgress(2);
 
                 //Toast.makeText(getApplicationContext(), "uploaded", Toast.LENGTH_SHORT).show();
 
                 if (isYelp){
                     final ParseObject newYelpVendor = new ParseObject(Constants.PARSE_CLASS_VENDOR);
                     newYelpVendor.put(Constants.YELP_ID, objectId);
+                    progressBar.setProgress(3);
                     newYelpVendor.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
@@ -198,6 +203,7 @@ public class PictureActivity extends AppCompatActivity {
                                     ParseRelation<ParseObject> pictures = newYelpVendor.getRelation("pictures");
                                     pictures.add(picture);
                                     newYelpVendor.saveInBackground();
+                                    progressBar.setProgress(4);
 
                                 }
                             });
@@ -211,6 +217,7 @@ public class PictureActivity extends AppCompatActivity {
                 else {
 
                     ParseQuery<ParseObject> query = ParseQuery.getQuery(Constants.PARSE_CLASS_VENDOR);
+                    progressBar.setProgress(3);
                     query.getInBackground(objectId, new GetCallback<ParseObject>() {
                         @Override
                         public void done(final ParseObject vendor, ParseException e) {
@@ -221,6 +228,7 @@ public class PictureActivity extends AppCompatActivity {
                                     ParseRelation<ParseObject> pictures = vendor.getRelation("pictures");
                                     pictures.add(picture);
                                     vendor.saveInBackground();
+                                    progressBar.setProgress(4);
                                 }
                             });
                             progressBar.setVisibility(View.GONE);
