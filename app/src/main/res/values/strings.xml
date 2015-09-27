@@ -56,4 +56,6 @@
     <string name="favorites">Favorites</string>
     <string name="post_pic">Post a pic</string>
     <string name="friends_review_title">Here is what your friends say</string>
+    <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
+    <string name="title_activity_settings">SettingsActivity</string>
 </resources>
