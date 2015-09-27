@@ -349,6 +349,8 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
                 startActivity(coupon);
                 break;
             case R.id.action_settings:
+                Intent settingsPage= new Intent(getApplicationContext(), SettingsActivity.class);
+                startActivity(settingsPage);
                 break;
         }
 

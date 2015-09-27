@@ -389,6 +389,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    public void goToSettingsActivity(){
+        Intent settingsPage= new Intent(getApplicationContext(), SettingsActivity.class);
+        startActivity(settingsPage);
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -436,6 +441,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 logOut();
                 break;
             case R.id.action_settings:
+                goToSettingsActivity();
                 break;
             case R.id.action_list:
                 if (isListed) {
