@@ -138,10 +138,6 @@
                 android:value="c4q.nyc.take2.accessfoodnyc.ProfileActivity" />
         </activity>
         <activity
-            android:name=".NavigationDrawerActivity"
-            android:label="@string/title_activity_navigation_drawer" >
-        </activity>
-        <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" >
         </activity>
