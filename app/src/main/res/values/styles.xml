@@ -21,6 +21,10 @@
         <item name="android:textColorSecondary">@color/toolbarTextColorSecondary</item>
     </style>
 
+    <style name="PreferencesTheme">
+        <item name="android:background">#FFEAEAEA</item>
+    </style>
+
     <style name="LoginTheme" parent="AppTheme.Base">
         <item name="android:editTextColor">@color/accentColor</item>
         <item name="android:textColorSecondary">@color/accentColor</item>
