@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Settings For App Notifications"
+        android:key="preferencesForNotifications">
+
+        <SwitchPreference
+            android:key="notifications_switch"
+            android:title="Notifications Preferences"
+            android:summary="Notification Preferences"
+            android:defaultValue="true" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
